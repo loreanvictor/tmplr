@@ -1,0 +1,25 @@
+{
+  "name": "tmplr",
+  "version": "0.0.1",
+  "description": "Easy templating for repositories",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loreanvictor/tmplr.git"
+  },
+  "keywords": [
+    "template",
+    "cli",
+    "repository",
+    "setup"
+  ],
+  "author": "Eugene Ghanizadeh Khoub",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/loreanvictor/tmplr/issues"
+  },
+  "homepage": "https://github.com/loreanvictor/tmplr#readme"
+}
