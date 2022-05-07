@@ -59,7 +59,7 @@ steps:
     default: 'The greatest project in the history'
 
   - read: git_url
-    from: git.push_url
+    from: git.remote_url
     fallback:
       steps:
         - read: git_provider
