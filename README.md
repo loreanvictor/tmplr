@@ -51,7 +51,8 @@ steps:
     from: git.repository
     fallback:
       prompt: 'What is your project name?'
-      default: '{{ path.folder_name }}'
+      default:
+        from: path.folder_name
 
   - read: project_description
     prompt: 'Describe your project ...'
