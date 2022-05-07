@@ -73,8 +73,9 @@ steps:
           prompt: 'What is your git username?'
         - read: git_repo
           prompt: 'What is the repository name?'
-          default: '{{ project_name }}'
-        - resolve: 'https://{{ git_provider }}/{{ git_owner }}/{{ git_repo }}'
+          default:
+            from: project_name
+      eval: 'https://{{ git_provider }}/{{ git_owner }}/{{ git_repo }}'
 
   - update: ./package.json
   - remove: ./LICENSE
