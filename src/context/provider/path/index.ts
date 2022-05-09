@@ -1,6 +1,6 @@
 import { basename } from 'path'
 
-import { cached } from '../../util/cached'
+import { cached } from '../util/cached'
 import { createProvider } from '../base'
 
 

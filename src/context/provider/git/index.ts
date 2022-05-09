@@ -1,5 +1,5 @@
 import { createProvider } from '../base'
-import { cached } from '../../util/cached'
+import { cached } from '../util/cached'
 
 import { remoteUrl, remoteDetails } from './remote'
 import { initialCommit } from './commits'

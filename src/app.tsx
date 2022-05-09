@@ -2,12 +2,14 @@ import React from 'react'
 import { Text } from 'ink'
 import { useAsync } from 'react-use'
 
-import { get } from './store'
+import { createContext } from './context'
 
+
+const context = createContext()
 
 export function App() {
-  const url = useAsync(() => get('git.remote_owner'))
-  const initer = useAsync(() => get('path.dirname'))
+  const url = useAsync(() => context.scope.get('git.remote_owner'))
+  const initer = useAsync(() => context.scope.get('path.dirname'))
 
   return (
     <>

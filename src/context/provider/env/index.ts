@@ -1,4 +1,4 @@
-import { cached } from '../../util/cached'
+import { cached } from '../util/cached'
 import { Provider } from '../base'
 
 

@@ -1,6 +1,7 @@
 import { evaluate } from '../eval'
-import { cached } from '../util/cached'
-import { createStore, createProvider } from '../store'
+import { cached } from '../provider/util/cached'
+import { createStore } from '../store'
+import { createProvider } from '../provider'
 
 
 test('replaces vars in text with given store.', async () => {
