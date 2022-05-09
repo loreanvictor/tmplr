@@ -65,10 +65,10 @@ steps:
         - read: git_provider
           prompt: 'Where do you host the repository?'
           choices:
-            - 'github.com':     GitHub
-            - 'gitlab.com':     GitLab
-            - 'bitbucket.org':  BitBucket
-            - 'git.sr.ht': Source Hut
+            - GitHub:     'github.com'
+            - Gitlab:     'gitlab.com'
+            - BitBucket:  'bitbucket.org'
+            - Source Hut:  'git.sr.ht'
         - read: git_owner
           prompt: 'What is your git username?'
         - read: git_repo
