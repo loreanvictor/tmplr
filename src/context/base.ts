@@ -1,8 +1,8 @@
-import { Scope } from './scope'
+import { Stack } from './stack'
 import { ChangeLog } from './command'
 
 
 export interface Context {
-    scope: Scope
+    stack: Stack
     changeLog: ChangeLog
 }

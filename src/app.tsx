@@ -1,20 +1,20 @@
 import React from 'react'
-import { Text } from 'ink'
+import { readFile } from 'fs/promises'
 import { useAsync } from 'react-use'
 
-import { createContext } from './context'
+import { Waiting, Error } from './components/theme'
+import { parse } from './parse'
+import { ExecDisplay } from './components'
 
-
-const context = createContext()
 
 export function App() {
-  const url = useAsync(() => context.scope.get('git.remote_owner'))
-  const initer = useAsync(() => context.scope.get('path.dirname'))
+  const exec = useAsync(async () => parse(await readFile('.tmplr.yml', 'utf8')))
 
-  return (
-    <>
-      <Text>{ url.loading ? 'loading ...' : `${url.value}` }</Text>
-      <Text>{ initer.loading ? 'loading ...' : `${initer.value}` }</Text>
-    </>
-  )
+  if (exec.loading) {
+    return <Waiting>Loading config ...</Waiting>
+  } else if (exec.error) {
+    return <Error>{exec.error.message}</Error>
+  } else {
+    return <ExecDisplay exec={exec.value!} />
+  }
 }

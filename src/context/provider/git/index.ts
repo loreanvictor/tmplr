@@ -8,6 +8,9 @@ import { initialCommit } from './commits'
 const remoteDetailsCached = cached(remoteDetails)
 const initialCommitCached = cached(initialCommit)
 
+//
+// TODO: a lot of these might not exist. they should only be conditionally added.
+//
 export default createProvider({
   'remote_url': cached(remoteUrl),
   'remote_provider': cached(async () => (await remoteDetailsCached()).resource),

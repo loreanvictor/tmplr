@@ -1,0 +1,33 @@
+import React from 'react'
+
+import { useAsync } from 'react-use'
+
+import { Read, Update } from '../context/command'
+
+import { Waiting, Error } from './theme'
+import { ReadInfo, UpdateInfo } from './command'
+import { LogDisplay } from './log'
+import { useActiveRunnable } from './hooks'
+import { Execution } from '../parse'
+
+
+export interface ExecDisplayProps {
+  exec: Execution
+}
+
+export function ExecDisplay({ exec }: ExecDisplayProps) {
+  const active = useActiveRunnable(exec.command)
+  const res = useAsync(() => exec.command.run())
+
+  if (active instanceof Read) {
+    return <ReadInfo read={active} />
+  } else if (active instanceof Update) {
+    return <UpdateInfo update={active} />
+  } else if (active) {
+    return <Waiting>{active.constructor.name}</Waiting>
+  } else if (res.error) {
+    return <Error>{res.error.message}</Error>
+  } else {
+    return <LogDisplay log={exec.context.changeLog} />
+  }
+}

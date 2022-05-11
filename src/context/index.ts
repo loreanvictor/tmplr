@@ -1,5 +1,5 @@
 import { Context } from './base'
-import { createScope } from './scope'
+import { createStack } from './stack'
 import { git, env, path } from './provider'
 import { createChangeLog } from './command'
 
@@ -7,7 +7,7 @@ import { createChangeLog } from './command'
 
 export function createContext(): Context {
   return {
-    scope: createScope({ git, env, path }, {}),
+    stack: createStack({ git, env, path }, {}, 'tmplr'),
     changeLog: createChangeLog(),
   }
 }

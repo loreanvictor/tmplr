@@ -14,6 +14,6 @@ export function parseRead(context: ParsingContext, obj: any) {
   return new Read(
     obj.read,
     context.parseExpr(context, obj),
-    context.scope,
+    context.stack,
   )
 }

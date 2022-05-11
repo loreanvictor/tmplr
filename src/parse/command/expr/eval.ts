@@ -16,7 +16,7 @@ export function parseEval(context: ParsingContext, obj: any) {
     undefined
 
   return new Eval(
-    context.scope,
+    context.stack,
     obj.eval,
     steps
   )

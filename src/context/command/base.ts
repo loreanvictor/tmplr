@@ -24,6 +24,10 @@ export class Runnable {
     }
   }
 
+  running() {
+    return this.active() !== null
+  }
+
   protected start() {
     this._active = this
     this._startl.forEach(cb => cb())
@@ -41,13 +45,8 @@ export class Runnable {
       throw new Error('Inactive Runnable')
     }
 
-    runnable.onStart(() => {
-      this._active = runnable
-      this.notifyStateChange()
-    })
-
-    runnable.onEnd(() => {
-      this._active = this
+    runnable.onStateChange(() => {
+      this._active = runnable.active() || this
       this.notifyStateChange()
     })
 

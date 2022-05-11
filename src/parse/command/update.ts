@@ -13,7 +13,7 @@ export function parseUpdate(context: ParsingContext, obj: any) {
 
   return new Update(
     obj.update,
-    context.scope,
+    context.stack.varStore,
     context.changeLog,
   )
 }

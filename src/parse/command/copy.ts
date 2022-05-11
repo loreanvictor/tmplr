@@ -18,7 +18,7 @@ export function parseCopy(context: ParsingContext, obj: any) {
   return new Copy(
     obj.copy,
     obj.to,
-    context.scope,
+    context.stack.varStore,
     context.changeLog,
   )
 }

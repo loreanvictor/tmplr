@@ -12,7 +12,7 @@ export function parseFrom(context: ParsingContext, obj: any) {
   }
 
   return new From(
-    context.scope,
+    context.stack,
     obj.from,
     obj.fallback ? context.parseExpr(context, obj.fallback) : undefined,
   )
