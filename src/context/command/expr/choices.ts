@@ -1,5 +1,5 @@
 import { Expr } from './base'
-import { Deferred } from './util/deferred'
+import { IOAware, Prep } from './io'
 
 
 export interface Choice {
@@ -21,37 +21,29 @@ export interface ChoicesIO {
 }
 
 
-export class Choices extends Expr {
-  io = new Deferred<ChoicesIO>()
-
+export class Choices extends IOAware<ChoicesIO> {
   constructor(
     readonly msg: string,
     readonly choices: Choice[]
   ) { super() }
 
-  plug(io: ChoicesIO) {
-    this.io.resolve(io)
-  }
+  protected async prepare() {
+    const prep: Prep = {}
+    prep['choices'] = []
 
-  protected async _eval() {
-    const io = await this.io.promise
-
-    io.setMessage(this.msg)
-
-    const choices: ResolvedChoice[] = []
     for (const choice of this.choices) {
-      choices.push({
+      prep['choices'].push({
         label: choice.label,
-        value: await this.delegate(choice.value, e => e.eval()),
+        value: await this.delegate(choice.value, e => e.eval())
       })
     }
 
-    io.setChoices(choices)
+    return prep
+  }
 
-    const deferred = new Deferred<string>()
-
-    io.onSelect(choice => deferred.resolve(choice.value))
-
-    return deferred.promise
+  protected connect(io: ChoicesIO, prep: Prep, resolve: (value: string) => void) {
+    io.setMessage(this.msg)
+    io.setChoices(prep['choices'])
+    io.onSelect(choice => resolve(choice.value))
   }
 }

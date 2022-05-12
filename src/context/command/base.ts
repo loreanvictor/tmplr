@@ -16,12 +16,14 @@ export class Runnable {
     this._schangel.push(cb)
   }
 
-  active() {
+  active(): Runnable | null {
     if (this._active === this) {
       return this
     } else if (this._active) {
       return this._active.active() || this
     }
+
+    return null
   }
 
   running() {

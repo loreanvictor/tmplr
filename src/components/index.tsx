@@ -2,13 +2,14 @@ import React from 'react'
 
 import { useAsync } from 'react-use'
 
-import { Read, Update } from '../context/command'
+import { Prompt, Read, Update } from '../context/command'
 
 import { Waiting, Error } from './theme'
 import { ReadInfo, UpdateInfo } from './command'
 import { LogDisplay } from './log'
 import { useActiveRunnable } from './hooks'
 import { Execution } from '../parse'
+import { PromptDisplay } from './command/expr/prompt'
 
 
 export interface ExecDisplayProps {
@@ -23,8 +24,10 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return <ReadInfo read={active} />
   } else if (active instanceof Update) {
     return <UpdateInfo update={active} />
+  } else if (active instanceof Prompt) {
+    return <PromptDisplay prompt={active} />
   } else if (active) {
-    return <Waiting>{active.constructor.name}</Waiting>
+    return <Waiting>Waiting on {active.constructor.name}</Waiting>
   } else if (res.error) {
     return <Error>{res.error.message}</Error>
   } else {

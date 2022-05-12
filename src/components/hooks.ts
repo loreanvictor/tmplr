@@ -20,7 +20,10 @@ export function useActiveRunnable(runnable: Runnable) {
   const [active, mark] = useState<Runnable | null>(runnable.active())
 
   useEffect(() => {
-    runnable.onStateChange(() => mark(runnable.active()))
+    runnable.onStateChange(() => {
+      // console.log(runnable.active()?.constructor.name || 'null')
+      mark(runnable.active())
+    })
   }, [runnable])
 
   return active

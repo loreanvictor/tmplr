@@ -1,5 +1,5 @@
 import { Expr } from './base'
-import { Deferred } from './util/deferred'
+import { IOAware, Prep } from './io'
 
 
 export interface PromptIO {
@@ -9,32 +9,30 @@ export interface PromptIO {
 }
 
 
-export class Prompt extends Expr {
-  io = new Deferred<PromptIO>()
+export class Prompt extends IOAware<PromptIO> {
 
   constructor(
     readonly msg: string,
     readonly _default?: Expr
   ) { super() }
 
-  plug(io: PromptIO) {
-    this.io.resolve(io)
-  }
 
-  protected async _eval() {
-    const io = await this.io.promise
+  protected async prepare() {
+    const prep: Prep = {}
 
     if (this._default) {
-      io.setDefault(
-        await this.delegate(this._default, e => e.eval())
-      )
+      prep['default'] = await this.delegate(this._default, e => e.eval())
     }
 
-    const deferred = new Deferred<string>()
+    return prep
+  }
+
+  protected connect(io: PromptIO, prep: Prep, resolve: (value: string) => void) {
+    if ('default' in prep) {
+      io.setDefault(prep['default'])
+    }
 
     io.setMessage(this.msg)
-    io.onValue(value => deferred.resolve(value))
-
-    return deferred.promise
+    io.onValue(resolve)
   }
 }

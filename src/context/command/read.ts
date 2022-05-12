@@ -13,6 +13,7 @@ export class Read extends Command {
   }
 
   protected async _run() {
-    await this.scope.set(this.variable, await this.expr.eval())
+    const val = await this.delegate(this.expr, e => e.eval())
+    await this.scope.set(this.variable, val)
   }
 }
