@@ -26,7 +26,10 @@ export abstract class IOAware<IO> extends Expr {
     }
   }
 
-  protected abstract prepare(): Promise<Prep>
+  protected async prepare(): Promise<Prep> {
+    return {}
+  }
+
   protected abstract connect(io: IO, prep: Prep, resolve: (value: string) => void)
 
   protected async _eval() {

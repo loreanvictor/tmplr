@@ -18,10 +18,17 @@ export function parseChoices(context: ParsingContext, obj: any) {
   return new Choices(
     obj.prompt,
     obj.choices.map(choice => {
-      const label = Object.keys(choice)[0]
-      const value = context.parseExpr(context, choice[label!])
+      if (typeof choice === 'string') {
+        return {
+          label: choice,
+          value: context.parseExpr(context, choice)
+        }
+      } else {
+        const label = Object.keys(choice)[0]
+        const value = context.parseExpr(context, choice[label!])
 
-      return { label, value }
+        return { label, value }
+      }
     }),
   )
 }

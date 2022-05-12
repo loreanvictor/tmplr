@@ -8,16 +8,10 @@ export interface Choice {
 }
 
 
-interface ResolvedChoice {
-  label: string
-  value: string
-}
-
-
 export interface ChoicesIO {
   setMessage(msg: string): void
-  setChoices(choices: ResolvedChoice[]): void
-  onSelect(cb: (choice: ResolvedChoice) => void)
+  setChoices(choices: Choice[]): void
+  onSelect(cb: (choice: Choice) => void)
 }
 
 
@@ -27,23 +21,9 @@ export class Choices extends IOAware<ChoicesIO> {
     readonly choices: Choice[]
   ) { super() }
 
-  protected async prepare() {
-    const prep: Prep = {}
-    prep['choices'] = []
-
-    for (const choice of this.choices) {
-      prep['choices'].push({
-        label: choice.label,
-        value: await this.delegate(choice.value, e => e.eval())
-      })
-    }
-
-    return prep
-  }
-
-  protected connect(io: ChoicesIO, prep: Prep, resolve: (value: string) => void) {
+  protected connect(io: ChoicesIO, _: Prep, resolve: (value: string) => void) {
     io.setMessage(this.msg)
-    io.setChoices(prep['choices'])
-    io.onSelect(choice => resolve(choice.value))
+    io.setChoices(this.choices)
+    io.onSelect(choice => this.delegate(choice.value, e => e.eval()).then(resolve))
   }
 }

@@ -17,7 +17,7 @@ export class Prompt extends IOAware<PromptIO> {
   ) { super() }
 
 
-  protected async prepare() {
+  protected override async prepare() {
     const prep: Prep = {}
 
     if (this._default) {
