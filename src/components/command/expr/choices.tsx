@@ -1,12 +1,33 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import SelectInput from 'ink-select-input'
+import { Text, Newline } from 'ink'
+import SelectInput, { ItemProps, IndicatorProps } from 'ink-select-input'
 import { Choices, Choice } from '../../../context/command'
-import { Question } from '../../theme'
+import { Question, Highlight, Hint, Tertiary } from '../../theme'
+
+
+
+function Item({ label, isSelected }: ItemProps) {
+  if (isSelected) {
+    return <Highlight>{label}</Highlight>
+  } else {
+    return <Text>{label}</Text>
+  }
+}
+
+
+function Indicator({ isSelected }: IndicatorProps) {
+  if (isSelected) {
+    return <Tertiary> ⦿ </Tertiary>
+  } else {
+    return <Hint> ○ </Hint>
+  }
+}
 
 
 export interface ChoicesDisplayProps {
   choices: Choices
 }
+
 
 export function ChoicesDisplay({ choices }: ChoicesDisplayProps) {
   const [msg, setMsg] = useState('loading ...')
@@ -30,7 +51,13 @@ export function ChoicesDisplay({ choices }: ChoicesDisplayProps) {
   return (
     <>
       <Question>{msg}</Question>
-      <SelectInput items={items.map(({ label, value }) => ({ label, value, key: label }))} onSelect={submit} />
+      <SelectInput
+        itemComponent={Item}
+        indicatorComponent={Indicator}
+        items={items.map(({ label, value }) => ({ label, value, key: label }))}
+        onSelect={submit} />
+      <Newline/>
+      <Hint>Use {'<Up>'} and {'<Down>'} keys to navigate, {'<Enter>'} to select.</Hint>
     </>
   )
 }
