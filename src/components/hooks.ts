@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useToggle } from 'react-use'
+import { pipe, tap, observe, first, last } from 'streamlets'
 
 import { Runnable } from '../context/command'
 
@@ -8,8 +9,8 @@ export function useRunnableState(runnable: Runnable) {
   const [running, toggle] = useToggle(runnable.running())
 
   useEffect(() => {
-    runnable.onStart(() => toggle(true))
-    runnable.onEnd(() => toggle(false))
+    first(runnable.active).then(() => toggle(true))
+    last(runnable.active).then(() => toggle(false))
   }, [runnable])
 
   return running
@@ -17,13 +18,12 @@ export function useRunnableState(runnable: Runnable) {
 
 
 export function useActiveRunnable(runnable: Runnable) {
-  const [active, mark] = useState<Runnable | null>(runnable.active())
+  const [active, mark] = useState<Runnable | null>(runnable.active.last)
 
   useEffect(() => {
-    runnable.onStateChange(() => {
-      // console.log(runnable.active()?.constructor.name || 'null')
-      mark(runnable.active())
-    })
+    const obs = pipe(runnable.active, tap(mark), observe)
+
+    return () => obs.stop()
   }, [runnable])
 
   return active

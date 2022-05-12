@@ -1,62 +1,35 @@
+import { replay, Subject, tap, observe, map, pipe } from 'streamlets'
+
+
+// TODO: add abstract validation and check it on start
 export class Runnable {
-  private _active: Runnable | null = null
-  private _startl: (() => void)[] = []
-  private _endl: (() => void)[] = []
-  private _schangel: ((active: Runnable | null) => void)[] = []
-
-  onStart(cb: () => void) {
-    this._startl.push(cb)
-  }
-
-  onEnd(cb: () => void) {
-    this._endl.push(cb)
-  }
-
-  onStateChange(cb: () => void) {
-    this._schangel.push(cb)
-  }
-
-  active(): Runnable | null {
-    if (this._active === this) {
-      return this
-    } else if (this._active) {
-      return this._active.active() || this
-    }
-
-    return null
-  }
+  readonly active = replay(new Subject<Runnable>())
 
   running() {
-    return this.active() !== null
+    return !!this.active.last
   }
 
   protected start() {
-    this._active = this
-    this._startl.forEach(cb => cb())
-    this.notifyStateChange()
+    this.active.receive(this)
   }
 
   protected end() {
-    this._active = null
-    this._endl.forEach(cb => cb())
-    this.notifyStateChange()
+    this.active.end()
   }
 
   protected async delegate<T, R extends Runnable>(runnable: R, fn: (r: R) => Promise<T>) {
-    if (!this._active) {
+    if (!this.active.last) {
       throw new Error('Inactive Runnable')
     }
 
-    runnable.onStateChange(() => {
-      this._active = runnable.active() || this
-      this.notifyStateChange()
-    })
+    pipe(
+      runnable.active,
+      map(active => active || this),
+      tap(active => this.active.receive(active)),
+      observe
+    )
 
     return await fn(runnable)
-  }
-
-  private notifyStateChange() {
-    this._schangel.forEach(cb => cb(this.active()))
   }
 }
 
