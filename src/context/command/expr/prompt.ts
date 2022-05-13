@@ -1,5 +1,6 @@
 import { Expr } from './base'
 import { IOAware, Prep } from './io'
+import { Deferred } from './util/deferred'
 
 
 export interface PromptIO {
@@ -27,12 +28,12 @@ export class Prompt extends IOAware<PromptIO> {
     return prep
   }
 
-  protected connect(io: PromptIO, prep: Prep, resolve: (value: string) => void) {
+  protected connect(io: PromptIO, prep: Prep, deferred: Deferred<string>) {
     if ('default' in prep) {
       io.setDefault(prep['default'])
     }
 
     io.setMessage(this.msg)
-    io.onValue(resolve)
+    io.onValue(deferred.resolve)
   }
 }

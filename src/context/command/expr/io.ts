@@ -30,14 +30,14 @@ export abstract class IOAware<IO> extends Expr {
     return {}
   }
 
-  protected abstract connect(io: IO, prep: Prep, resolve: (value: string) => void)
+  protected abstract connect(io: IO, prep: Prep, deferred: Deferred<string>)
 
   protected async _eval() {
     const prep = await this.prepare()
     await this.connected.promise
 
     const value = new Deferred<string>()
-    this.connect(this.connector!(), prep, v => value.resolve(v))
+    this.connect(this.connector!(), prep, value)
 
     return await value.promise
   }

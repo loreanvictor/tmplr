@@ -1,5 +1,6 @@
 import { Expr } from './base'
 import { IOAware, Prep } from './io'
+import { Deferred } from './util/deferred'
 
 
 export interface Choice {
@@ -21,9 +22,13 @@ export class Choices extends IOAware<ChoicesIO> {
     readonly choices: Choice[]
   ) { super() }
 
-  protected connect(io: ChoicesIO, _: Prep, resolve: (value: string) => void) {
+  protected connect(io: ChoicesIO, _: Prep, deferred: Deferred<string>) {
     io.setMessage(this.msg)
     io.setChoices(this.choices)
-    io.onSelect(choice => this.delegate(choice.value, e => e.eval()).then(resolve))
+    io.onSelect(choice =>
+      this.delegate(choice.value, e => e.eval())
+        .then(deferred.resolve)
+        .catch(deferred.reject)
+    )
   }
 }

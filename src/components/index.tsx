@@ -24,7 +24,16 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
   const res = useAsync(() => exec.command.run())
 
   if (res.error) {
-    return <Error>{res.error.message}</Error>
+    return (
+      <>
+        <Error>{res.error.message.trim()}</Error>
+        <Error>
+          <Hint>
+            While running {active?.constructor.name}
+          </Hint>
+        </Error>
+      </>
+    )
   } else if (active instanceof Read) {
     return <ReadInfo read={active} />
   } else if (active instanceof Update) {

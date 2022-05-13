@@ -10,15 +10,22 @@ export class From extends Expr {
   ) { super() }
 
   protected async _eval() {
-    const val = this.store.has(this.address) ? await this.store.get(this.address) : undefined
+    let val: string | undefined
+    try {
+      if (this.store.has(this.address)) {
+        val = await this.store.get(this.address)
+      }
 
-    if (val && val.trim().length > 0) {
+      if (!val || val.trim().length === 0) {
+        throw new Error(`Could not resolve ${this.address}`)
+      }
+
       return val
-    } else {
+    } catch(error) {
       if (this.fallback) {
-        return await this.delegate(this.fallback, f => f.eval())
+        return await this.delegate(this.fallback, e => e.eval())
       } else {
-        return ''
+        throw error
       }
     }
   }
