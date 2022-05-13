@@ -6,3 +6,10 @@ export function isSubPath(base: string, path: string) {
 
   return !!rel && !isAbsolute(rel) && !rel.startsWith('..')
 }
+
+
+export function checkSubPath(path: string, base = process.cwd()) {
+  if (!isSubPath(base, path)) {
+    throw new Error(`${path} is not in current working directory.`)
+  }
+}

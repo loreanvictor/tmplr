@@ -28,9 +28,9 @@ steps:
 `
 
   const parsed = parse(yml)
-  expect(parsed).toBeInstanceOf(Steps)
+  expect(parsed.command).toBeInstanceOf(Steps)
 
-  const steps = parsed as Steps
+  const steps = parsed.command as Steps
   expect(steps.steps.length).toBe(5)
   expect(steps.steps[0]).toBeInstanceOf(Read)
   expect(steps.steps[1]).toBeInstanceOf(Read)

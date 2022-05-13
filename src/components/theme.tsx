@@ -9,7 +9,7 @@ export const ACCENT = '#0AA1DD'
 export const TERTIARY = '#9772FB'
 export const SUCCESS = '#97DBAE'
 export const ERROR = '#F24A72'
-export const HINT = '#041562'
+export const HINT = '#22577E'
 export const Q = [
   '#0AA1DD', '#0992C9', '#0884B5', '#0775A1', '#06668D', '#055879', '#054964',
   '#055879', '#06668D', '#0775A1', '#0884B5', '#0992C9', '#0AA1DD', '#0AA1DD',
@@ -55,7 +55,7 @@ export function Success({ children }) {
 
 export function Error({ children }) {
   return <Text>
-    <Text color={ERROR}>✘</Text> {children}
+    <Text color={ERROR}>✘ {children}</Text>
   </Text>
 }
 

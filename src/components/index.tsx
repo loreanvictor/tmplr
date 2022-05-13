@@ -23,7 +23,9 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
   const active = useActiveRunnable(exec.command)
   const res = useAsync(() => exec.command.run())
 
-  if (active instanceof Read) {
+  if (res.error) {
+    return <Error>{res.error.message}</Error>
+  } else if (active instanceof Read) {
     return <ReadInfo read={active} />
   } else if (active instanceof Update) {
     return <UpdateInfo update={active} />
@@ -37,8 +39,6 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return <ChoicesDisplay choices={active} />
   } else if (active) {
     return <Waiting>Working ... <Hint>{active.constructor.name}</Hint></Waiting>
-  } else if (res.error) {
-    return <Error>{res.error.message}</Error>
   } else {
     return <LogDisplay log={exec.context.changeLog} />
   }

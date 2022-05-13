@@ -1,5 +1,6 @@
-import { unlink } from 'fs/promises'
+import { rm } from 'fs/promises'
 
+import { checkFile } from './util/check-file'
 import { ChangeLog, Change } from './change'
 
 
@@ -10,6 +11,7 @@ export class Remove extends Change {
   ) { super(log) }
 
   protected async commit() {
-    await unlink(this.target)
+    await checkFile(this.target)
+    await rm(this.target)
   }
 }
