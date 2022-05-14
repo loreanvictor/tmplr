@@ -43,8 +43,8 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return <PromptDisplay prompt={active} />
   } else if (active instanceof Choices) {
     return <ChoicesDisplay choices={active} />
-  } else if (active) {
-    return <Waiting>Working ... <Hint>{active.constructor.name}</Hint></Waiting>
+  } else if (res.loading) {
+    return <Waiting>Working ... <Hint>{active?.constructor.name}</Hint></Waiting>
   } else {
     return <LogDisplay log={exec.context.changeLog} />
   }

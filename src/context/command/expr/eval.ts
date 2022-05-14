@@ -1,6 +1,7 @@
 import { evaluate } from '../../eval'
 import { Store } from '../../store'
 import { Steps } from '../steps'
+import { indent } from '../util/indent'
 import { Expr } from './base'
 
 
@@ -19,7 +20,11 @@ export class Eval extends Expr {
     return await evaluate(this.store, this.expr)
   }
 
-  summary() {
-    return `eval: ${this.expr}`
+  summary(i) {
+    return indent(
+      `eval: ${this.expr}` +
+      (this.steps ? `\n${this.steps.summary(i)}` : '')
+      , i
+    )
   }
 }

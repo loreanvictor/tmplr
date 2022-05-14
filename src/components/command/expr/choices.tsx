@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react'
+import { useMountedState } from 'react-use'
 import { Text, Newline } from 'ink'
 import SelectInput, { ItemProps, IndicatorProps } from 'ink-select-input'
+
 import { Choices, Choice } from '../../../context/command'
 import { Question, Highlight, Hint, Tertiary } from '../../theme'
 
@@ -30,20 +32,22 @@ export interface ChoicesDisplayProps {
 
 
 export function ChoicesDisplay({ choices }: ChoicesDisplayProps) {
+  const isMounted = useMountedState()
   const [msg, setMsg] = useState('loading ...')
   const [items, setItems] = useState<Choice[]>([])
-  const [cb, setCb] = useState<{ callback: (choice: Choice) => void }>()
+  const [cb, setCb] = useState<{ callback?: (choice: Choice) => void }>()
 
   useEffect(() => {
     choices.plug(() => ({
       setMessage: v => setMsg(v),
       setChoices: i => setItems(i),
       onSelect: (c: (_: Choice) => void) => setCb({ callback: c }),
+      disconnect: () => setCb({ })
     }))
   }, [choices])
 
   const submit = useCallback((choice: Choice) => {
-    if (cb?.callback) {
+    if (isMounted() && cb?.callback) {
       cb.callback(choice)
     }
   }, [cb])

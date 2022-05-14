@@ -1,5 +1,6 @@
+import { indent } from '../util/indent'
 import { Expr } from './base'
-import { IOAware, Prep } from './io'
+import { IOAware, Prep, IO } from './io'
 import { Deferred } from './util/deferred'
 
 
@@ -9,7 +10,7 @@ export interface Choice {
 }
 
 
-export interface ChoicesIO {
+export interface ChoicesIO extends IO {
   setMessage(msg: string): void
   setChoices(choices: Choice[]): void
   onSelect(cb: (choice: Choice) => void)
@@ -32,8 +33,12 @@ export class Choices extends IOAware<ChoicesIO> {
     )
   }
 
-  // TODO: fix this with indentation
-  summary() {
-    return `prompt: ${this.msg}\nchoices: ${this.choices.map(c => c.label).join(', ')}`
+  summary(i) {
+    return indent(
+      `prompt: ${this.msg}\n` +
+      'choices:\n' +
+      indent(this.choices.map(c => `- ${c.label}:\n` + indent(c.value.summary(), 2)).join('\n'), 1)
+      , i
+    )
   }
 }

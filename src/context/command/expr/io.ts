@@ -2,7 +2,11 @@ import { Expr } from './base'
 import { Deferred } from './util/deferred'
 
 
-export type Connector<IO> = () => IO
+export interface IO {
+  disconnect()
+}
+
+export type Connector<_IO extends IO> = () => _IO
 
 
 export interface Prep {
@@ -10,20 +14,18 @@ export interface Prep {
 }
 
 
-export abstract class IOAware<IO> extends Expr {
-  private connector: Connector<IO> | undefined
+export abstract class IOAware<_IO extends IO> extends Expr {
+  private connector: Connector<_IO> | undefined
   private connected = new Deferred<void>()
 
-  public plug(connector: Connector<IO>) {
+  public plug(connector: Connector<_IO>) {
     this.connector = connector
     this.connected.resolve()
   }
 
-  public unplug(connector: Connector<IO>) {
-    if (this.connector === connector) {
-      this.connector = undefined
-      this.connected = new Deferred<void>()
-    }
+  public unplug() {
+    this.connector = undefined
+    this.connected = new Deferred<void>()
   }
 
   protected async prepare(): Promise<Prep> {
@@ -37,8 +39,14 @@ export abstract class IOAware<IO> extends Expr {
     await this.connected.promise
 
     const value = new Deferred<string>()
-    this.connect(this.connector!(), prep, value)
+    const io = this.connector!()
+    this.connect(io, prep, value)
 
-    return await value.promise
+    const res = await value.promise
+
+    io.disconnect()
+    this.unplug()
+
+    return res
   }
 }

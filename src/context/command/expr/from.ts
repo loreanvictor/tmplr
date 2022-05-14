@@ -1,4 +1,5 @@
 import { Store } from '../../store'
+import { indent } from '../util/indent'
 import { Expr } from './base'
 
 
@@ -30,7 +31,11 @@ export class From extends Expr {
     }
   }
 
-  summary() {
-    return `from: ${this.address}`
+  summary(i) {
+    return indent(
+      `from: ${this.address}` +
+      (this.fallback ? `\nfallback:\n${this.fallback.summary(1)}` : '')
+      , i
+    )
   }
 }

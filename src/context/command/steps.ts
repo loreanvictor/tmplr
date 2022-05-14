@@ -1,4 +1,5 @@
 import { Command } from './base'
+import { indent } from './util/indent'
 
 
 export class Steps extends Command {
@@ -12,8 +13,7 @@ export class Steps extends Command {
     }
   }
 
-  // TODO: fix this
-  summary() {
-    return `steps: ${this.steps.map(s => s.summary()).join('\n')}`
+  summary(i) {
+    return indent(`steps:\n${indent(this.steps.map(s =>  '- ' + indent(s.summary(), 1).slice(2)).join('\n'), 1)}`, i)
   }
 }

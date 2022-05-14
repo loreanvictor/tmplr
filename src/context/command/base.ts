@@ -31,7 +31,7 @@ export abstract class Runnable {
     return await fn(runnable)
   }
 
-  public abstract summary(): string
+  public abstract summary(indent?: number): string
 }
 
 

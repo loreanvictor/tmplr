@@ -1,6 +1,7 @@
 import { Scope } from '../scope'
 import { Command } from './base'
 import { Expr } from './expr'
+import { indent } from './util/indent'
 
 
 export class Read extends Command {
@@ -17,7 +18,7 @@ export class Read extends Command {
     await this.scope.set(this.variable, val)
   }
 
-  summary() {
-    return `read: ${this.variable} \n${this.expr.summary()}`
+  summary(i) {
+    return indent(`read: ${this.variable} \n${this.expr.summary()}`, i)
   }
 }

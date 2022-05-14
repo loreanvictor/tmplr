@@ -15,15 +15,17 @@ export function PromptDisplay({ prompt }: PromptDisplayProps) {
   const [value, setValue] = useState('')
   const [touched, touch] = useToggle(false)
   const [msg, setMsg] = useState('loading ...')
-  const [cb, setCb] = useState<{ callback: (val: string) => void }>()
+  const [cb, setCb] = useState<{ callback?: (val: string) => void }>()
 
   useEffect(() => {
     prompt.plug(() => ({
       setDefault: (v: string) => setValue(v),
       setMessage: (m: string) => setMsg(m),
       onValue: (c: (v: string) => void) => setCb({ callback: c }),
+      disconnect: () => setCb({ }),
     }))
   }, [prompt])
+
 
   useInput((input) => {
     if (!touched && input[0]?.match(/\w/)) {
