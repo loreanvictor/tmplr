@@ -23,4 +23,8 @@ export class Copy extends Change {
     const updated = await evaluate(this.store, content)
     await writeFile(this.dest, updated)
   }
+
+  summary() {
+    return `copy: ${this.src} \nto: ${this.dest}`
+  }
 }

@@ -11,4 +11,9 @@ export class Steps extends Command {
       await this.delegate(step, s => s.run())
     }
   }
+
+  // TODO: fix this
+  summary() {
+    return `steps: ${this.steps.map(s => s.summary()).join('\n')}`
+  }
 }

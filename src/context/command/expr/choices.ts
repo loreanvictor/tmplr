@@ -31,4 +31,9 @@ export class Choices extends IOAware<ChoicesIO> {
         .catch(deferred.reject)
     )
   }
+
+  // TODO: fix this with indentation
+  summary() {
+    return `prompt: ${this.msg}\nchoices: ${this.choices.map(c => c.label).join(', ')}`
+  }
 }

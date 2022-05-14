@@ -36,4 +36,8 @@ export class Prompt extends IOAware<PromptIO> {
     io.setMessage(this.msg)
     io.onValue(deferred.resolve)
   }
+
+  summary() {
+    return `prompt: ${this.msg}`
+  }
 }

@@ -18,4 +18,8 @@ export class Eval extends Expr {
 
     return await evaluate(this.store, this.expr)
   }
+
+  summary() {
+    return `eval: ${this.expr}`
+  }
 }

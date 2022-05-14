@@ -14,4 +14,8 @@ export class Remove extends Change {
     await checkFile(this.target)
     await rm(this.target)
   }
+
+  summary() {
+    return `remove: ${this.target}`
+  }
 }

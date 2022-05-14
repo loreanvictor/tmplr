@@ -29,4 +29,8 @@ export class From extends Expr {
       }
     }
   }
+
+  summary() {
+    return `from: ${this.address}`
+  }
 }

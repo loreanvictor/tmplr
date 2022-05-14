@@ -1,8 +1,7 @@
 import { replay, Subject, tap, observe, map, pipe } from 'streamlets'
 
 
-// TODO: add abstract validation and check it on start
-export class Runnable {
+export abstract class Runnable {
   readonly active = replay(new Subject<Runnable>())
 
   running() {
@@ -31,6 +30,8 @@ export class Runnable {
 
     return await fn(runnable)
   }
+
+  public abstract summary(): string
 }
 
 

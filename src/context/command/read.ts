@@ -16,4 +16,8 @@ export class Read extends Command {
     const val = await this.delegate(this.expr, e => e.eval())
     await this.scope.set(this.variable, val)
   }
+
+  summary() {
+    return `read: ${this.variable} \n${this.expr.summary()}`
+  }
 }

@@ -13,6 +13,7 @@ import { PromptDisplay } from './command/expr/prompt'
 import { ChoicesDisplay } from './command/expr/choices'
 import { CopyInfo } from './command/copy'
 import { RemoveInfo } from './command/remove'
+import { TraceDisplay } from './trace'
 
 
 export interface ExecDisplayProps {
@@ -27,11 +28,7 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return (
       <>
         <Error>{res.error.message.trim()}</Error>
-        <Error>
-          <Hint>
-            While running {active?.constructor.name}
-          </Hint>
-        </Error>
+        { active && <TraceDisplay active={active} /> }
       </>
     )
   } else if (active instanceof Read) {

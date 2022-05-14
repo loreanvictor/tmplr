@@ -9,4 +9,8 @@ export class Update extends Copy {
     store: Store,
     log: ChangeLog,
   ) { super(target, target, store, log) }
+
+  override summary() {
+    return `update: ${this.target}`
+  }
 }
