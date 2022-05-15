@@ -1,5 +1,5 @@
-import { Steps, Eval } from '../../../context/command'
-import { ParsingContext } from '../../base'
+import { Steps, Eval } from '../../context/command'
+import { ParsingContext } from '../base'
 
 
 export function parseEval(context: ParsingContext, obj: any) {

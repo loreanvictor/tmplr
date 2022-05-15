@@ -1,7 +1,6 @@
-import { evaluate } from '../../eval'
-import { Store } from '../../store'
-import { Steps } from '../steps'
-import { indent } from '../util/indent'
+import { evaluate } from '../eval'
+import { Store } from '../store'
+import { Steps } from '../command/steps'
 import { Expr } from './base'
 
 
@@ -18,13 +17,5 @@ export class Eval extends Expr {
     }
 
     return await evaluate(this.store, this.expr)
-  }
-
-  summary(i) {
-    return indent(
-      `eval: ${this.expr}` +
-      (this.steps ? `\n${this.steps.summary(i)}` : '')
-      , i
-    )
   }
 }

@@ -1,4 +1,3 @@
-import { indent } from '../util/indent'
 import { Expr } from './base'
 import { IOAware, Prep, IO } from './io'
 import { Deferred } from './util/deferred'
@@ -36,13 +35,5 @@ export class Prompt extends IOAware<PromptIO> {
 
     io.setMessage(this.msg)
     io.onValue(v => deferred.resolve(v))
-  }
-
-  summary(i) {
-    return indent(
-      `prompt: ${this.msg}`
-      + (this._default ? `\ndefault:\n${this._default.summary(1)}` : '')
-      , i
-    )
   }
 }

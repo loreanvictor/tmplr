@@ -2,7 +2,6 @@ import { rm } from 'fs/promises'
 
 import { checkFile } from './util/check-file'
 import { ChangeLog, Change } from './change'
-import { indent } from './util/indent'
 
 
 export class Remove extends Change {
@@ -14,9 +13,5 @@ export class Remove extends Change {
   protected async commit() {
     await checkFile(this.target)
     await rm(this.target)
-  }
-
-  summary(i) {
-    return indent(`remove: ${this.target}`, i)
   }
 }

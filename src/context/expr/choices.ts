@@ -1,4 +1,3 @@
-import { indent } from '../util/indent'
 import { Expr } from './base'
 import { IOAware, Prep, IO } from './io'
 import { Deferred } from './util/deferred'
@@ -30,15 +29,6 @@ export class Choices extends IOAware<ChoicesIO> {
       this.delegate(choice.value, e => e.eval())
         .then(deferred.resolve)
         .catch(deferred.reject)
-    )
-  }
-
-  summary(i) {
-    return indent(
-      `prompt: ${this.msg}\n` +
-      'choices:\n' +
-      indent(this.choices.map(c => `- ${c.label}:\n` + indent(c.value.summary(), 2)).join('\n'), 1)
-      , i
     )
   }
 }

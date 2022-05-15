@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { pipe, tap, finalize, observe } from 'streamlets'
 
-import { Runnable } from '../context/command'
+import { Runnable } from '../context'
 
 
 

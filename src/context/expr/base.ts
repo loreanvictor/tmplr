@@ -1,4 +1,4 @@
-import { Runnable } from '../base'
+import { Runnable } from '../runnable'
 
 
 export abstract class Expr extends Runnable {

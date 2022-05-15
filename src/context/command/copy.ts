@@ -4,7 +4,6 @@ import { evaluate } from '../eval'
 import { Store } from '../store'
 import { Change, ChangeLog } from './change'
 import { checkFile } from './util/check-file'
-import { indent } from './util/indent'
 import { checkSubPath } from './util/sub-path'
 
 
@@ -23,9 +22,5 @@ export class Copy extends Change {
     const content = await readFile(this.src, 'utf8')
     const updated = await evaluate(this.store, content)
     await writeFile(this.dest, updated)
-  }
-
-  summary(i) {
-    return indent(`copy: ${this.src}\nto: ${this.dest}`, i)
   }
 }

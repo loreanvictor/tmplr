@@ -1,5 +1,5 @@
-import { Choices } from '../../../context/command'
-import { ParsingContext } from '../../base'
+import { Choices } from '../../context/command'
+import { ParsingContext } from '../base'
 
 
 export function parseChoices(context: ParsingContext, obj: any) {

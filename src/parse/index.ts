@@ -2,7 +2,7 @@ import { parse as parseYaml } from 'yaml'
 
 import { createContext, Context } from '../context'
 import { Command } from '../context/command'
-import { parseExpr } from './command/expr'
+import { parseExpr } from './expr'
 import { parseCommand } from './command'
 
 

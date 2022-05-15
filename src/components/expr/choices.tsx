@@ -3,8 +3,8 @@ import { useMountedState } from 'react-use'
 import { Text, Newline } from 'ink'
 import SelectInput, { ItemProps, IndicatorProps } from 'ink-select-input'
 
-import { Choices, Choice } from '../../../context/command'
-import { Question, Highlight, Hint, Tertiary } from '../../theme'
+import { Choices, Choice } from '../../context/command'
+import { Question, Highlight, Hint, Tertiary } from '../theme'
 
 
 

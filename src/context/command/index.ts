@@ -1,5 +1,5 @@
 export * from './base'
-export * from './expr'
+export * from '../expr'
 
 export { Read } from './read'
 export { Steps } from './steps'

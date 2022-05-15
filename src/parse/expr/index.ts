@@ -1,4 +1,4 @@
-import { ParsingContext } from '../../base'
+import { ParsingContext } from '../base'
 import { parseChoices } from './choices'
 import { parseEval } from './eval'
 import { parseFrom } from './from'

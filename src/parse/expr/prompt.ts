@@ -1,5 +1,5 @@
-import { Prompt } from '../../../context/command'
-import { ParsingContext } from '../../base'
+import { Prompt } from '../../context/command'
+import { ParsingContext } from '../base'
 
 
 export function parsePrompt(context: ParsingContext, obj: any) {
