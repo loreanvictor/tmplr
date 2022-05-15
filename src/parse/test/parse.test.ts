@@ -1,4 +1,4 @@
-import { Choices, Copy, Eval, From, Prompt, Read, Remove, Steps, Update, Value } from '../../context/command'
+import { Choices, Copy, Degit, Eval, From, Prompt, Read, Remove, Steps, Update, Value } from '../../context/command'
 import { parse } from '../index'
 
 
@@ -25,13 +25,16 @@ steps:
   - copy: ./.tmplr/template.js
     to: ./src/template.js
   - remove: ./LICENSE
+  - degit: some/repo
+    to:
+      prompt: Where should we clone the repo?
 `
 
   const parsed = parse(yml)
   expect(parsed.command).toBeInstanceOf(Steps)
 
   const steps = parsed.command as Steps
-  expect(steps.steps.length).toBe(5)
+  expect(steps.steps.length).toBe(6)
   expect(steps.steps[0]).toBeInstanceOf(Read)
   expect(steps.steps[1]).toBeInstanceOf(Read)
   expect(steps.steps[2]).toBeInstanceOf(Update)
@@ -79,14 +82,31 @@ steps:
 
   expect(steps.steps[2]).toBeInstanceOf(Update)
   const u = steps.steps[2] as Update
-  expect(u.target).toBe('./package.json')
+  expect(u.target).toBeInstanceOf(Value)
+  const uv = u.target as Value
+  expect(uv.value).toBe('./package.json')
 
   expect(steps.steps[3]).toBeInstanceOf(Copy)
   const c = steps.steps[3] as Copy
-  expect(c.src).toBe('./.tmplr/template.js')
-  expect(c.dest).toBe('./src/template.js')
+  expect(c.src).toBeInstanceOf(Value)
+  const cv = c.src as Value
+  expect(cv.value).toBe('./.tmplr/template.js')
+  expect(c.dest).toBeInstanceOf(Value)
+  const cd = c.dest as Value
+  expect(cd.value).toBe('./src/template.js')
 
   expect(steps.steps[4]).toBeInstanceOf(Remove)
   const r = steps.steps[4] as Remove
-  expect(r.target).toBe('./LICENSE')
+  expect(r.target).toBeInstanceOf(Value)
+  const rv = r.target as Value
+  expect(rv.value).toBe('./LICENSE')
+
+  expect(steps.steps[5]).toBeInstanceOf(Degit)
+  const d = steps.steps[5] as Degit
+  expect(d.src).toBeInstanceOf(Value)
+  const dv = d.src as Value
+  expect(dv.value).toBe('some/repo')
+  expect(d.dest).toBeInstanceOf(Prompt)
+  const dp = d.dest as Prompt
+  expect(dp.msg).toBe('Where should we clone the repo?')
 })

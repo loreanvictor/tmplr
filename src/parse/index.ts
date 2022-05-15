@@ -8,7 +8,8 @@ import { parseCommand } from './command'
 
 export interface Execution {
   context: Context
-  command: Command
+  command: Command,
+  run: () => Promise<void>,
 }
 
 
@@ -23,6 +24,14 @@ export function parse(obj: string | object): Execution {
       parseExpr
     }, obj)
 
-    return { context, command }
+    const run = async () => {
+      try {
+        await command.run()
+      } finally {
+        await context.stack.cleanup()
+      }
+    }
+
+    return { context, command, run }
   }
 }

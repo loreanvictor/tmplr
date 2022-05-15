@@ -4,6 +4,7 @@ import { Provider } from './provider'
 export interface Store {
   get(key: string): Promise<string>
   has(key: string): boolean
+  cleanup(): Promise<void>
 }
 
 
@@ -39,6 +40,14 @@ export function createStore(providers: {[namespace: string]: Provider}, vars: {[
         return namespace! in vars
       } else {
         return namespace! in providers && providers[namespace!]!.has(key)
+      }
+    },
+
+    async cleanup() {
+      for (const provider of Object.values(providers)) {
+        if (provider!.cleanup) {
+          await provider!.cleanup()
+        }
       }
     }
   }

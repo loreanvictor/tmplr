@@ -15,7 +15,7 @@ export class Remove extends Change {
     const target = await this.delegate(this.target, s => s.eval())
 
     await checkFile(target)
-    await rm(target)
+    await rm(target, { force: true, recursive: true })
 
     return { target }
   }

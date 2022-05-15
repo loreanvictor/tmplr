@@ -1,7 +1,7 @@
 import React from 'react'
 import { Static } from 'ink'
 
-import { ChangeLog, Copy, Remove, Update } from '../context/command'
+import { ChangeLog, Copy, Degit, Remove, Update } from '../context/command'
 import { Success, Highlight } from './theme'
 
 
@@ -29,6 +29,12 @@ export function LogDisplay({ log } : LogDisplayProps) {
         return (
           <Success key={i}>
             Removed: <Highlight>{entry.details['target']}</Highlight>
+          </Success>
+        )
+      } else if (entry.change instanceof Degit) {
+        return (
+          <Success key={i}>
+            Cloned: <Highlight>{entry.details['src']}</Highlight> {'->'} <Highlight>{entry.details['dest']}</Highlight>
           </Success>
         )
       } else {

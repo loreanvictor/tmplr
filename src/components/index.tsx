@@ -2,17 +2,14 @@ import React from 'react'
 
 import { useAsync } from 'react-use'
 
-import { Choices, Copy, Prompt, Read, Remove, Update } from '../context/command'
+import { Choices, Copy, Prompt, Read, Remove, Update, Degit } from '../context/command'
 
 import { Waiting, Error, Hint } from './theme'
-import { ReadInfo, UpdateInfo } from './command'
+import { ReadInfo, UpdateInfo, DegitInfo, CopyInfo, RemoveInfo } from './command'
+import { PromptDisplay, ChoicesDisplay } from './expr'
 import { LogDisplay } from './log'
 import { useActiveRunnable } from './hooks'
 import { Execution } from '../parse'
-import { PromptDisplay } from './expr/prompt'
-import { ChoicesDisplay } from './expr/choices'
-import { CopyInfo } from './command/copy'
-import { RemoveInfo } from './command/remove'
 import { TraceDisplay } from './trace'
 
 
@@ -22,7 +19,7 @@ export interface ExecDisplayProps {
 
 export function ExecDisplay({ exec }: ExecDisplayProps) {
   const active = useActiveRunnable(exec.command)
-  const res = useAsync(() => exec.command.run())
+  const res = useAsync(() => exec.run())
 
   if (res.error) {
     return (
@@ -43,6 +40,8 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return <PromptDisplay prompt={active} />
   } else if (active instanceof Choices) {
     return <ChoicesDisplay choices={active} />
+  } else if (active instanceof Degit) {
+    return <DegitInfo degit={active} />
   } else if (res.loading) {
     return <Waiting>Working ... <Hint>{active?.constructor.name}</Hint></Waiting>
   } else {

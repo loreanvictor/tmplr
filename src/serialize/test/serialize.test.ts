@@ -26,6 +26,9 @@ steps:
   - copy: ./.tmplr/template.js
     to: ./src/template.js
   - remove: ./LICENSE
+  - degit: some/repo
+    to:
+      prompt: Where should we clone the repo?
 `
 
   const parsed = parse(yml)

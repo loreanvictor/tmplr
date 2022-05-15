@@ -6,5 +6,6 @@ export { Steps } from './steps'
 export { Copy } from './copy'
 export { Update } from './update'
 export { Remove } from './remove'
+export { Degit } from './degit'
 
 export { ChangeLog, createChangeLog } from './change'

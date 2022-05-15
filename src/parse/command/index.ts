@@ -1,9 +1,10 @@
 import { ParsingContext } from '../base'
-import { parseCopy } from '../command/copy'
-import { parseRead } from '../command/read'
-import { parseRemove } from '../command/remove'
-import { parseSteps } from '../command/steps'
-import { parseUpdate } from '../command/update'
+import { parseCopy } from './copy'
+import { parseRead } from './read'
+import { parseRemove } from './remove'
+import { parseSteps } from './steps'
+import { parseUpdate } from './update'
+import { parseDegit } from './degit'
 
 
 export function parseCommand(context: ParsingContext, obj: any) {
@@ -21,6 +22,8 @@ export function parseCommand(context: ParsingContext, obj: any) {
     return parseRemove(context, obj)
   } else if (obj.steps) {
     return parseSteps(context, obj)
+  } else if (obj.degit) {
+    return parseDegit(context, obj)
   }
 
   throw new Error('Expected "steps", "read", "update", "copy", or "remove".')

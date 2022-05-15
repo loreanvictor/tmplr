@@ -15,13 +15,14 @@ export function createStack(
 ) {
   const pre = prefix + '.'
   const scope = createScope(providers, vars)
-  const varStore = {
+  const varStore: Store = {
     has(key: string) {
       return key.startsWith(pre) && scope.has(key.slice(pre.length))
     },
     async get(key: string) {
       return await scope.get(key.slice(pre.length))
-    }
+    },
+    async cleanup() { }
   }
 
   return {
