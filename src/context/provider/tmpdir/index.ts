@@ -10,7 +10,7 @@ const provider: Provider = {
   has: (_: string) => true,
   get: (key: string) => {
     if (!(key in _Map)) {
-      _Map[key] = cached(() => mkdtemp(`${key}-`))
+      _Map[key] = cached(() => mkdtemp(`.${key}-`))
     }
 
     return _Map[key]!

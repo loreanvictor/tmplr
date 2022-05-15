@@ -2,7 +2,7 @@ import React from 'react'
 import { Static } from 'ink'
 
 import { ChangeLog, Copy, Degit, Remove, Update } from '../context/command'
-import { Success, Highlight } from './theme'
+import { Success, Highlight, Tertiary } from './theme'
 
 
 
@@ -22,7 +22,9 @@ export function LogDisplay({ log } : LogDisplayProps) {
       } else if (entry.change instanceof Copy) {
         return (
           <Success key={i}>
-            Copied: <Highlight>{entry.details['src']}</Highlight> {'->'} <Highlight>{entry.details['dest']}</Highlight>
+            Copied: <Highlight>{entry.details['src']}</Highlight>
+            <Tertiary>{' -> '}</Tertiary>
+            <Highlight>{entry.details['dest']}</Highlight>
           </Success>
         )
       } else if (entry.change instanceof Remove) {
@@ -34,7 +36,9 @@ export function LogDisplay({ log } : LogDisplayProps) {
       } else if (entry.change instanceof Degit) {
         return (
           <Success key={i}>
-            Cloned: <Highlight>{entry.details['src']}</Highlight> {'->'} <Highlight>{entry.details['dest']}</Highlight>
+            Cloned: <Highlight>{entry.details['src']}</Highlight>
+            <Tertiary>{' -> '}</Tertiary>
+            <Highlight>{entry.details['dest']}</Highlight>
           </Success>
         )
       } else {

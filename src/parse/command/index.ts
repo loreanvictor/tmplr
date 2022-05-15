@@ -5,6 +5,7 @@ import { parseRemove } from './remove'
 import { parseSteps } from './steps'
 import { parseUpdate } from './update'
 import { parseDegit } from './degit'
+import { parseRun } from './run'
 
 
 export function parseCommand(context: ParsingContext, obj: any) {
@@ -24,6 +25,8 @@ export function parseCommand(context: ParsingContext, obj: any) {
     return parseSteps(context, obj)
   } else if (obj.degit) {
     return parseDegit(context, obj)
+  } else if (obj.run) {
+    return parseRun(context, obj)
   }
 
   throw new Error('Expected "steps", "read", "update", "copy", or "remove".')
