@@ -13,22 +13,22 @@ export interface LogDisplayProps {
 export function LogDisplay({ log } : LogDisplayProps) {
   return <Static items={log.entries()}>
     {(entry, i) => {
-      if (entry instanceof Update) {
+      if (entry.change instanceof Update) {
         return (
           <Success key={i}>
-            Updated: <Highlight>{entry.target}</Highlight>
+            Updated: <Highlight>{entry.details['target']}</Highlight>
           </Success>
         )
-      } else if (entry instanceof Copy) {
+      } else if (entry.change instanceof Copy) {
         return (
           <Success key={i}>
-            Copied: <Highlight>{entry.src}</Highlight> {'->'} <Highlight>{entry.dest}</Highlight>
+            Copied: <Highlight>{entry.details['src']}</Highlight> {'->'} <Highlight>{entry.details['dest']}</Highlight>
           </Success>
         )
-      } else if (entry instanceof Remove) {
+      } else if (entry.change instanceof Remove) {
         return (
           <Success key={i}>
-            Removed: <Highlight>{entry.target}</Highlight>
+            Removed: <Highlight>{entry.details['target']}</Highlight>
           </Success>
         )
       } else {

@@ -1,26 +1,34 @@
 import { readFile, writeFile } from 'fs/promises'
 
 import { evaluate } from '../eval'
+import { Expr } from '../expr'
 import { Store } from '../store'
 import { Change, ChangeLog } from './change'
 import { checkFile } from './util/check-file'
+import { ensurePath } from './util/ensure-path'
 import { checkSubPath } from './util/sub-path'
 
 
 export class Copy extends Change {
   constructor(
-    readonly src: string,
-    readonly dest: string,
+    readonly src: Expr,
+    readonly dest: Expr,
     readonly store: Store,
     log: ChangeLog,
   ) { super(log) }
 
   protected async commit() {
-    await checkFile(this.src)
-    await checkSubPath(this.dest)
+    const src = await this.delegate(this.src, s => s.eval())
+    const dest = await this.delegate(this.dest, s => s.eval())
 
-    const content = await readFile(this.src, 'utf8')
+    await checkFile(src)
+    await checkSubPath(dest)
+    await ensurePath(dest)
+
+    const content = await readFile(src, 'utf8')
     const updated = await evaluate(this.store, content)
-    await writeFile(this.dest, updated)
+    await writeFile(dest, updated)
+
+    return { src, dest }
   }
 }

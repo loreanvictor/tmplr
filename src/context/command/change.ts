@@ -1,18 +1,29 @@
 import { Command } from './base'
 
 
+export interface ChangeDetails {
+  [key: string]: string
+}
+
+
+export interface ChangeLogEntry {
+  change: Change
+  details: ChangeDetails
+}
+
+
 export interface ChangeLog {
-  commit(change: Change)
-  entries(): Change[]
+  commit(entry: ChangeLogEntry)
+  entries(): ChangeLogEntry[]
 }
 
 
 export function createChangeLog(): ChangeLog {
-  const logs: Change[] = []
+  const logs: ChangeLogEntry[] = []
 
   return {
     entries() { return logs },
-    commit(change: Change) { logs.push(change) }
+    commit(entry: ChangeLogEntry) { logs.push(entry) }
   }
 }
 
@@ -23,9 +34,11 @@ export abstract class Change extends Command {
   ) { super() }
 
   protected async _run() {
-    await this.commit()
-    this.log.commit(this)
+    this.log.commit({
+      change: this,
+      details: await this.commit()
+    })
   }
 
-  protected abstract commit(): Promise<void>
+  protected abstract commit(): Promise<ChangeDetails>
 }

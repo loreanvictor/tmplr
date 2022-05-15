@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text } from 'ink'
+import { Transform, Text, Newline } from 'ink'
+import chalk from 'chalk'
 import SyntaxHihglight from 'ink-syntax-highlight'
 
 import { HINT } from './theme'
@@ -11,21 +12,18 @@ export interface TraceDisplayProps {
   active: Runnable
 }
 
-const PREFIX = '│ '
+const transform = (text: string) => {
+  return text.split('\n').map(line => chalk.hex(HINT)('⎢  ') + line).join('\n')
+}
+
 
 export function TraceDisplay({ active }: TraceDisplayProps) {
   return (
-    <>
-      <Text color={HINT}>
-        {PREFIX}
-        <Text color={HINT}>Error occured during the following:</Text>
-      </Text>
-      <Text color={HINT}>{PREFIX}</Text>
-      <Text color={HINT}>
-        {PREFIX}
-        <SyntaxHihglight language="yaml" code={serialize(active).trim()} />
-      </Text>
-      <Text color={HINT}>{PREFIX}</Text>
-    </>
+    <Transform transform={transform}>
+      <Text color={HINT}>Error occured during the following:</Text>
+      <Newline/><Newline/>
+      <SyntaxHihglight language="yaml" code={serialize(active).trim()} />
+      <Newline/>
+    </Transform>
   )
 }

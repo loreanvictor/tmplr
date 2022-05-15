@@ -14,6 +14,6 @@ export function UpdateInfo({ update }: UpdateInfoProps) {
   const running = useRunnableState(update)
 
   return running ?
-    <Waiting>Updating {update.target} ...</Waiting> :
-    <Success>Updated {update.target}</Success>
+    <Waiting>Updating files...</Waiting> :
+    <Success>Updated!</Success>
 }

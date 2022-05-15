@@ -12,7 +12,7 @@ export function parseRemove(context: ParsingContext, obj: any) {
   }
 
   return new Remove(
-    obj.remove,
+    context.parseExpr(context, obj.remove),
     context.changeLog,
   )
 }

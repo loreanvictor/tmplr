@@ -14,6 +14,6 @@ export function CopyInfo({ copy }: CopyInfoProps) {
   const running = useRunnableState(copy)
 
   return running ?
-    <Waiting>Copying {copy.src} to {copy.dest} ...</Waiting> :
-    <Success>Copied {copy.src} to {copy.dest}</Success>
+    <Waiting>Copying files...</Waiting> :
+    <Success>Copied!</Success>
 }

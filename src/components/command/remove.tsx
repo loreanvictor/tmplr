@@ -14,6 +14,6 @@ export function RemoveInfo({ remove }: RemoveInfoProps) {
   const running = useRunnableState(remove)
 
   return running ?
-    <Waiting>Removing {remove.target} ...</Waiting> :
-    <Success>Removed {remove.target}</Success>
+    <Waiting>Removing files ...</Waiting> :
+    <Success>Removed!</Success>
 }
