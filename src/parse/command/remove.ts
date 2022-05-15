@@ -13,6 +13,7 @@ export function parseRemove(context: ParsingContext, obj: any) {
 
   return new Remove(
     context.parseExpr(context, obj.remove),
+    context.root,
     context.changeLog,
   )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Static } from 'ink'
 
+import serialize from '../serialize'
 import { ChangeLog, Copy, Degit, Remove, Update } from '../context/command'
 import { Success, Highlight, Tertiary } from './theme'
 
@@ -42,7 +43,11 @@ export function LogDisplay({ log } : LogDisplayProps) {
           </Success>
         )
       } else {
-        return <></>
+        return (
+          <Success key={i}>
+            {serialize(entry.change)}
+          </Success>
+        )
       }
     }}
   </Static>

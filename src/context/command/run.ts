@@ -1,24 +1,27 @@
 import { readFile } from 'fs/promises'
+import { dirname } from 'path'
 import { parse } from 'yaml'
 
 import { Expr } from '../expr'
 import { Command } from './base'
+import { Rooted } from './rooted'
 import { checkFile } from './util/check-file'
 
 
-export class Run extends Command {
+export class Run extends Rooted {
   constructor(
     readonly src: Expr,
-    readonly parser: (_: string) => Promise<Command>
-  ) { super() }
+    readonly parser: (_: string, __: string) => Command,
+    root: string,
+  ) { super(root) }
 
   async _run() {
-    const src = await this.src.eval()
+    const src = this.path(await this.src.eval())
     await checkFile(src)
 
     const contents = await readFile(src, 'utf8')
     const parsed = parse(contents)
-    const command = await this.parser(parsed)
+    const command = this.parser(parsed, dirname(src))
 
     await this.delegate(command, c => c.run())
   }

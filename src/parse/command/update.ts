@@ -14,6 +14,7 @@ export function parseUpdate(context: ParsingContext, obj: any) {
   return new Update(
     context.parseExpr(context, obj.update),
     context.stack.varStore,
+    context.root,
     context.changeLog,
   )
 }

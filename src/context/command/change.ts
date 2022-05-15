@@ -1,4 +1,4 @@
-import { Command } from './base'
+import { Rooted } from './rooted'
 
 
 export interface ChangeDetails {
@@ -28,10 +28,11 @@ export function createChangeLog(): ChangeLog {
 }
 
 
-export abstract class Change extends Command {
+export abstract class Change extends Rooted {
   constructor(
+    root: string,
     readonly log: ChangeLog,
-  ) { super() }
+  ) { super(root) }
 
   protected async _run() {
     this.log.commit({

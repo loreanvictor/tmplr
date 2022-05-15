@@ -9,12 +9,13 @@ export class Degit extends Change {
   constructor(
     readonly src: Expr,
     readonly dest: Expr | undefined,
+    root: string,
     log: ChangeLog,
-  ) { super(log) }
+  ) { super(root, log) }
 
   protected async commit() {
-    const src = await this.delegate(this.src, s => s.eval())
-    const dest = this.dest ? await this.delegate(this.dest, s => s.eval()): '.'
+    const src = this.path(await this.delegate(this.src, s => s.eval()))
+    const dest = this.path(this.dest ? await this.delegate(this.dest, s => s.eval()): '.')
 
     await checkSubPath(dest)
 

@@ -14,6 +14,7 @@ export function parseDegit(context: ParsingContext, obj: any) {
   return new Degit(
     context.parseExpr(context, obj.degit),
     obj.to ? context.parseExpr(context, obj.to) : undefined,
+    context.root,
     context.changeLog,
   )
 }

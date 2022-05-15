@@ -14,12 +14,13 @@ export class Copy extends Change {
     readonly src: Expr,
     readonly dest: Expr,
     readonly store: Store,
+    root: string,
     log: ChangeLog,
-  ) { super(log) }
+  ) { super(root, log) }
 
   protected async commit() {
-    const src = await this.delegate(this.src, s => s.eval())
-    const dest = await this.delegate(this.dest, s => s.eval())
+    const src = this.path(await this.delegate(this.src, s => s.eval()))
+    const dest = this.path(await this.delegate(this.dest, s => s.eval()))
 
     await checkFile(src)
     await checkSubPath(dest)

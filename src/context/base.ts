@@ -3,6 +3,6 @@ import { ChangeLog } from './command'
 
 
 export interface Context {
-    stack: Stack
-    changeLog: ChangeLog
+  stack: Stack
+  changeLog: ChangeLog
 }

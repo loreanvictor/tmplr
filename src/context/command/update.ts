@@ -11,11 +11,12 @@ export class Update extends Change {
   constructor(
     readonly target: Expr,
     readonly store: Store,
+    root: string,
     log: ChangeLog,
-  ) { super(log) }
+  ) { super(root, log) }
 
   protected async commit() {
-    const target = await this.delegate(this.target, s => s.eval())
+    const target = this.path(await this.delegate(this.target, s => s.eval()))
 
     await checkFile(target)
 

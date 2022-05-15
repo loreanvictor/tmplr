@@ -13,6 +13,7 @@ export function parseRun(context: ParsingContext, obj: any) {
 
   return new Run(
     context.parseExpr(context, obj.run),
-    async code => context.parseCommand(context, code),
+    (code, root) => context.parseCommand({ ...context, root }, code),
+    context.root,
   )
 }

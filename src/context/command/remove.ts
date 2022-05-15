@@ -8,8 +8,9 @@ import { Expr } from '../expr'
 export class Remove extends Change {
   constructor(
     readonly target: Expr,
+    root: string,
     log: ChangeLog,
-  ) { super(log) }
+  ) { super(root, log) }
 
   protected async commit() {
     const target = await this.delegate(this.target, s => s.eval())

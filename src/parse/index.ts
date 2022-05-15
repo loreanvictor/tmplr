@@ -13,7 +13,7 @@ export interface Execution {
 }
 
 
-export function parse(obj: string | object): Execution {
+export function parse(obj: string | object, root = '.'): Execution {
   if (typeof obj === 'string') {
     return parse(parseYaml(obj))
   } else {
@@ -21,7 +21,8 @@ export function parse(obj: string | object): Execution {
     const command = parseCommand({
       ...context,
       parseCommand,
-      parseExpr
+      parseExpr,
+      root,
     }, obj)
 
     const run = async () => {

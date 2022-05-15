@@ -19,6 +19,7 @@ export function parseCopy(context: ParsingContext, obj: any) {
     context.parseExpr(context, obj.copy),
     context.parseExpr(context, obj.to),
     context.stack.varStore,
+    context.root,
     context.changeLog,
   )
 }
