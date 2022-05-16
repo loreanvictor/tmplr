@@ -25,10 +25,11 @@ export class Choices extends IOAware<ChoicesIO> {
   protected connect(io: ChoicesIO, _: Prep, deferred: Deferred<string>) {
     io.setMessage(this.msg)
     io.setChoices(this.choices)
-    io.onSelect(choice =>
+    io.onSelect(choice => {
+      this.unplug()
       this.delegate(choice.value, e => e.eval())
         .then(deferred.resolve)
         .catch(deferred.reject)
-    )
+    })
   }
 }
