@@ -2,7 +2,7 @@
 ![Logo](./logo-light.svg#gh-light-mode-only)
 
 
-Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then asks a few questions to fill up the template for your customized needs.
+Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then asks a few questions and prepares local files (like `package.json`, `README`, etc.) for you.
 
 <div align="center">
 
@@ -28,7 +28,77 @@ npx tmplr
 
 <br/>
 
-## For Repository Owners
+# Table of Contents
+
+- [How to Install](#how-to-install)
+- [How to Use](#how-to-use)
+- [How to Make a Template](#how-to-make-a-template)
+
+<br/>
+
+# How to Install
+
+You don't need to install `tmplr`, since you can use it with [`npx`](https://www.npmjs.com/package/npx):
+
+```bash
+npx tmplr owner/repo
+```
+
+<br>
+
+You can also install it globally for more convenience:
+
+```bash
+npm i -g tmplr
+```
+```bash
+tmplr owner/repo
+```
+
+<br/>
+
+# How to Use
+
+If the repository is on github, simply pass `owner/repo` to `tmplr`. For example, if you want to [create a reusable React component using this template](https://github.com/vitrin-app/react-component-template), you can run the following:
+```bash
+npx tmplr vitrin-app/react-component-template
+```
+
+<br/>
+
+It can also work with public repositories on other sources:
+
+```bash
+# 👉 download from GitLab
+tmplr gitlab:owner/repo
+tmplr git@gitlab.com:owner/repo
+tmplr https://gitlab.com/owner/repo
+
+# 👉 download from BitBucket
+tmplr bitbucket:owner/repo
+tmplr git@bitbucket.org:owner/repo
+tmplr https://bitbucket.org/owner/repo
+
+# 👉 download from Sourcehut
+tmplr git.sr.ht/owner/repo
+tpmlr git@git.sr.ht:owner/repo
+tpmlr https://git.sr.ht/owner/repo
+```
+
+<br/>
+
+You can also specify a tag, branch, commit or subdirectory:
+
+```bash
+tmplr owner/repo#branch       # 👉 branch
+tmplr owner/repo#tag          # 👉 release tag
+tmplr owner/repo#c0m1th45h    # 👉 commit hash
+tmplr owner/repo/subdirectory # 👉 sub directory
+```
+
+<br/>
+
+# How to Make a Template
 
 You can easily configure `tmplr` to make it easier to use your repo as a template. Just use `{{ tmplr.variable }}` in places where an end-user
 variable should be used:
