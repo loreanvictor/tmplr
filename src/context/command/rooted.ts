@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { isAbsolute, join } from 'path'
 
 import { Command } from './base'
 
@@ -9,6 +9,6 @@ export abstract class Rooted extends Command {
   ) { super() }
 
   protected path(p: string) {
-    return join(this.root, p)
+    return isAbsolute(p) ? p : join(this.root, p)
   }
 }

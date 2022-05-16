@@ -1,6 +1,4 @@
 export * from './base'
-// TODO: fix import paths using this
-export * from '../expr'
 
 export { Read } from './read'
 export { Steps } from './steps'
@@ -9,5 +7,6 @@ export { Update } from './update'
 export { Remove } from './remove'
 export { Degit } from './degit'
 export { Run } from './run'
+export { Use } from './use'
 
 export { ChangeLog, createChangeLog } from './change'

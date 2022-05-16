@@ -1,4 +1,4 @@
-import { Command, Copy, Degit, Read, Remove, Run, Steps, Update } from '../../../context/command'
+import { Command, Copy, Degit, Read, Remove, Run, Steps, Update, Use } from '../../../context/command'
 import { SerializationContext } from '../base'
 
 import serializeCopy from './copy'
@@ -8,6 +8,7 @@ import serializeRemove from './remove'
 import serializeSteps from './steps'
 import serializeDegit from './degit'
 import serializeRun from './run'
+import serializeUse from './use'
 
 
 export default (command: Command, context: SerializationContext) => {
@@ -25,6 +26,8 @@ export default (command: Command, context: SerializationContext) => {
     return serializeDegit(command, context)
   } else if (command instanceof Run) {
     return serializeRun(command, context)
+  } else if (command instanceof Use) {
+    return serializeUse(command, context)
   }
 
   throw new Error(`Unsupported command: ${command.constructor.name}`)

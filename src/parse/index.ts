@@ -13,7 +13,7 @@ export interface Execution {
 }
 
 
-export function parse(obj: string | object, root = '.'): Execution {
+export function parse(obj: string | object, root = process.cwd()): Execution {
   if (typeof obj === 'string') {
     return parse(parseYaml(obj))
   } else {

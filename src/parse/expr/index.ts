@@ -4,6 +4,7 @@ import { parseEval } from './eval'
 import { parseFrom } from './from'
 import { parsePrompt } from './prompt'
 import { parseValue } from './value'
+import { parsePath } from './path'
 
 
 export function parseExpr(context: ParsingContext, obj: any) {
@@ -23,6 +24,8 @@ export function parseExpr(context: ParsingContext, obj: any) {
     return parsePrompt(context, obj)
   } else if (obj.eval) {
     return parseEval(context, obj)
+  } else if (obj.path) {
+    return parsePath(context, obj)
   }
 
   throw new Error('Expected "from", "choices", "prompt", or "eval".')

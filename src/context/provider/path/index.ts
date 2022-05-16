@@ -5,5 +5,5 @@ import { createProvider } from '../base'
 
 
 export default createProvider({
-  'dirname': cached(async () => basename(process.cwd()))
+  'rootdir': cached(async () => basename(process.cwd()))
 })

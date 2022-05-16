@@ -1,4 +1,5 @@
-import { Command, Expr } from '../../context/command'
+import { Command } from '../../context/command/base'
+import { Expr } from '../../context/expr/base'
 
 
 export interface SerializationContext {

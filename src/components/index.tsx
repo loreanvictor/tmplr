@@ -2,10 +2,11 @@ import React from 'react'
 
 import { useAsync } from 'react-use'
 
-import { Choices, Copy, Prompt, Read, Remove, Update, Degit, Run } from '../context/command'
+import { Copy, Read, Remove, Update, Degit, Run, Use } from '../context/command'
+import { Choices, Prompt } from '../context/expr'
 
 import { Waiting, Error, Hint } from './theme'
-import { ReadInfo, UpdateInfo, DegitInfo, CopyInfo, RemoveInfo, RunInfo } from './command'
+import { ReadInfo, UpdateInfo, DegitInfo, CopyInfo, RemoveInfo, RunInfo, UseInfo } from './command'
 import { PromptDisplay, ChoicesDisplay } from './expr'
 import { LogDisplay } from './log'
 import { useActiveRunnable } from './hooks'
@@ -44,6 +45,8 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return <DegitInfo degit={active} />
   } else if (active instanceof Run) {
     return <RunInfo run={active} />
+  } else if (active instanceof Use) {
+    return <UseInfo use={active} />
   } else if (res.loading) {
     return <Waiting>Working ... <Hint>{active?.constructor.name}</Hint></Waiting>
   } else {

@@ -3,6 +3,7 @@ import { dirname } from 'path'
 import { parse } from 'yaml'
 
 import { ParsingContext } from '../../parse/base'
+import { Provider } from '../provider/base'
 import { createLazyProvider } from '../provider/lazy'
 import { createTmpDirProvider } from '../provider/tmpdir'
 import { Expr } from '../expr/base'
@@ -10,6 +11,45 @@ import { Scope } from '../scope'
 
 import { Rooted } from './rooted'
 import { checkFile } from './util/check-file'
+import { Command } from './base'
+
+
+export async function runYaml(
+  src: string,
+  args: Provider,
+  outputs: {[name: string]: string},
+  context: ParsingContext,
+  delegate: (command: Command) => Promise<void>,
+  scope: Scope,
+  root?: string,
+) {
+  const contents = await readFile(src, 'utf8')
+  const parsed = parse(contents)
+
+  const ctx = {
+    ...context,
+    root: root || dirname(src),
+    stack: context.stack.sub({
+      args,
+      tmpdir: createTmpDirProvider(),
+    }),
+  }
+  const command = context.parseCommand(ctx, parsed)
+
+  try {
+    await delegate(command)
+  } finally {
+    await ctx.stack.cleanup()
+  }
+
+  for (const [name, outname] of Object.entries(outputs)) {
+    if (ctx.stack.has(outname)) {
+      scope.set(name, await ctx.stack.get(outname))
+    } else {
+      throw new Error('Output not found: ' + outname)
+    }
+  }
+}
 
 
 export class Run extends Rooted {
@@ -26,31 +66,13 @@ export class Run extends Rooted {
     const src = this.path(await this.src.eval())
     await checkFile(src)
 
-    const contents = await readFile(src, 'utf8')
-    const parsed = parse(contents)
-
-    const context = {
-      ...this.context,
-      root: dirname(src),
-      stack: this.context.stack.sub({
-        args: createLazyProvider(this.inputs),
-        tmpdir: createTmpDirProvider(),
-      }),
-    }
-    const command = this.context.parseCommand(context, parsed)
-
-    try {
-      await this.delegate(command, c => c.run())
-    } finally {
-      await context.stack.cleanup()
-    }
-
-    for (const [name, outname] of Object.entries(this.outputs)) {
-      if (context.stack.has(outname)) {
-        this.scope.set(name, await context.stack.get(outname))
-      } else {
-        throw new Error('Output not found: ' + outname)
-      }
-    }
+    await runYaml(
+      src,
+      createLazyProvider(this.inputs),
+      this.outputs,
+      this.context,
+      async (command) => this.delegate(command, c => c.run()),
+      this.scope,
+    )
   }
 }

@@ -1,4 +1,4 @@
-import { Prompt } from '../../context/command'
+import { Prompt } from '../../context/expr'
 import { ParsingContext } from '../base'
 
 

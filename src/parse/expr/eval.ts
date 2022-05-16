@@ -1,4 +1,5 @@
-import { Steps, Eval } from '../../context/command'
+import { Eval } from '../../context/expr'
+import { Steps } from '../../context/command'
 import { ParsingContext } from '../base'
 
 

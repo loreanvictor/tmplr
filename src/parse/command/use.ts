@@ -1,14 +1,14 @@
-import { Run } from '../../context/command'
+import { Use } from '../../context/command'
 import { ParsingContext } from '../base'
 
 
-export function parseRun(context: ParsingContext, obj: any) {
+export function parseUse(context: ParsingContext, obj: any) {
   if (typeof obj !== 'object') {
     throw new Error('Expected object.')
   }
 
-  if (!obj.run) {
-    throw new Error('Expected "run" field.')
+  if (!obj.use) {
+    throw new Error('Expected "use" field.')
   }
 
   const inputs = {}
@@ -37,12 +37,11 @@ export function parseRun(context: ParsingContext, obj: any) {
     })
   }
 
-  return new Run(
-    context.parseExpr(context, obj.run),
+  return new Use(
+    context.parseExpr(context, obj.use),
     inputs,
     outputs,
     context,
     context.stack,
-    context.root,
   )
 }

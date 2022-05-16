@@ -14,13 +14,13 @@ export class Degit extends Change {
   ) { super(root, log) }
 
   protected async commit() {
-    const src = this.path(await this.delegate(this.src, s => s.eval()))
+    const src = await this.delegate(this.src, s => s.eval())
     const dest = this.path(this.dest ? await this.delegate(this.dest, s => s.eval()): '.')
 
     await checkSubPath(dest)
 
     const emitter = degit(src, {
-      cache: true,
+      cache: false,
       force: true,
     })
 

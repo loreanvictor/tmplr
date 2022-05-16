@@ -6,6 +6,7 @@ import { parseSteps } from './steps'
 import { parseUpdate } from './update'
 import { parseDegit } from './degit'
 import { parseRun } from './run'
+import { parseUse } from './use'
 
 
 export function parseCommand(context: ParsingContext, obj: any) {
@@ -15,6 +16,8 @@ export function parseCommand(context: ParsingContext, obj: any) {
 
   if (obj.run) {
     return parseRun(context, obj)
+  } else if (obj.use) {
+    return parseUse(context, obj)
   } else if (obj.read) {
     return parseRead(context, obj)
   } else if (obj.update) {

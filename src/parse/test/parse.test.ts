@@ -1,4 +1,5 @@
-import { Choices, Copy, Degit, Eval, From, Prompt, Read, Remove, Steps, Update, Value } from '../../context/command'
+import { Copy, Degit, Read, Remove, Steps, Update } from '../../context/command'
+import { Choices, Eval, From, Prompt, Value } from '../../context/expr'
 import { parse } from '../index'
 
 
