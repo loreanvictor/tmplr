@@ -4,18 +4,15 @@ import { Provider } from './provider'
 
 
 export interface Stack extends Scope {
-  varStore: Store
+  varStore: Store,
+  sub: (_: {[namespace: string]: Provider}) => Stack,
 }
 
 
-export function createStack(
-  providers: {[namespace: string]: Provider},
-  vars: {[key: string]: string},
-  prefix: string,
-) {
+function createVarStore(scope: Scope, prefix: string): Store {
   const pre = prefix + '.'
-  const scope = createScope(providers, vars)
-  const varStore: Store = {
+
+  return {
     has(key: string) {
       return key.startsWith(pre) && scope.has(key.slice(pre.length))
     },
@@ -24,9 +21,25 @@ export function createStack(
     },
     async cleanup() { }
   }
+}
+
+
+export function createStack(
+  providers: {[namespace: string]: Provider},
+  vars: {[key: string]: string},
+  prefix: string,
+): Stack {
+  const scope = createScope(providers, vars)
+  const varStore = createVarStore(scope, prefix)
+  const snapshot = { ...vars }
+
+  const sub = (additionalProviders: {[namespace: string]: Provider} = {}) => {
+    return createStack({ ...providers, ...additionalProviders }, { ...snapshot }, prefix)
+  }
 
   return {
     ...scope,
     varStore,
+    sub,
   }
 }

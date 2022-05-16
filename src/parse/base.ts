@@ -1,5 +1,6 @@
-import { Context } from '../context'
-import { Command, Expr } from '../context/command'
+import { Context } from '../context/base'
+import { Command } from '../context/command/base'
+import { Expr } from '../context/expr/base'
 
 
 export interface ParsingContext extends Context {

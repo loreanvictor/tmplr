@@ -5,26 +5,28 @@ import { Runnable } from '../context'
 
 
 
-export function useActiveRunnable(runnable: Runnable) {
-  const [active, mark] = useState<Runnable | null>(runnable.active.last)
+export function useActiveRunnable(runnable: Runnable): [] | [Runnable, Runnable | undefined, Runnable[]] {
+  const [ stack, update ] = useState<Runnable[] | undefined>(runnable.stack.last)
 
   useEffect(() => {
     const obs = pipe(
-      runnable.active,
-      tap(_active => mark(_active)),
-      finalize(() => mark(null)),
+      runnable.stack,
+      tap(_stack => update(_stack)),
+      finalize(() => update(undefined)),
       observe
     )
 
     return () => obs.stop()
   }, [runnable])
 
-  return active
+  return stack ?
+    [stack[stack.length - 1]!, stack[stack.length - 2], stack] :
+    []
 }
 
 
 export function useRunnableState(runnable: Runnable) {
-  const active = useActiveRunnable(runnable)
+  const [active] = useActiveRunnable(runnable)
 
   return !!active
 }

@@ -13,7 +13,9 @@ export function parseCommand(context: ParsingContext, obj: any) {
     throw new Error('Expected object.')
   }
 
-  if (obj.read) {
+  if (obj.run) {
+    return parseRun(context, obj)
+  } else if (obj.read) {
     return parseRead(context, obj)
   } else if (obj.update) {
     return parseUpdate(context, obj)
@@ -25,8 +27,6 @@ export function parseCommand(context: ParsingContext, obj: any) {
     return parseSteps(context, obj)
   } else if (obj.degit) {
     return parseDegit(context, obj)
-  } else if (obj.run) {
-    return parseRun(context, obj)
   }
 
   throw new Error('Expected "steps", "read", "update", "copy", or "remove".')

@@ -1,30 +1,31 @@
-import { replay, Subject, tap, observe, map, pipe } from 'streamlets'
+import { replay, Subject, tap, observe, map, pipe, finalize } from 'streamlets'
 
 
 export abstract class Runnable {
-  readonly active = replay(new Subject<Runnable>())
+  readonly stack = replay(new Subject<Runnable[]>())
 
   running() {
-    return !!this.active.last
+    return !!this.stack.last
   }
 
   protected start() {
-    this.active.receive(this)
+    this.stack.receive([this])
   }
 
   protected end() {
-    this.active.end()
+    this.stack.end()
   }
 
   protected async delegate<T, R extends Runnable>(runnable: R, fn: (r: R) => Promise<T>) {
-    if (!this.active.last) {
+    if (!this.running()) {
       throw new Error('Inactive Runnable')
     }
 
     pipe(
-      runnable.active,
-      map(active => active || this),
-      tap(active => this.active.receive(active)),
+      runnable.stack,
+      map(stack => [this, ...stack]),
+      tap(stack => this.stack.receive(stack)),
+      finalize(() => this.stack.receive([this])),
       observe
     )
 

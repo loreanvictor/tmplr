@@ -11,9 +11,34 @@ export function parseRun(context: ParsingContext, obj: any) {
     throw new Error('Expected "run" field.')
   }
 
+  const inputs = {}
+  if (obj.with) {
+    obj.with.forEach(entry => {
+      const key = Object.keys(entry)[0]
+      const expr = context.parseExpr(context, entry[key!])
+
+      inputs[key!] = expr
+    })
+  }
+
+  const outputs = {}
+  if (obj.read) {
+    obj.read.forEach(entry => {
+      if (typeof entry === 'string') {
+        outputs[entry] = entry
+      } else {
+        const key = Object.keys(entry)[0]
+        outputs[key!] = entry[key!]
+      }
+    })
+  }
+
   return new Run(
     context.parseExpr(context, obj.run),
-    (code, root) => context.parseCommand({ ...context, root }, code),
+    inputs,
+    outputs,
+    context,
+    context.stack,
     context.root,
   )
 }

@@ -18,7 +18,7 @@ export interface ExecDisplayProps {
 }
 
 export function ExecDisplay({ exec }: ExecDisplayProps) {
-  const active = useActiveRunnable(exec.command)
+  const [active] = useActiveRunnable(exec.command)
   const res = useAsync(() => exec.run())
 
   if (res.error) {
