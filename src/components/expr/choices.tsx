@@ -44,6 +44,8 @@ export function ChoicesDisplay({ choices }: ChoicesDisplayProps) {
       onSelect: (c: (_: Choice) => void) => setCb({ callback: c }),
       disconnect: () => setCb({ })
     }))
+
+    return () => choices.unplug()
   }, [choices])
 
   const submit = useCallback((choice: Choice) => {

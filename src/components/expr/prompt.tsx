@@ -24,6 +24,8 @@ export function PromptDisplay({ prompt }: PromptDisplayProps) {
       onValue: (c: (v: string) => void) => setCb({ callback: c }),
       disconnect: () => setCb({ }),
     }))
+
+    return () => prompt.unplug()
   }, [prompt])
 
 
