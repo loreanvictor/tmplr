@@ -4,6 +4,12 @@
 
 Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then asks a few questions to fill up the template for your customized needs.
 
+<div align="center">
+
+![Demo](./demo.gif)
+
+</div>
+  
 ```bash
 npx tmplr owner/repo                  # 👉 get repo from github
 npx tmplr gitlab:user/repo            # 👉 or gitlab
