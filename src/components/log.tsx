@@ -7,7 +7,7 @@ import { ChangeLog, Copy, Degit, Remove, Update } from '../context/command'
 import { Success, Highlight, Tertiary } from './theme'
 
 
-const _ = (path: string) => relative(process.cwd(), path)
+const _ = (path: string) => relative(process.cwd(), path) || '.'
 
 
 export interface LogDisplayProps {
