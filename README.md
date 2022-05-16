@@ -66,6 +66,38 @@ npx tmplr vitrin-app/react-component-template
 
 <br/>
 
+It can also work with public repositories on other sources:
+
+```bash
+# 👉 download from GitLab
+tmplr gitlab:owner/repo
+tmplr git@gitlab.com:owner/repo
+tmplr https://gitlab.com/owner/repo
+
+# 👉 download from BitBucket
+tmplr bitbucket:owner/repo
+tmplr git@bitbucket.org:owner/repo
+tmplr https://bitbucket.org/owner/repo
+
+# 👉 download from Sourcehut
+tmplr git.sr.ht/owner/repo
+tpmlr git@git.sr.ht:owner/repo
+tpmlr https://git.sr.ht/owner/repo
+```
+
+<br/>
+
+You can also specify a tag, branch, commit or subdirectory:
+
+```bash
+tmplr owner/repo#branch       # 👉 branch
+tmplr owner/repo#tag          # 👉 release tag
+tmplr owner/repo#c0m1th45h    # 👉 commit hash
+tmplr owner/repo/subdirectory # 👉 sub directory
+```
+
+<br/>
+
 # How to Make a Template
 
 You can easily configure `tmplr` to make it easier to use your repo as a template. Just use `{{ tmplr.variable }}` in places where an end-user
