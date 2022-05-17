@@ -38,7 +38,8 @@ npx tmplr
 
 # How to Install
 
-You don't need to install `tmplr`, since you can use it with [`npx`](https://www.npmjs.com/package/npx):
+You need to have [Node.js and NPM installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+You don't need to install `tmplr` itself, since you can use it with [`npx`](https://www.npmjs.com/package/npx):
 
 ```bash
 npx tmplr owner/repo
@@ -46,13 +47,13 @@ npx tmplr owner/repo
 
 <br>
 
-You can also install it globally for more convenience:
+However, you _can_ install it globally for more convenience:
 
 ```bash
 npm i -g tmplr
 ```
 ```bash
-tmplr owner/repo
+tmplr owner/repo    # 3 less characters per project 🍺
 ```
 
 <br/>
