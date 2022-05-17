@@ -36,7 +36,7 @@ export function ChoicesDisplay({ choices }: ChoicesDisplayProps) {
   const [cb, setCb] = useState<{ callback?: (choice: Choice) => void }>()
 
   useEffect(() => {
-    choices.plug(() => ({
+    choices.interface.plug(() => ({
       setMessage: v => setMsg(v),
       setChoices: i => setItems(i),
       onSelect: (c: (_: Choice) => void) => setCb({ callback: c }),
@@ -45,7 +45,7 @@ export function ChoicesDisplay({ choices }: ChoicesDisplayProps) {
 
     return () => {
       setCb({ })
-      choices.unplug()
+      choices.interface.unplug()
     }
   }, [choices])
 

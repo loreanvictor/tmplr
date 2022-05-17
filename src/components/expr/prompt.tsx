@@ -18,14 +18,14 @@ export function PromptDisplay({ prompt }: PromptDisplayProps) {
   const [cb, setCb] = useState<{ callback?: (val: string) => void }>()
 
   useEffect(() => {
-    prompt.plug(() => ({
+    prompt.interface.plug(() => ({
       setDefault: (v: string) => setValue(v),
       setMessage: (m: string) => setMsg(m),
       onValue: (c: (v: string) => void) => setCb({ callback: c }),
       disconnect: () => setCb({ }),
     }))
 
-    return () => prompt.unplug()
+    return () => prompt.interface.unplug()
   }, [prompt])
 
 

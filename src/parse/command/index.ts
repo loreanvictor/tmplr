@@ -7,6 +7,7 @@ import { parseUpdate } from './update'
 import { parseDegit } from './degit'
 import { parseRun } from './run'
 import { parseUse } from './use'
+import { parseExit } from './exit'
 
 
 export function parseCommand(context: ParsingContext, obj: any) {
@@ -30,6 +31,8 @@ export function parseCommand(context: ParsingContext, obj: any) {
     return parseSteps(context, obj)
   } else if (obj.degit) {
     return parseDegit(context, obj)
+  } else if (obj.exit) {
+    return parseExit(context, obj)
   }
 
   throw new Error('Expected "steps", "read", "update", "copy", or "remove".')

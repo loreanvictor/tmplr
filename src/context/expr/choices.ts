@@ -1,6 +1,7 @@
 import { Expr } from './base'
-import { IOAware, Prep, IO } from './io'
-import { Deferred } from './util/deferred'
+import { Prep, IO } from '../io'
+import { IOAwareExpr } from './io'
+import { Deferred } from '../util/deferred'
 
 
 export interface Choice {
@@ -16,17 +17,17 @@ export interface ChoicesIO extends IO {
 }
 
 
-export class Choices extends IOAware<ChoicesIO> {
+export class Choices extends IOAwareExpr<ChoicesIO> {
   constructor(
     readonly msg: string,
     readonly choices: Choice[]
   ) { super() }
 
-  protected connect(io: ChoicesIO, _: Prep, deferred: Deferred<string>) {
+  onConnect(io: ChoicesIO, _: Prep, deferred: Deferred<string>) {
     io.setMessage(this.msg)
     io.setChoices(this.choices)
     io.onSelect(choice => {
-      this.unplug()
+      this.interface.unplug()
       this.delegate(choice.value, e => e.eval())
         .then(deferred.resolve)
         .catch(deferred.reject)

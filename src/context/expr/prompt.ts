@@ -1,6 +1,7 @@
 import { Expr } from './base'
-import { IOAware, Prep, IO } from './io'
-import { Deferred } from './util/deferred'
+import { Prep, IO } from '../io'
+import { IOAwareExpr } from './io'
+import { Deferred } from '../util/deferred'
 
 
 export interface PromptIO extends IO {
@@ -10,7 +11,7 @@ export interface PromptIO extends IO {
 }
 
 
-export class Prompt extends IOAware<PromptIO> {
+export class Prompt extends IOAwareExpr<PromptIO> {
 
   constructor(
     readonly msg: string,
@@ -18,7 +19,7 @@ export class Prompt extends IOAware<PromptIO> {
   ) { super() }
 
 
-  protected override async prepare() {
+  override async prepare() {
     const prep: Prep = {}
 
     if (this._default) {
@@ -28,7 +29,7 @@ export class Prompt extends IOAware<PromptIO> {
     return prep
   }
 
-  protected connect(io: PromptIO, prep: Prep, deferred: Deferred<string>) {
+  onConnect(io: PromptIO, prep: Prep, deferred: Deferred<string>) {
     if ('default' in prep) {
       io.setDefault(prep['default'])
     }

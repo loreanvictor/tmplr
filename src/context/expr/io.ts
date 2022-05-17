@@ -1,52 +1,27 @@
+import { IOAwareRunnable, IO, IOInterface, Prep } from '../io'
+import { Deferred } from '../util/deferred'
 import { Expr } from './base'
-import { Deferred } from './util/deferred'
 
 
-export interface IO {
-  disconnect()
-}
 
-export type Connector<_IO extends IO> = () => _IO
-
-
-export interface Prep {
-  [key: string]: any
-}
-
-
-export abstract class IOAware<_IO extends IO> extends Expr {
-  private connector: Connector<_IO> | undefined
-  private connected = new Deferred<void>()
-
-  public plug(connector: Connector<_IO>) {
-    this.connector = connector
-    this.connected.resolve()
-  }
-
-  public unplug() {
-    this.connector = undefined
-    this.connected = new Deferred<void>()
-  }
-
-  protected async prepare(): Promise<Prep> {
-    return {}
-  }
-
-  protected abstract connect(io: IO, prep: Prep, deferred: Deferred<string>)
+export abstract class IOAwareExpr<_IO extends IO> extends Expr implements IOAwareRunnable<string, _IO> {
+  interface = new IOInterface<_IO>()
 
   protected async _eval() {
     const prep = await this.prepare()
-    await this.connected.promise
-
+    const io = await this.interface.connect()
     const value = new Deferred<string>()
-    const io = this.connector!()
-    this.connect(io, prep, value)
+
+    this.onConnect(io, prep, value)
 
     const res = await value.promise
 
     io.disconnect()
-    this.unplug()
+    this.interface.unplug()
 
     return res
   }
+
+  async prepare() { return {} }
+  abstract onConnect(io: _IO, prep: Prep, deferred: Deferred<string>)
 }
