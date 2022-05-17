@@ -1,6 +1,7 @@
 ![Logo](./logo-dark.svg#gh-dark-mode-only)
 ![Logo](./logo-light.svg#gh-light-mode-only)
 
+[![version](https://img.shields.io/npm/v/tmplr?logo=npm)](https://www.npmjs.com/package/tmplr)
 
 Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then asks a few questions and prepares local files (like `package.json`, `README`, etc.) for you.
 

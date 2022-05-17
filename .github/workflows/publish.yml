@@ -24,6 +24,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Fix README for NPM
+        run: tail -n +2 README.md > README.md.tmp && mv README.md.tmp README.md
+
       - name: Publish
         uses: JS-DevTools/npm-publish@v1
         with:
