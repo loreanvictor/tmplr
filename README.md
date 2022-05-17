@@ -12,9 +12,9 @@ Use `tmplr` to get a repository as a starter template for your next project. `tm
   
 ```bash
 npx tmplr owner/repo                  # 👉 get repo from github
-npx tmplr gitlab:user/repo            # 👉 or gitlab
-npx tmplr git@bitbucket.org:user/repo # 👉 or bitbucket
-npx tmplr https://git.sr.ht/user/repo # 👉 or source hut
+npx tmplr gitlab:user/repo            # 🥽 or gitlab
+npx tmplr git@bitbucket.org:user/repo # 🪣 or bitbucket
+npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 ```
 
 <br/>
@@ -69,17 +69,17 @@ npx tmplr vitrin-app/react-component-template
 It can also work with public repositories on other sources:
 
 ```bash
-# 👉 download from GitLab
+# 🥽 download from GitLab
 tmplr gitlab:owner/repo
 tmplr git@gitlab.com:owner/repo
 tmplr https://gitlab.com/owner/repo
 
-# 👉 download from BitBucket
+# 🪣 download from BitBucket
 tmplr bitbucket:owner/repo
 tmplr git@bitbucket.org:owner/repo
 tmplr https://bitbucket.org/owner/repo
 
-# 👉 download from Sourcehut
+# 🛖 download from Sourcehut
 tmplr git.sr.ht/owner/repo
 tpmlr git@git.sr.ht:owner/repo
 tpmlr https://git.sr.ht/owner/repo
