@@ -38,7 +38,16 @@ npx tmplr
   - [Template Recipes](#template-recipes)
   - [GitHub Workflows](#github-workflows)
   - [Contextual Values](#contextual-values)
+    - [Git Context](#git-context)
+    - [Path Context](#path-context)
+    - [Environment Variables](#environment-variables)
+    - [Temporary Directories](#temporary-directories)
   - [Recipe Syntax](#recipe-syntax)
+    - [Read](#read)
+    - [Update](#update)
+    - [Copy](#copy)
+    - [Remove](#remove)
+    - [Steps](#steps)
 
 <br/>
 
@@ -260,7 +269,7 @@ Recipes might have access to following contextual values, depending on the condi
 - `path.rootdir`: The name of the root directory
 - `path.rootempty`: This is an empty string if root directory is not empty, and `yes` if it is. `.git` and `.tmplr.yml` are ignored.
 
-### Env Context
+### Environment Variables
 
 You can use `env.some_var` to access some environment variable. If it is not defined, an empty string will be returned.
 
@@ -358,29 +367,44 @@ Steps Command
        ┗━ Value Expression
 ```
 
+Expressions, except for when they are attached to a command (like the From Expression attached to the Read Command) above, can either be an object, or a simple string value. In above example, the _default_ value for for the fallback prompt is an object specifying a From Expression. It could also be a simple string value, i.e.:
+
+```yml
+  - read: project_name
+    from: git.remote_name
+    fallback:
+      prompt: What is the name of the project?
+      default: My Awesome Project
+```
+
 <br>
 
 ### Read
-A command that reads some value into a variable. The variable then can be used in updating / copying file contents.
-```yml
-read: <variable name>
-<expression>
-```
-Example:
+
+> _Command_
+> 
+> ```yml
+> read: <variable name>
+> <expression>
+> ```
+
+Reads some value into a variable. The variable then can be used in updating / copying file contents.
 ```yml
 steps:
   - read: project_name
     from: path.rootdir
 ```
-☝️ After executing this command, if you _update_ or _copy_ any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
+☝️ After executing this command, if you [update](#update) or [copy](#copy) any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
+
+<br>
 
 ### Update
-A command to update contents of a file, using values read with [`read`](#read).
-```yml
-update:
-  <expression>
-```
-Example:
+> _Command_
+> ```yml
+> update:
+>   <expression>
+> ```
+Updates contents of a file, using values read with [`read`](#read).
 ```yml
 steps:
   - read: name
@@ -393,11 +417,83 @@ steps:
   - read: docs_folder
     prompt: Where do you keep the docs?
     choices:
-      - docs/
-      - documents/
+      - docs
+      - documents
       - other:
           prompt: Specify the folder name ...
   - update:
       path: '{{ docs_folder }}/Home.md'
+```
+
+<br>
+
+### Copy
+> _Command_
+> ```yml
+> copy:
+>   <expression>
+> to:
+>   <expression>
+Copies content of given file to a new file on given name/address. Will create required folders, also if a file with given destination address
+exists, will replace it. Will replace all `tmplr` variables (i.e. `{{ tmplr.some_var }}` in the content of the new file based on values [read](#read).
+```yml
+steps:
+  - read: email
+    from: git.author_email
+  
+  - copy: .template/CODE_OF_CONDUCT
+    to: CODE_OF_CONDUCT
+```
+```yml
+steps:
+  - read: email
+    from: git.author_email
+  
+  - degit: some/license_template
+    to:
+      path: '{{ tmpdir.license }}'
+  
+  - copy:
+      path: '{{ tmpdir.license }}/LICENSE'
+    to: LICENSE
+```
+<br>
+
+### Remove
+> _Command_
+> ```yml
+> remove:
+>   <expression>
+> ```
+Removes given file. Can also remove a folder.
+```yml
+steps:
+  # do some other stuff
+  
+  - remove: .tmplr.yml
+```
+
+<br>
+
+### Steps
+> _Command_
+> ```yml
+> steps:
+>   - <command>
+>   - <command>
+>   - ...
+> ```
+Runs given commands step by step.
+```yml
+steps:
+  - read: name
+    from: git.author_name
+    fallback:
+      from: env.USER
+  
+  - update: package.json
+  - copy: .template/README.md
+    to: README.md
+  - remove: .template
 ```
 <br><br><br>
