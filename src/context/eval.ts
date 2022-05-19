@@ -1,8 +1,9 @@
 import { Store } from './store'
+import { parse } from './pipe'
 
 
 export async function evaluate(store: Store, text: string) {
-  const RE = /{{(\s*[A-Za-z]\w*(?:\.[A-Za-z]\w*)?\s*)}}/g
+  const RE = /{{(\s*[A-Za-z]\w*(?:\.[A-Za-z]\w*)?(?:\s*\|\s*[^:]+(?::[^:]+)?\s*)*\s*)}}/g
 
   return (
     await Promise.all(
@@ -11,10 +12,14 @@ export async function evaluate(store: Store, text: string) {
           return piece
         }
 
-        const addr = piece.trim()
+        const [addr, ...pipes] = piece.split('|').map(_ => _.trim())
 
-        if (store.has(addr)) {
-          return await store.get(addr)
+        if (store.has(addr!)) {
+          try {
+            return pipes.map(parse).reduce((res, pipe) => pipe(res), await store.get(addr!))
+          } catch {
+            return `{{${piece}}}`
+          }
         } else {
           return `{{${piece}}}`
         }
