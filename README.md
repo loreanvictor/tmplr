@@ -43,11 +43,9 @@ npx tmplr
     - [Environment Variables](#environment-variables)
     - [Temporary Directories](#temporary-directories)
   - [Recipe Syntax](#recipe-syntax)
-    - [Read](#read)
-    - [Update](#update)
-    - [Copy](#copy)
-    - [Remove](#remove)
-    - [Steps](#steps)
+    - [Commands](#commands)
+    - [Expressions](#expressions)
+    - [Pipes](#pipes)
 
 <br/>
 
@@ -370,7 +368,23 @@ Note that the single string passed to the [update](#update) command is also an e
 
 <br>
 
-### Read
+### Commands
+
+Commands instruct `tmplr` to read values, update contents of files, etc. Here you can see an overview of all available commands:
+
+- [**read**](#read): reads a value into a variable, so that the variable can be used to update subsequent files.
+- [**update**](#update): updates contents of a file, replacing variables with values read.
+- [**copy**](#copy): copy contents of a file to a new file, while replacing variables with values read.
+- [**remove**](#remove): removes a file.
+- [**steps**](#steps): runs a bunch of commands in a step by step manner.
+- [**run**](#run): runs another local recipe file, with given arguments.
+- [**use**](#use): runs a remote recipe file, with given arugments.
+- [**degit**](#degit): copies content of given repository to given folder, without bringing the git history.
+- [**exit**](#exit): ends the recipe early.
+
+<br>
+
+#### Read
 
 > _Command_
 > 
@@ -389,7 +403,7 @@ steps:
 
 <br>
 
-### Update
+#### Update
 > _Command_
 > ```yml
 > update:
@@ -418,7 +432,7 @@ steps:
 
 <br>
 
-### Copy
+#### Copy
 > _Command_
 > ```yml
 > copy:
@@ -450,7 +464,7 @@ steps:
 ```
 <br>
 
-### Remove
+#### Remove
 > _Command_
 > ```yml
 > remove:
@@ -466,7 +480,7 @@ steps:
 
 <br>
 
-### Steps
+#### Steps
 > _Command_
 > ```yml
 > steps:
@@ -487,4 +501,102 @@ steps:
     to: README.md
   - remove: .template
 ```
+  
+<br>
+  
+### Expressions
+
+Expressions calculate string values used by commands. Here is an overview of all available expressions:
+
+- [**from**](#from): reads from a contextual value.
+- [**prompt**](#prompt): asks the value from user.
+- [**choices**](#choices): asks the value from user, but gives them some predetermined choices.
+- [**eval**](#eval): evaluates an expression.
+- [**path**](#path): evaluates to an absolute path value.
+
+<br>
+
+### Pipes
+
+Templating variables referenced in files or in the recipe (i.e. `{{ some_var }}`, `{{ git.some_var }}` or `{{ tmplr.some_var }}`) can also
+be further modified with _pipes_:
+  
+```yaml
+# .tmplr.yml
+steps:
+  - read: name
+    prompt: whats the name?
+  
+  - copy: .templates/template.md
+    to:
+      eval: '{{ name | path/case }}.md'
+
+  - remove: .templates
+```
+
+````markdown
+<!-- .templates/template.md -->
+
+# {{ tmplr.name | Capital Case }}
+
+This is a super awesome project that can be installed by running:
+```bash
+npm i {{ tmplr.name | kebab-case }}
+```
+````
+☝️ Running this recipe with the name `cool project` will result in `cool/project.md` with the following contents:
+````markdown
+# Cool Project
+
+This is a super awesome project that can be installed by running:
+```bash
+npm i cool-project
+```
+````
+
+<br>
+
+Most pipes do not accept arguments are just for changing the letter case of the string. Here is a list of supported letter cases:
+
+```
+- camelCase           - Capital Case       - CONSTANT_CASE 
+- dot.case            - Header-Case        - kebab-case
+- PascalCase          - path/case          - param-case
+- Sentence case       - UPPERCASE          - lowercase
+```
+
+<br>
+  
+Additionally, there are `skip` and `trim` pipes as well, which will remove the given number of characters from the beginning and
+the end of the string respectively:
+
+```yml
+steps:
+  - read: component_name
+    prompt: What is the name of the component?
+    default:
+      #
+      # if the directory name is 'react-my-component', then
+      # this will evaluate to 'MyComponent'.
+      #
+      eval: '{{ path.rootdir | skip: 6 | PascalCase }}'
+```
+
+Alternatively, you can pass string values to `trim` and `skip`, in which case they will remove the given string
+from the start / end of the string only if the string starts / ends with the given string:
+
+```yml
+steps:
+  - read: component_name
+    prompt: What is the name of the component?
+    default:
+      #
+      # if the directory name is 'react-my-component', then
+      # this will evaluate to 'MyComponent'. However, if the
+      # directory name does not start with 'react-', then it will
+      # not modify it.
+      #
+      eval: '{{ path.rootdir | skip: react- | PascalCase }}'
+```
+
 <br><br><br>
