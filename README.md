@@ -293,6 +293,87 @@ Temporary directories will be deleted after the recipe has finished executing.
 
 ## Recipe Syntax
 
-==TO BE COMPLETED==
+Template recipes are composed of _commands_ and _expressions_. _Commands_ instruct actions that are to be taken (i.e. read a value, update a file, etc), and _expressions_ calculate string values used by commands. A template recipe descirbes a single command, which can itself be composed of multiple other
+steps:
+
+<br>
+
+```yaml
+# .tmplr.yml
+remove: LICENSE
+```
+☝️ Here the recipe is a single _remove_ command.
+
+<br>
+
+```yaml
+# .tmplr.yml
+steps:
+  - read: project_name
+    from: git.remote_name
+    fallback:
+      prompt: What is the name of the project?
+      default:
+        from: path.rootdir
+  
+  - update: README.md
+```
+
+☝️ Here the recipe is a single _steps_ command, which is composed of multiple steps, each another command. Take a closer look at the initial _read_ command:
+
+```yml
+  - read: project_name
+    from: git.remote_name
+    fallback:
+      prompt: What is the name of the project?
+      default:
+        from: path.rootdir
+```
+
+Here we have a single _read_ command, whose value is provided by a _from_ expression (which reads from [contextual values](#contextual-values) into variables that can be used to update file contents). The _from_ expression itself has a child expression as its _fallback_: When the provided contextual value is not present (e.g. not a git repository, or there are no remote origins), then the value will be read from a _prompt_ expression (which simply asks the user for the value). The prompt expression again has a child _from_ expression to provide a handy default (name of the current directory).
+
+```
+Read Command
+  ┃	
+  ┗━━ From Expression
+       ┃	
+       ┗━(fallback)━ Prompt Expression
+            ┃	
+            ┗━(default)━ From Expression
+```
+In turn, the following would outline the syntax tree for the whole recipe:
+```
+Steps Command
+  ┃
+  ┣━━ Read Command
+  ┃     ┃	
+  ┃     ┗━━ From Expression
+  ┃          ┃	
+  ┃          ┗━(fallback)━ Prompt Expression
+  ┃               ┃	
+  ┃               ┗━(default)━ From Expression
+  ┃
+  ┗━ Update Command
+       ┃
+       ┗━ Value Expression
+```
+
+<br>
+
+### Commands
+
+#### Read
+Reads some value into a variable. The variable then can be used in updating / copying file contents.
+```yml
+  - read: <variable name>
+    <expression>
+```
+Example:
+```yml
+  - read: project_name
+    from: path.rootdir
+```
+☝️ After executing this command, if you _update_ or _copy_ any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
+
 
 <br><br><br>
