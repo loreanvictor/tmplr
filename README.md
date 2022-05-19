@@ -328,7 +328,7 @@ steps:
   - update: README.md
 ```
 
-☝️ Here the recipe is a single _steps_ command, which is composed of multiple steps, each another command. Take a closer look at the initial _read_ command:
+☝️ Here the recipe is a single _steps_ command, which is composed of multiple steps (each another command). Take a closer look at the initial _read_ command:
 
 ```yml
   - read: project_name
@@ -339,18 +339,9 @@ steps:
         from: path.rootdir
 ```
 
-Here we have a single _read_ command, whose value is provided by a _from_ expression (which reads from [contextual values](#contextual-values) into variables that can be used to update file contents). The _from_ expression itself has a child expression as its _fallback_: When the provided contextual value is not present (e.g. not a git repository, or there are no remote origins), then the value will be read from a _prompt_ expression (which simply asks the user for the value). The prompt expression again has a child _from_ expression to provide a handy default (name of the current directory).
+The [read](#read) command reads a value from an expression and stores it in a variable. From this point on, when [copy](#copy) or [update](#update) contents of a file, if the file contains `{{ tmplr.project_name }}`, the value resolved here will be replaced. Here we read a value using a _From Expression_, i.e. we read _from_ a contextual value (in this case, the remote name for the git repository). If the contextual value can't be resolved (for example, the command is executed outside of a git repo), then the fallback expression will be used, which is a _prompt_ asking the user for the value, and so on.
 
-```
-Read Command
-  ┃	
-  ┗━━ From Expression
-       ┃	
-       ┗━(fallback)━ Prompt Expression
-            ┃	
-            ┗━(default)━ From Expression
-```
-In turn, the following would outline the syntax tree for the whole recipe:
+Here you can see the corresponding syntax tree of this example recipe:
 ```
 Steps Command
   ┃
@@ -367,7 +358,7 @@ Steps Command
        ┗━ Value Expression
 ```
 
-Expressions, except for when they are attached to a command (like the From Expression attached to the Read Command) above, can either be an object, or a simple string value. In above example, the _default_ value for for the fallback prompt is an object specifying a From Expression. It could also be a simple string value, i.e.:
+Note that the single string passed to the [update](#update) command is also an expression. Except in cases where the expression is attached to the command (like in case of the [read command](#read)), expressions can be simple string values or more complex objects. For example, we can replace the _default_ of the prompt from a _From Expression_ to a simple string:
 
 ```yml
   - read: project_name
