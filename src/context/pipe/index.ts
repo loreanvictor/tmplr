@@ -5,12 +5,28 @@ import {
 } from 'change-case'
 
 
-function skip(str: string, param: number) {
-  return str.slice(param)
+function skip(str: string, param: number | string) {
+  if (typeof param === 'string') {
+    if (/^\d+$/.test(param)) {
+      return skip(str, parseInt(param))
+    } else {
+      return str.startsWith(param) ? str.slice(param.length) : str
+    }
+  } else {
+    return str.slice(param)
+  }
 }
 
-function trim(str: string, param: number) {
-  return str.substring(0, str.length - param)
+function trim(str: string, param: number | string) {
+  if (typeof param === 'string') {
+    if (/^\d+$/.test(param)) {
+      return trim(str, parseInt(param))
+    } else {
+      return str.endsWith(param) ? str.slice(0, -param.length) : str
+    }
+  } else {
+    return str.substring(0, str.length - param)
+  }
 }
 
 function upperCase(str: string) {
@@ -41,7 +57,7 @@ const PIPES = {
 }
 
 export function parse(desc: string) {
-  const [pipe, param] = desc.split(':')
+  const [pipe, param] = desc.split(':').map(_ => _.trim())
 
   if (!(pipe! in PIPES)) {
     throw new Error('Invalid pipe: ' + pipe)
