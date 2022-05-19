@@ -516,6 +516,147 @@ Expressions calculate string values used by commands. Here is an overview of all
 
 <br>
 
+#### From
+> _Expression_
+> ```yml
+> from: <contextual-variable>
+> fallback?:
+>   <expression>
+> ```
+Will resolve from the value of given contextual variable. If it is not present and fallback is specified, will evaluate
+and return the fallback expression. Otherwise will return an empty string.
+```yml
+steps:
+  - read: username
+    from: git.remote_owner
+    fallback:
+      from: env.USER
+```
+
+<br>
+
+#### Prompt
+> _Expression_
+> ```yml
+> prompt: <message>
+> default?:
+>   <expression>
+>```
+Will resolve the value by asking the user. If a default value is provided, then that will be suggested to the user
+as well.
+```yml
+steps:
+  - read: username
+    prompt: What is your username?
+    default:
+      from: git.author_name
+      fallback:
+        from: env.USER
+```
+
+<br>
+
+#### Choices
+> _Expression_
+> ```yml
+> prompt: <message>
+> choices:
+>   - <label>:
+>       <expression>
+>   - <label>:
+>       <expression>
+>   ...
+> ```
+Will resolve the value by giving the user multiple choices. Will evaluate the corresponding expression of each choice _after_ the user
+has selected it (so you can chain prompts and other expressions safely).
+```yml
+steps:
+  - read: username
+    prompt: What is your username?
+    choices:
+      - Read it from git:
+          from: git.author_name
+      - Read it from env:
+          from: env.USER
+      - John Doe # 👉 here the value is the same as the label.
+      - None:
+          prompt: Ok but what is your username though?
+```
+
+<br>
+
+#### Eval
+> _Expression_
+> ```yml
+> eval: <expr>
+> steps?:
+>   - <command>
+>   - <command>
+>   ...
+> ```
+
+Will evaluate given string expression. This is almost similar to evaluation of template variables in [updated](#update) or [copied](#copy)
+files. The main difference is that in eval expressions you don't need the `tmplr.` prefix to access [read](#read) variables, and you can also
+access other contextual values. [Pipes](#pipes) work similar to other files.
+
+```yml
+steps:  
+  read: git_url
+  from: git.remote_url
+  fallback:
+    eval: 'https://github.com/{{ env.USER | snake_case }}/{{ path.rootdir }}.git'
+```
+
+You can optionally pass a list of commands as the _steps_ property. These are usually (but not necessarily) some [read](#read)
+commands to fetch further values required for the evaluation. Note that these commands only get executed if the _Eval Expression_
+itself is evaluated.
+
+```yml
+steps:
+  - read: git_url
+    from: git.remote_url
+    fallback:
+      steps:
+        - read: git_provider
+          prompt: Where is the project hosted?
+          choices:
+            - GitHub: 'https://github.com'
+            - BitBucket: 'https://bitbucket.org'
+            - Source Hut: 'https://git.sr.ht'
+            - Other:
+                prompt: Please specify ...
+        - read: git_owner
+          from: env.USER
+          fallback:
+            prompt: What is your username?
+      eval: '{{ git_provider }}/{{ git_owner }}/{{ path.rootdir }}.git'  
+```
+
+<br>
+
+#### Path
+> _Expression_
+> ```yml
+> path: <expr>
+> ```
+Similar to [**eval**](#eval) but for strings representing file paths. If the expression evaluates to a relative path, will
+turn it into an absolute path assuming the recipe file itself as the root of the address. This will be useful for passing path
+arguments to and reading path values from other recipes executed via [run](#run) or [use](#use) commands.
+```yml
+steps:
+  # ...
+  - degit: some/repo
+    to:
+      eval: '{{ tmpdir.some_repo }}'
+
+  - use: some/recipe
+    with:
+      - readme:
+          path: '{{ tmpdir.some_repo }}/README.md'
+```
+
+<br>
+
 ### Pipes
 
 Templating variables referenced in files or in the recipe (i.e. `{{ some_var }}`, `{{ git.some_var }}` or `{{ tmplr.some_var }}`) can also
