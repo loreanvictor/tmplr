@@ -3,7 +3,7 @@
 
 [![version](https://img.shields.io/npm/v/tmplr?logo=npm)](https://www.npmjs.com/package/tmplr)
 
-Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then asks a few questions and prepares local files (like `package.json`, `README`, etc.) for you.
+Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then runs a _templating recipe_ and asks a few questions to further prepare the project for you (e.g. update the owner name in LICENSE, project name in README, etc.).
 
 <div align="center">
 
@@ -33,7 +33,7 @@ npx tmplr
 
 - [How to Install](#how-to-install)
 - [How to Use](#how-to-use)
-  - [GitHub Templates](#github-templates)
+  - [Running Recipes](#running-recipes)
 - [How to Make a Template](#how-to-make-a-template)
   - [Template Recipes](#template-recipes)
   - [GitHub Workflows](#github-workflows)
@@ -105,12 +105,10 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 <br/>
 
-## GitHub Templates
+## Running Recipes
 
-On GitHub, users [can create template repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository), allowing others to [use their templates](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template). While convenient, GitHub's templating still does not modify the content of the original template repository according to your specific
-information: for example you would definitely need to update the README and replace the name of the project.
-
-`tmplr` can enhance that process. If you want to create a project from a template repository which also specifies a _`tmplr` templating recipe_ (basically, a `.tmplr.yml` file at the root of the project), simply create the project on GitHub, clone it, cd to it and run the following:
+If you receive the content of the template repository via other means (for example [via GitHub template repos](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), and the repository
+provides a `tmplr` templating recipe, you can run it by going to the directory where the project is and run the following:
 
 ```bash
 npx tmplr
@@ -124,9 +122,7 @@ npx tmplr
 
 # How to Make a Template
 
-Any repository is by default a _template repository_ for `tmplr`, as it can copy its content without the history. However, `tmplr` also allows you to do advanced templating, such as removing files, replacing files or updating them with variables dependent on the user's environment (for example, the name of their repository), or variables whose values are directly asked from users.
-
-To do this, you need to provide a templating recipe. A templating recipe must be a [YAML file](https://en.wikipedia.org/wiki/YAML) named `.tmplr.yml`, located at the root of your repository. When running the following:
+Add a template recipe that instructs `tmplr` what to do (for example, update the project name in README). A template recipe is a [YAML file](https://en.wikipedia.org/wiki/YAML) named `.tmplr.yml`, located at the root of your repository. When running the following:
 
 ```bash
 npx tmplr your/repo
@@ -142,14 +138,14 @@ npx tmplr
 
 ## Template Recipes
 
-A template recipe can be a single command or a list of commands, instructing `tmplr` to _read_ some values and then modify some files with those values. They can be a single command:
+A template recipe instructs `tmplr` as to how to update project files with contextual values such as local git information or directory name. It can be a single command:
 
 ```yaml
 # .tmplr.yml
 remove: LICENSE
 ```
 
-Or a series of steps:
+Or multiple steps:
 
 ```yaml
 # .tmplr.yml
