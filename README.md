@@ -360,20 +360,44 @@ Steps Command
 
 <br>
 
-### Commands
-
-#### Read
-Reads some value into a variable. The variable then can be used in updating / copying file contents.
+### Read
+A command that reads some value into a variable. The variable then can be used in updating / copying file contents.
 ```yml
-  - read: <variable name>
-    <expression>
+read: <variable name>
+<expression>
 ```
 Example:
 ```yml
+steps:
   - read: project_name
     from: path.rootdir
 ```
 ☝️ After executing this command, if you _update_ or _copy_ any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
 
-
+### Update
+A command to update contents of a file, using values read with [`read`](#read).
+```yml
+update:
+  <expression>
+```
+Example:
+```yml
+steps:
+  - read: name
+    prompt: What is your name?
+  
+  - update: README.md
+```
+```yml
+steps:
+  - read: docs_folder
+    prompt: Where do you keep the docs?
+    choices:
+      - docs/
+      - documents/
+      - other:
+          prompt: Specify the folder name ...
+  - update:
+      path: '{{ docs_folder }}/Home.md'
+```
 <br><br><br>
