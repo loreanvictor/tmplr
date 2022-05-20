@@ -333,8 +333,8 @@ steps:
 steps:
   - run: ./called.yml
     with:
-      readme:
-        path: ./README.md
+      - readme:
+          path: ./README.md
 ```
 <br/>
 
