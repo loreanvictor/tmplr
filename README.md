@@ -34,6 +34,7 @@ npx tmplr
 - [How to Install](#how-to-install)
 - [How to Use](#how-to-use)
   - [Running Recipes](#running-recipes)
+  - [Execution Safety](#execution-safety)
 - [How to Make a Template](#how-to-make-a-template)
   - [Template Recipes](#template-recipes)
   - [GitHub Workflows](#github-workflows)
@@ -42,6 +43,7 @@ npx tmplr
     - [Path Context](#path-context)
     - [Environment Variables](#environment-variables)
     - [Temporary Directories](#temporary-directories)
+    - [Recipe Arguments](#recipe-arguments)
   - [Recipe Syntax](#recipe-syntax)
     - [Commands](#commands)
     - [Expressions](#expressions)
@@ -58,7 +60,7 @@ You don't need to install `tmplr` itself, since you can use it with [`npx`](http
 npx tmplr owner/repo
 ```
 
-<br>
+<br/>
 
 However, you _can_ install it globally for more convenience:
 
@@ -121,11 +123,25 @@ provides a `tmplr` templating recipe, you can run it by going to the directory w
 npx tmplr
 ```
 
-<br>
+<br/>
 
 > When executed without a parameter, `tmplr` will try to locate `.tmplr.yml` recipe file in current folder and run the recipe.
 
-<br><br>
+<br/>
+
+## Execution Safety
+
+Running `tmplr` is basically as safe as downloading a bunch of files into a specified folder. Templating recipes can only read values
+from [controlled contexts](#contextual-values) and user prompts, and can only modify contents of files in the same directory by replacing
+string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current directory. Note that they do get access
+to your environment variables, but can only use those values to modify contents of some files in the local directory.
+
+If you are getting a template from an untrusted source, it is safe to exectue `tmplr`, but it is NOT SAFE to run any subsequent commands,
+as those commands might execute some mallicious scripts sneaked in during templating process. For example, a mallicious template might
+sneak in some packages in `package.json` that will sneak out some information on pre-install scripts. Note that this is still inherently
+as unsafe as simply cloning a repository and then running its scripts (which you shouldn't do unless you trust the authors).
+
+<br/><br/>
 
 # How to Make a Template
 
@@ -141,7 +157,7 @@ npx tmplr your/repo
 npx tmplr
 ```
 
-<br>
+<br/>
 
 ## Template Recipes
 
@@ -179,11 +195,11 @@ git clone {{ tmplr.clone_url }}
 ```
 ````
 
-<br>
+<br/>
 
 After you read a variable such as `some_var`, in any file you update or copy, `{{ tmplr.some_var }}` will be replaced with the value read. If a variable is not resolved or read, then `tmplr` will leave it untouched. The comprehensive list of all available commands can be found in [this section](#recipe-syntax), and a list of available contextual values (e.g. `git.remote_url` or `path.rootdir`) can be found in [this section](#contextual-values). If you prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example).
 
-<br>
+<br/>
 
 ## GitHub Workflows
 
@@ -247,7 +263,7 @@ jobs:
           message: Initialize from template
 ```
 
-<br>
+<br/>
 
 ## Contextual Values
 
@@ -296,14 +312,43 @@ steps:
 
 Temporary directories will be deleted after the recipe has finished executing.
 
-<br>
+<br/>
+
+### Recipe Arguments
+
+Recipes can also [run](#run) other local recipes or [use](#use) publicly published recipes. The caller recipe can pass arguments
+to the called recipe, which will be available on `args` context.
+
+```yml
+# called.yml
+steps:
+  - read: remote_url
+    from: git.remote_url
+    
+  - update:
+      path: '{{ args.readme }}'
+```
+```yml
+# .tmplr.yml
+steps:
+  - run: ./called.yml
+    with:
+      readme:
+        path: ./README.md
+```
+<br/>
+
+> 👉 Recipe arguments are evaluated lazily. For example, if a prompt is passed as an argument, the user will be prompted the first time you
+> access that argument.
+
+<br/>
 
 ## Recipe Syntax
 
 Template recipes are composed of _commands_ and _expressions_. _Commands_ instruct actions that are to be taken (i.e. read a value, update a file, etc), and _expressions_ calculate string values used by commands. A template recipe descirbes a single command, which can itself be composed of multiple other
 steps:
 
-<br>
+<br/>
 
 ```yaml
 # .tmplr.yml
@@ -311,7 +356,7 @@ remove: LICENSE
 ```
 ☝️ Here the recipe is a single _remove_ command.
 
-<br>
+<br/>
 
 ```yaml
 # .tmplr.yml
@@ -366,7 +411,7 @@ Note that the single string passed to the [update](#update) command is also an e
       default: My Awesome Project
 ```
 
-<br>
+<br/>
 
 ### Commands
 
@@ -377,12 +422,12 @@ Commands instruct `tmplr` to read values, update contents of files, etc. Here yo
 - [**copy**](#copy): copy contents of a file to a new file, while replacing variables with values read.
 - [**remove**](#remove): removes a file.
 - [**steps**](#steps): runs a bunch of commands in a step by step manner.
-- [**run**](#run): runs another local recipe file, with given arguments.
-- [**use**](#use): runs a remote recipe file, with given arugments.
 - [**degit**](#degit): copies content of given repository to given folder, without bringing the git history.
 - [**exit**](#exit): ends the recipe early.
+- [**run**](#run): runs another local recipe file, with given arguments.
+- [**use**](#use): runs a remote recipe file, with given arugments.
 
-<br>
+<br/>
 
 #### Read
 
@@ -401,7 +446,7 @@ steps:
 ```
 ☝️ After executing this command, if you [update](#update) or [copy](#copy) any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
 
-<br>
+<br/>
 
 #### Update
 > _Command_
@@ -430,7 +475,7 @@ steps:
       path: '{{ docs_folder }}/Home.md'
 ```
 
-<br>
+<br/>
 
 #### Copy
 > _Command_
@@ -462,7 +507,7 @@ steps:
       path: '{{ tmpdir.license }}/LICENSE'
     to: LICENSE
 ```
-<br>
+<br/>
 
 #### Remove
 > _Command_
@@ -478,7 +523,7 @@ steps:
   - remove: .tmplr.yml
 ```
 
-<br>
+<br/>
 
 #### Steps
 > _Command_
@@ -502,8 +547,147 @@ steps:
   - remove: .template
 ```
   
-<br>
+<br/>
   
+#### Degit
+
+> _Command_
+> ```yml
+> degit:
+>   <expression>
+> to?:
+>   <expression>
+> ```
+Will fetch the contents of given repository and copy them into specified folder. If destination is not specified, will copy
+into the same folder as the running recipe. Accepts the same sources as `tmplr` command itself (basically runs [degit](https://github.com/Rich-Harris/degit)).
+```yml
+steps:
+  - degit: user/repo
+    to:
+      eval: '{{ tmpdir.repo }}'
+```
+
+<br/>
+  
+#### Exit
+> _Command_
+> ```yml
+> exit:
+>   <expression>
+> ```
+Will end the templating process early (for example because value is not set or due to user's choice). Will evaluate and display given
+message.
+```yml
+steps:
+  - read: remote_url
+    from: git.remote_url
+    fallback:
+      eval: _
+      steps:
+        - exit: Must be a git repository!
+
+  # ...
+```
+
+<br/>
+
+#### Run
+> _Command_
+> ```yml
+> run:
+>   <expression>
+> with?:
+>   - <argname>:
+>       <expression>
+>   - <argname>:
+>       <expression>
+>   ...
+> read?:
+>   - <varname>: <outname>
+>   - <varname>: <outname>
+>   ...
+> ```
+Parses and executes given local recipe file. You can pass arguments to the recipe file (which can be accessed via the [`args` context](#recipe-arguments) lazily. The recipe WILL NOT have access to variables you have read, so you need to manually pass them as arguments. You can access all the variables
+read by the recipe though, and read them into variables of your own execution context.
+
+```yml
+steps:
+  - read: name
+    from: git.author_name
+
+  - run: .templates/util/some-recipe.yml
+    with:
+      - name                   # will directly pass `name`
+      - remote_url:
+          from: git.remote_url # this will be executed lazily
+          fallback:
+            prompt: What is the remote URL?
+    read:
+      - lockfile               # will read `lockfile` variable of the inner recipe into `lockfile` variable of outer recipe
+      - some_success: success  # will read `success` variable of the inner recipe into `some_success` variable of outer recipe
+```
+
+<br/>
+
+Note that all relative paths inside any recipe are resolved _relative to the recipe file itself_. So in case of above example, the caller recipe referencing `README.md` will access `README.md` at the root of the project, while the called recipe accessing `README.md` would access `.templates/util/README.md`. This means the string `README.md` or `./README.md` mean different things for different recipes. To avoid such
+confusions, use the [path](#path) expression to turn all path strings into absolute paths.
+
+<br/>
+
+#### Use
+> _Command_
+> ```yml
+> use:
+>   <expression>
+> with?:
+>   - <argname>:
+>       <expression>
+>   - <argname>:
+>       <expression>
+>   ...
+> read?:
+>   - <varname>: <outname>
+>   - <varname>: <outname>
+>   ...
+> ```
+Will download, parse and execute given recipe from a public repository. Will first fetch the specified repository (via [degit](#degit))
+into a temporary directory at the root of the project, and then locate `.tmplr.yml` in that directory and [run](#run) it. The specified
+repository MUST have a `.tmplr.yml` file at its root.
+
+```yml
+steps:
+  - read: name
+    from: git.author_name
+
+  - use: some-user/some-repo
+    with:
+      - name                   # will directly pass `name`
+      - remote_url:
+          from: git.remote_url # this will be executed lazily
+          fallback:
+            prompt: What is the remote URL?
+    read:
+      - lockfile               # will read `lockfile` variable of the inner recipe into `lockfile` variable of outer recipe
+      - some_success: success  # will read `success` variable of the inner recipe into `some_success` variable of outer recipe
+```
+
+<br/>
+
+Since the whole repo is fetched, the recipe can also utilize other templating files shipped alongside it. Since it will be put in a temporary
+directory at the root of the project, it can relatively access files via `../` (for example, the main readme will be at `../README.md`).
+
+```yml
+# https://github.com/some-user/some-repo/.tmplr.yml
+steps:
+  - read: some_variable
+    from: some.context
+
+  - copy: ./README.md
+    to: ../README.md
+```
+
+<br/>
+
 ### Expressions
 
 Expressions calculate string values used by commands. Here is an overview of all available expressions:
@@ -514,7 +698,7 @@ Expressions calculate string values used by commands. Here is an overview of all
 - [**eval**](#eval): evaluates an expression.
 - [**path**](#path): evaluates to an absolute path value.
 
-<br>
+<br/>
 
 #### From
 > _Expression_
@@ -533,7 +717,7 @@ steps:
       from: env.USER
 ```
 
-<br>
+<br/>
 
 #### Prompt
 > _Expression_
@@ -554,7 +738,7 @@ steps:
         from: env.USER
 ```
 
-<br>
+<br/>
 
 #### Choices
 > _Expression_
@@ -583,7 +767,7 @@ steps:
           prompt: Ok but what is your username though?
 ```
 
-<br>
+<br/>
 
 #### Eval
 > _Expression_
@@ -632,7 +816,7 @@ steps:
       eval: '{{ git_provider }}/{{ git_owner }}/{{ path.rootdir }}.git'  
 ```
 
-<br>
+<br/>
 
 #### Path
 > _Expression_
