@@ -264,6 +264,8 @@ jobs:
 
 Recipes might have access to following contextual values, depending on the conditions (for example, if the repository is executed outside of a git repository, then `git.*` values are not available).
 
+<br/>
+
 ### Git Context
 
 - `git.remote_url`: The origin URL of current git repository (this can be cloned, for example)
@@ -273,14 +275,20 @@ Recipes might have access to following contextual values, depending on the condi
 - `git.author_name`: The name of the person who made the first commit on the repo
 - `git.author_email`: Email address of the first committer.
 
+<br/>
+
 ### Path Context
 
 - `path.rootdir`: The name of the root directory
 - `path.rootempty`: This is an empty string if root directory is not empty, and `yes` if it is. `.git` and `.tmplr.yml` are ignored.
 
+<br/>
+
 ### Environment Variables
 
 You can use `env.some_var` to access some environment variable. If it is not defined, an empty string will be returned.
+
+<br/>
 
 ### Temporary Directories
 
