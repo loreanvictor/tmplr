@@ -133,13 +133,8 @@ npx tmplr
 
 Running `tmplr` is basically as safe as downloading a bunch of files into a specified folder. Templating recipes can only read values
 from [controlled contexts](#contextual-values) and user prompts, and can only modify contents of files in the same directory by replacing
-string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current directory. Note that they do get access
-to your environment variables, but can only use those values to modify contents of some files in the local directory.
-
-If you are getting a template from an untrusted source, it is safe to exectue `tmplr`, but it is NOT SAFE to run any subsequent commands,
-as those commands might execute some mallicious scripts sneaked in during templating process. For example, a mallicious template might
-sneak in some packages in `package.json` that will sneak out some information on pre-install scripts. Note that this is still inherently
-as unsafe as simply cloning a repository and then running its scripts (which you shouldn't do unless you trust the authors).
+string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current directory. Note that they DO get access to your
+environment variables.
 
 <br/><br/>
 
