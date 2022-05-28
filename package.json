@@ -1,8 +1,8 @@
 {
   "name": "tmplr",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Easy templating for repositories",
-  "bin": "dist/cli/index.js",
+  "bin": "dist/src/cli/index.js",
   "engines": {
     "node": ">=12"
   },
