@@ -1,5 +1,5 @@
 import { Remove } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseRemove(context: ParsingContext, obj: any) {

@@ -2,8 +2,8 @@ import React from 'react'
 import { Static } from 'ink'
 import { relative } from 'path'
 
-import serialize from '../serialize'
-import { ChangeLog, Copy, Degit, Remove, Update } from '../context/command'
+import serialize from '../../serialize'
+import { ChangeLog, Copy, Degit, Remove, Update } from '../../context/command'
 import { Success, Highlight, Tertiary } from './theme'
 
 

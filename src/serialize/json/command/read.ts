@@ -1,5 +1,5 @@
 import { Read } from '../../../context/command'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (read: Read, context: SerializationContext) => ({

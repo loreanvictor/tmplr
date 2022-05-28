@@ -1,5 +1,5 @@
 import { Prompt } from '../../../context/expr'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (prompt: Prompt, context: SerializationContext) => ({

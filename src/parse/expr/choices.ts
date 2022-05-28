@@ -1,5 +1,5 @@
 import { Choices } from '../../context/expr'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseChoices(context: ParsingContext, obj: any) {

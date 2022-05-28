@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Text, Newline } from 'ink'
 import SelectInput, { ItemProps, IndicatorProps } from 'ink-select-input'
 
-import { Choices, Choice } from '../../context/expr'
+import { Choices, Choice } from '../../../context/expr'
 import { Question, Highlight, Hint, Tertiary } from '../theme'
 
 

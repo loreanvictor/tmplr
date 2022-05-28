@@ -1,5 +1,5 @@
 import { Copy } from '../../../context/command'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (copy: Copy, context: SerializationContext) => ({

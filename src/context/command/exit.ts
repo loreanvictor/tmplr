@@ -10,7 +10,7 @@ export interface ExitIO extends IO {
 
 
 export class ExitSignal extends Error {
-  constructor() {
+  constructor(readonly showLogs = true) {
     super('ExitSignal')
   }
 }

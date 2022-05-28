@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Exit } from '../../context/command'
+import { Exit } from '../../../context/command'
 
 
 export interface ExitLogProps {

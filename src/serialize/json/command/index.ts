@@ -1,5 +1,5 @@
 import { Command, Copy, Degit, Exit, Read, Remove, Run, Steps, Update, Use } from '../../../context/command'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 import serializeCopy from './copy'
 import serializeUpdate from './update'

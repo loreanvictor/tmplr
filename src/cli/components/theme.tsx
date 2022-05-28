@@ -8,6 +8,7 @@ export const PRIMARY = '#F1DDBF'
 export const ACCENT = '#0AA1DD'
 export const TERTIARY = '#9772FB'
 export const SUCCESS = '#97DBAE'
+export const WARNING = '#EC9B3B'
 export const ERROR = '#F24A72'
 export const FADE = '#5584AC'
 export const HINT = '#22577E'
@@ -61,6 +62,18 @@ export function Error({ children }) {
 }
 
 
+export function Warning({ children }) {
+  return <Text>
+    <Text color={WARNING}>⚠ {children}</Text>
+  </Text>
+}
+
+
 export function Highlight({ children }) {
   return <Text bold color={PRIMARY}>{children}</Text>
+}
+
+
+export function Accent({ children }) {
+  return <Text bold color={ACCENT}>{children}</Text>
 }

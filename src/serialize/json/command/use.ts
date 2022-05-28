@@ -1,5 +1,5 @@
 import { Use } from '../../../context/command'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (use: Use, context: SerializationContext) => ({

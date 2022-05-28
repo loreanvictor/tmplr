@@ -1,6 +1,6 @@
 import { Eval } from '../../context/expr'
 import { Steps } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseEval(context: ParsingContext, obj: any) {

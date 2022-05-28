@@ -1,5 +1,5 @@
 import { Use } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseUse(context: ParsingContext, obj: any) {

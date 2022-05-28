@@ -43,3 +43,9 @@ export abstract class Change extends Rooted {
 
   protected abstract commit(): Promise<ChangeDetails>
 }
+
+
+export const NULL_LOG: ChangeLog = {
+  commit: () => { throw new Error('Cannot commit to a null log') },
+  entries: () => []
+}

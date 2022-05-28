@@ -1,5 +1,5 @@
-import { Store } from './store'
-import { createScope, Scope } from './scope'
+import { Store, NULL_STORE } from './store'
+import { createScope, Scope, NULL_SCOPE } from './scope'
 import { Provider } from './provider'
 
 
@@ -42,4 +42,11 @@ export function createStack(
     varStore,
     sub,
   }
+}
+
+
+export const NULL_STACK: Stack = {
+  ...NULL_SCOPE,
+  varStore: NULL_STORE,
+  sub: () => NULL_STACK,
 }

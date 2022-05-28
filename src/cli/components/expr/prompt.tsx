@@ -3,7 +3,7 @@ import { useToggle } from 'react-use'
 import { Text, Newline, useInput } from 'ink'
 import TextInput from 'ink-text-input'
 
-import { Prompt } from '../../context/expr'
+import { Prompt } from '../../../context/expr'
 import { Question, Hint, TERTIARY, PRIMARY } from '../theme'
 
 

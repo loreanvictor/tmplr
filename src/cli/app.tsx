@@ -6,11 +6,11 @@ import { useBootstrap } from './bootstrap'
 
 
 export function App() {
-  const exec = useBootstrap()
+  const { exec, loaded } = useBootstrap()
 
-  if (!exec) {
-    return <Waiting>Loading config ...</Waiting>
+  if (!loaded) {
+    return <Waiting>Loading ...</Waiting>
   } else {
-    return <ExecDisplay exec={exec!} />
+    return <ExecDisplay exec={exec} />
   }
 }

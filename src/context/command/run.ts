@@ -2,7 +2,7 @@ import { readFile } from 'fs/promises'
 import { dirname } from 'path'
 import { parse } from 'yaml'
 
-import { ParsingContext } from '../../parse/base'
+import { ParsingContext } from '../base'
 import { Provider } from '../provider/base'
 import { createLazyProvider } from '../provider/lazy'
 import { createTmpDirProvider } from '../provider/tmpdir'

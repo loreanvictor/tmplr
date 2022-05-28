@@ -1,5 +1,5 @@
 import { Degit } from '../../../context/command'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (degit: Degit, context: SerializationContext) => ({

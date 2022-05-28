@@ -1,5 +1,5 @@
 import { Update } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseUpdate(context: ParsingContext, obj: any) {

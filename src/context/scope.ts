@@ -1,5 +1,5 @@
 import { Provider } from './provider'
-import { Store, createStore } from './store'
+import { Store, createStore, NULL_STORE } from './store'
 
 
 export interface Scope extends Store {
@@ -14,4 +14,12 @@ export function createScope(providers: {[namespace: string]: Provider}, vars: {[
       vars[variable] = value
     }
   }
+}
+
+
+export const NULL_SCOPE: Scope = {
+  ...NULL_STORE,
+  set: async () => {
+    throw new Error('Cannot set values on a null scope')
+  },
 }

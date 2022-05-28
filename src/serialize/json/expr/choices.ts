@@ -1,5 +1,5 @@
 import { Choices } from '../../../context/expr'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (choices: Choices, context: SerializationContext) => ({

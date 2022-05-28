@@ -1,5 +1,5 @@
 import { Choices, Eval, Expr, From, Path, Prompt, Value } from '../../../context/expr'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 import serializeChoices from './choices'
 import serializeEval from './eval'

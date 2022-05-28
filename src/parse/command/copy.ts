@@ -1,5 +1,5 @@
 import { Copy } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseCopy(context: ParsingContext, obj: any) {

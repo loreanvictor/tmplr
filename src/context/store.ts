@@ -52,3 +52,10 @@ export function createStore(providers: {[namespace: string]: Provider}, vars: {[
     }
   }
 }
+
+
+export const NULL_STORE: Store = {
+  get: async () => { throw new Error('Cannot get values on a null store') },
+  has: () => false,
+  cleanup: async () => {},
+}

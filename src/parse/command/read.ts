@@ -1,5 +1,5 @@
 import { Read } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseRead(context: ParsingContext, obj: any) {

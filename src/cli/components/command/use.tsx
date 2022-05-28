@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Use } from '../../context/command'
+import { Use } from '../../../context/command'
 import { useRunnableState } from '../hooks'
 import { Waiting, Success } from '../theme'
 

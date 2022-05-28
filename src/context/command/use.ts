@@ -3,7 +3,7 @@ import { join } from 'path'
 import { mkdtemp, rm } from 'fs/promises'
 
 import { Expr } from '../expr/base'
-import { ParsingContext } from '../../parse/base'
+import { ParsingContext } from '../base'
 import { Scope } from '../scope'
 import { checkFile } from './util/check-file'
 import { Command } from './base'

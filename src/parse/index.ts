@@ -1,16 +1,9 @@
 import { parse as parseYaml } from 'yaml'
 
-import { createContext, Context } from '../context'
-import { Command } from '../context/command'
+import { createContext, createExecution, Execution } from '../context'
 import { parseExpr } from './expr'
 import { parseCommand } from './command'
 
-
-export interface Execution {
-  context: Context
-  command: Command,
-  run: () => Promise<void>,
-}
 
 
 export function parse(obj: string | object, root = process.cwd()): Execution {
@@ -25,14 +18,6 @@ export function parse(obj: string | object, root = process.cwd()): Execution {
       root,
     }, obj)
 
-    const run = async () => {
-      try {
-        await command.run()
-      } finally {
-        await context.stack.cleanup()
-      }
-    }
-
-    return { context, command, run }
+    return createExecution(command, context)
   }
 }

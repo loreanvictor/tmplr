@@ -1,4 +1,4 @@
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 import { parseCopy } from './copy'
 import { parseRead } from './read'
 import { parseRemove } from './remove'

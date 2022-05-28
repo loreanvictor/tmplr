@@ -1,5 +1,5 @@
 import { Exit } from '../../context/command'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseExit(context: ParsingContext, obj: any) {

@@ -1,5 +1,5 @@
 import { Update } from '../../../context/command'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (update: Update, context: SerializationContext) => ({

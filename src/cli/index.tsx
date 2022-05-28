@@ -5,8 +5,5 @@ import { render } from 'ink'
 
 import { App } from './app'
 
-const CLI = () => (
-  <App/>
-)
 
-render(<CLI/>)
+render(<App/>)

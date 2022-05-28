@@ -1,5 +1,5 @@
 import { Value } from '../../context/expr'
-import { ParsingContext } from '../base'
+import { ParsingContext } from '../../context'
 
 
 export function parseValue(_: ParsingContext, obj: any) {

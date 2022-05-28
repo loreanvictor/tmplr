@@ -1,5 +1,5 @@
 import { Path } from '../../../context/expr'
-import { SerializationContext } from '../base'
+import { SerializationContext } from '../../../context'
 
 
 export default (path: Path, _: SerializationContext) => ({
