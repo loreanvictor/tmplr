@@ -4,7 +4,6 @@ import { git, env, path, tmpdir } from './provider'
 import { createChangeLog } from './command'
 
 
-
 export function createContext(): Context {
   return {
     stack: createStack({ git, env, path, tmpdir }, {}, 'tmplr'),
@@ -16,3 +15,5 @@ export function createContext(): Context {
 export * from './base'
 export * from './runnable'
 export * from './execution'
+
+// TODO: deprecate this package

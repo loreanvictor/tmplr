@@ -7,3 +7,6 @@ import serializeJSON from './json'
 export default (runnable: Runnable) => {
   return stringify(serializeJSON(runnable))
 }
+
+
+// TODO: deprecate this package

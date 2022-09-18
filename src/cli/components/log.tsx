@@ -55,3 +55,6 @@ export function LogDisplay({ log } : LogDisplayProps) {
     }}
   </Static>
 }
+
+
+// TODO: this should re refactored so that it works with @tmplr/core changelogs

@@ -27,3 +27,5 @@ export function TraceDisplay({ active }: TraceDisplayProps) {
     </Transform>
   )
 }
+
+// TODO: this should be re-written to work with LocatedError

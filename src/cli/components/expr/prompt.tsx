@@ -54,3 +54,5 @@ export function PromptDisplay({ prompt }: PromptDisplayProps) {
     </>
   )
 }
+
+// TODO: rewrite this to work with @tmplr/core

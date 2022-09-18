@@ -7,3 +7,5 @@ import { App } from './app'
 
 
 render(<App/>)
+
+// TODO: move this to root folder

@@ -7,5 +7,6 @@ export * from './run'
 export * from './use'
 export * from './exit'
 export * from './version'
-export * from './help'
+
+// TODO: all these should be deprecated honestly.
 

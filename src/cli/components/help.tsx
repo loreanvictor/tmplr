@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text } from 'ink'
 
-import { Highlight, Tertiary, Accent  } from '../theme'
+import { Highlight, Tertiary, Accent  } from './theme'
 
 
-export function ShowHelp() {
+export function Help() {
   return <>
     <Text> </Text>
     <Highlight># tmplr: repo templating</Highlight>

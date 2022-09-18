@@ -1,16 +1,15 @@
 import React from 'react'
 
-import { Waiting } from './components/theme'
-import { ExecDisplay } from './components'
-import { useBootstrap } from './bootstrap'
+import { isHelpArgs, isRepoArgs, isVersionArgs, useArgs } from './args'
+import { Exec, Help, Version } from './components'
 
 
 export function App() {
-  const { exec, loaded } = useBootstrap()
+  const args = useArgs()
 
-  if (!loaded) {
-    return <Waiting>Loading ...</Waiting>
-  } else {
-    return <ExecDisplay exec={exec} />
-  }
+  return <>
+    { isHelpArgs(args) && <Help /> }
+    { isVersionArgs(args) && <Version /> }
+    { isRepoArgs(args) && <Exec repo={args.repo} />}
+  </>
 }

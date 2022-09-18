@@ -21,3 +21,6 @@ export function parse(obj: string | object, root = process.cwd()): Execution {
     return createExecution(command, context)
   }
 }
+
+
+// TODO: deprecate this package

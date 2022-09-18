@@ -2,13 +2,13 @@ import React from 'react'
 
 import { useAsync } from 'react-use'
 
-import { Copy, Read, Remove, Update, Degit, Run, Use, Exit, Version, Help } from '../../context/command'
+import { Copy, Read, Remove, Update, Degit, Run, Use, Exit, Version } from '../../context/command'
 import { Choices, Prompt } from '../../context/expr'
 
 import { Waiting, Error, Hint } from './theme'
 import {
   ReadInfo, UpdateInfo, DegitInfo, CopyInfo, RemoveInfo, RunInfo,
-  UseInfo, ExitLog, ShowVersion, ShowHelp,
+  UseInfo, ExitLog, ShowVersion,
 } from './command'
 import { PromptDisplay, ChoicesDisplay } from './expr'
 import { LogDisplay } from './log'
@@ -57,11 +57,17 @@ export function ExecDisplay({ exec }: ExecDisplayProps) {
     return <ExitLog exit={active} />
   } else if (active instanceof Version) {
     return <ShowVersion version={active}/>
-  } else if (active instanceof Help) {
-    return <ShowHelp/>
   } else if (res.loading) {
     return <Waiting>Working ... <Hint>{active?.constructor.name}</Hint></Waiting>
   } else {
     return <LogDisplay log={exec.context.changeLog} />
   }
 }
+
+
+export * from './help'
+export * from './version'
+export * from './exec'
+
+// TODO: all other components should be either deprecated or refactored
+//       to work with @tmplr/core

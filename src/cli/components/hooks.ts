@@ -3,7 +3,7 @@ import { pipe, tap, finalize, observe } from 'streamlets'
 
 import { Runnable } from '../../context'
 
-
+// TODO: this should be deprecated
 
 export function useActiveRunnable(runnable: Runnable): [] | [Runnable, Runnable | undefined, Runnable[]] {
   const [ stack, update ] = useState<Runnable[] | undefined>(runnable.stack.last)
