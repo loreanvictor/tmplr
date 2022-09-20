@@ -13,7 +13,8 @@ export function Help() {
     <Text italic>Usage:</Text>
     <Tertiary>tmplr</Tertiary>
     <Tertiary>tmplr USER/REPO</Tertiary>
-    <Tertiary>tmplr -d   |   tmplr --dir</Tertiary>
+    <Tertiary>tmplr -d FOLDER</Tertiary>
+    <Tertiary>tmplr -d FOLDER USER/REPO</Tertiary>
     <Tertiary>tmplr -h   |   tmplr --help</Tertiary>
     <Tertiary>tmplr -v   |   tmplr --version</Tertiary>
     <Text> </Text>
