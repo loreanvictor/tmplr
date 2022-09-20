@@ -277,10 +277,19 @@ Recipes might have access to following contextual values, depending on the condi
 
 <br/>
 
-### Path Context
+### Filesystem Context
 
-- `path.rootdir`: The name of the root directory
-- `path.rootempty`: This is an empty string if root directory is not empty, and `yes` if it is. `.git` and `.tmplr.yml` are ignored.
+- `filesystem.root`: Absolute address of the root directory (which the recipe is being executed in)
+- `filesystem.rootdir`: The name of the root directory
+- `filesystem.scope`: Absolute address of the scope of this recipe.
+- `filesystem.scopedir`: The name of the scope directory.
+
+The root directory, accessible via `filesystem.root`, is where the recipe file is located. This is also the addrerss which all
+relative addresses in the recipe are interpreted relative to. The scope, accessible via `filesystem.scope`, dictates which files
+the recipe has access to: The recipe can only access files in the scope (or in sub directories in the scope, recursively). The scope
+is by default the same as the root, however when a recipe invokes a child recipe (via [run](#run) or [use](#use) commands), then
+the scope differs from the root, as the invoked recipe might be in a subdirectory (which would cause its root to differ from the
+parent recipe), while its scope remains the same as the parent recipe.
 
 <br/>
 
