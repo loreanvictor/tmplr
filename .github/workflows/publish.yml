@@ -18,8 +18,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Tests
-        run: npm test
+      #
+      # Disable tests for now.
+      # TODO: add some E2E tests for this.
+      #
+      #- name: Run Tests
+      #  run: npm test
       
       - name: Build
         run: npm run build
