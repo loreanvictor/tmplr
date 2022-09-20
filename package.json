@@ -1,6 +1,6 @@
 {
   "name": "tmplr",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Easy templating for repositories",
   "bin": "dist/src/index.js",
   "engines": {
@@ -47,7 +47,6 @@
     "react": "^18.2.0",
     "react-use": "^17.3.2",
     "semver": "^7.3.7",
-    "streamlets": "^0.4.8",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
