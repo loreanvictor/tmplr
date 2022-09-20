@@ -2,13 +2,13 @@
   "name": "tmplr",
   "version": "0.1.9",
   "description": "Easy templating for repositories",
-  "bin": "dist/src/cli/index.js",
+  "bin": "dist/src/index.js",
   "engines": {
     "node": ">=12"
   },
   "scripts": {
     "build": "tsc",
-    "start": "ts-node ./src/cli/index.tsx",
+    "start": "ts-node ./src/index.tsx",
     "test": "jest",
     "coverage": "jest --coverage",
     "prepack": "npm run build"
@@ -35,13 +35,10 @@
   "dependencies": {
     "@tmplr/core": "^0.5.1",
     "@tmplr/node": "^0.1.5",
-    "@tmplr/react": "^0.1.2",
+    "@tmplr/react": "^0.1.3",
     "@tmplr/yaml-parser": "^0.1.2",
     "chalk": "^4.1.2",
-    "change-case": "^4.1.2",
-    "degit": "^2.8.4",
     "execa": "^5.1.1",
-    "git-url-parse": "^11.6.0",
     "ink": "^3.2.0",
     "ink-select-input": "^4.2.1",
     "ink-spinner": "^4.0.3",
@@ -50,9 +47,7 @@
     "react": "^18.2.0",
     "react-use": "^17.3.2",
     "semver": "^7.3.7",
-    "simple-git": "^3.7.1",
     "streamlets": "^0.4.8",
-    "yaml": "^2.0.1",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
