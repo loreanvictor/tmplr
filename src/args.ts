@@ -12,6 +12,7 @@ export interface HelpArgs {
 
 export interface RepoArgs {
   repo: string | null
+  workdir: string
 }
 
 export type Args = VersionArgs | HelpArgs | RepoArgs
@@ -34,6 +35,7 @@ export function parseArgs(): Args {
   const parsed = yargs
     .help(false).alias('help', 'h')
     .version(false).alias('version', 'v')
+    .alias('dir', 'd')
     .parseSync(process.argv.slice(2))
 
   if (parsed['help']) {
@@ -43,7 +45,8 @@ export function parseArgs(): Args {
   } else {
     return {
       ...parsed,
-      repo: (parsed._[0] as string) || null
+      repo: (parsed._[0] as string) || null,
+      workdir: (parsed['dir'] as string) || process.cwd(),
     }
   }
 }

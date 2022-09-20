@@ -1,14 +1,15 @@
 import { useAsync } from 'react-use'
+import { mkdir, access } from 'fs/promises'
 import { ChangeLog, EvaluationContext, scopeFromProviders, STANDARD_PIPES } from '@tmplr/core'
 import { createEnvProvider, createGitProvider, createTmpDirProvider, NodeFS } from '@tmplr/node'
 import { STANDARD_RULE_SET, Parser } from '@tmplr/yaml-parser'
 
 import { RepoArgs } from './args'
+import { degitAndRun } from './recipes/degit-and-run'
+import { runLocalRecipe } from './recipes/run-local'
 
 
-const setupParser = () => {
-  // TODO: perhaps this should be an argument?
-  const workdir = process.cwd()
+const setupParser = (workdir: string) => {
   const fs = new NodeFS(workdir)
 
   const scope = scopeFromProviders({
@@ -24,11 +25,20 @@ const setupParser = () => {
 }
 
 
-export function useRuntime(_: RepoArgs) {
+export function useRuntime(args: RepoArgs) {
   const env = useAsync(async () => {
-    const parser = setupParser()
-    // TODO: if repo is passed, should instead degit and tmplr that repo
-    const runnable = await parser.parseString('run: .tmplr.yml')
+    if (args.repo) {
+      await mkdir(args.workdir, { recursive: true })
+    } else {
+      await access(args.workdir)
+    }
+
+    const parser = setupParser(args.workdir)
+    const recipe = args.repo ?
+      await degitAndRun(args.repo, parser.filesystem.root) :
+      await runLocalRecipe()
+
+    const runnable = await parser.parseString(recipe)
     const changeLog = parser.changelog
     const execution = runnable.run()
 
@@ -43,5 +53,6 @@ export function useRuntime(_: RepoArgs) {
   return {
     loading: env.loading,
     runtime: env.value,
+    error: env.error,
   }
 }

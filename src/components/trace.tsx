@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { join, relative } from 'path'
 import { Transform, Text, Newline } from 'ink'
 import chalk from 'chalk'
 import SyntaxHihglight from 'ink-syntax-highlight'
@@ -6,6 +7,7 @@ import { LocatedError } from '@tmplr/yaml-parser'
 import { Location, Position, Range } from 'mapped-file'
 
 import { BGERROR, Error, FADE, HINT, PRIMARY } from '../theme'
+import { useWorkDir } from '../workdir'
 
 
 export function TracePos({ pos }: { pos: Position }) {
@@ -21,8 +23,11 @@ export function TraceRange({ range }: { range: Range }) {
 
 
 export function TraceLocation({ location }: { location: Location }) {
+  const workdir = useWorkDir()
+  const path = join(relative(process.cwd(), workdir), location.file.name)
+
   return <Text>
-    👉 <Text color={FADE}>{location.file.name}</Text>
+    👉 <Text color={FADE}>{path}</Text>
     <Text color={PRIMARY}>:<TracePos pos={location.range.start} /></Text>
   </Text>
 }

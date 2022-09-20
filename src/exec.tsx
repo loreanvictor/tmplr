@@ -5,19 +5,23 @@ import { COMPONENTS } from './components'
 import { RepoArgs } from './args'
 import { Waiting } from './theme'
 import { useRuntime } from './runtime'
+import { WorkDirAware } from './workdir'
 
 
-export function Exec(_: RepoArgs) {
-  const { loading, runtime } = useRuntime(_)
+export function Exec(args: RepoArgs) {
+  const { loading, runtime, error } = useRuntime(args)
 
   return <>
     { loading && <Waiting>Initializing ...</Waiting> }
-    { runtime &&
-      <ExecutionInterface
-        execution={runtime.execution}
-        changeLog={runtime.changeLog}
-        components={COMPONENTS}
-      />
+    { error && <COMPONENTS.Error error={error} message={error.message} /> }
+    { !!runtime &&
+      <WorkDirAware workdir={runtime.parser.filesystem.root}>
+        <ExecutionInterface
+          execution={runtime.execution!}
+          changeLog={runtime.changeLog!}
+          components={COMPONENTS}
+        />
+      </WorkDirAware>
     }
   </>
 }

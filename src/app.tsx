@@ -12,6 +12,6 @@ export function App() {
   return <>
     { isHelpArgs(args) && <Help /> }
     { isVersionArgs(args) && <Version /> }
-    { isRepoArgs(args) && <Exec repo={args.repo} />}
+    { isRepoArgs(args) && <Exec {...args} />}
   </>
 }
