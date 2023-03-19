@@ -116,7 +116,7 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 ## Running Recipes
 
-If you receive the content of the template repository via other means (for example [via GitHub template repos](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), and the repository
+If you receive the content of the template repository via other means (for example [via GitHub template repos](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)), and the repository
 provides a `tmplr` templating recipe, you can run it by going to the directory where the project is and run the following:
 
 ```bash
