@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/loreanvictor/tmplr#readme",
   "dependencies": {
-    "@tmplr/core": "^0.5.1",
+    "@tmplr/core": "^0.5.2",
     "@tmplr/node": "^0.1.5",
     "@tmplr/react": "^0.1.4",
     "@tmplr/yaml-parser": "^0.1.2",
