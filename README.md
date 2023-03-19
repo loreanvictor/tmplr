@@ -277,10 +277,19 @@ Recipes might have access to following contextual values, depending on the condi
 
 <br/>
 
-### Path Context
+### Filesystem Context
 
-- `path.rootdir`: The name of the root directory
-- `path.rootempty`: This is an empty string if root directory is not empty, and `yes` if it is. `.git` and `.tmplr.yml` are ignored.
+- `filesystem.root`: Absolute address of the root directory (which the recipe is being executed in)
+- `filesystem.rootdir`: The name of the root directory
+- `filesystem.scope`: Absolute address of the scope of this recipe.
+- `filesystem.scopedir`: The name of the scope directory.
+
+The root directory, accessible via `filesystem.root`, is where the recipe file is located. This is also the addrerss which all
+relative addresses in the recipe are interpreted relative to. The scope, accessible via `filesystem.scope`, dictates which files
+the recipe has access to: The recipe can only access files in the scope (or in sub directories in the scope, recursively). The scope
+is by default the same as the root, however when a recipe invokes a child recipe (via [run](#run) or [use](#use) commands), then
+the scope differs from the root, as the invoked recipe might be in a subdirectory (which would cause its root to differ from the
+parent recipe), while its scope remains the same as the parent recipe.
 
 <br/>
 
@@ -425,6 +434,7 @@ Commands instruct `tmplr` to read values, update contents of files, etc. Here yo
 - [**copy**](#copy): copy contents of a file to a new file, while replacing variables with values read.
 - [**remove**](#remove): removes a file.
 - [**steps**](#steps): runs a bunch of commands in a step by step manner.
+- [**if**](#if): runs a command conditionally.
 - [**degit**](#degit): copies content of given repository to given folder, without bringing the git history.
 - [**exit**](#exit): ends the recipe early.
 - [**run**](#run): runs another local recipe file, with given arguments.
@@ -476,6 +486,11 @@ steps:
           prompt: Specify the folder name ...
   - update:
       path: '{{ docs_folder }}/Home.md'
+```
+
+👉 Update also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can update multiple files at once:
+```yml
+update: 'src/**/*.java'
 ```
 
 <br/>
@@ -551,6 +566,36 @@ steps:
 ```
   
 <br/>
+
+#### If
+> _Command_
+> ```yml
+> if: <contextual-variable>
+> <command>
+> else?:
+>   <command>
+> ```
+> ```yml
+> if:
+>   <expression>
+> <command>
+> else?:
+>   <command>
+> ```
+Runs given command if given contextual variable (or value) exists and has a non-empty value. Can be given an expression instead
+of a contextual variable (e.g. [eval](#eval)), where it will check if the resolved value is a non-empty string. Will run the _else_ command if the
+condition fails (and an _else_ command is provided).
+```yml
+steps:
+  - if: git.remote_url
+    copy: README.git-template.md
+    to: README.md
+    else:
+      copy: README.non-git-template.md
+      to: README.md
+```
+
+<br/>
   
 #### Degit
 
@@ -568,28 +613,6 @@ steps:
   - degit: user/repo
     to:
       eval: '{{ tmpdir.repo }}'
-```
-
-<br/>
-  
-#### Exit
-> _Command_
-> ```yml
-> exit:
->   <expression>
-> ```
-Will end the templating process early (for example because value is not set or due to user's choice). Will evaluate and display given
-message.
-```yml
-steps:
-  - read: remote_url
-    from: git.remote_url
-    fallback:
-      eval: _
-      steps:
-        - exit: Must be a git repository!
-
-  # ...
 ```
 
 <br/>
