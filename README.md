@@ -31,6 +31,7 @@ npx tmplr
 
 # Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [How to Install](#how-to-install)
 - [How to Use](#how-to-use)
   - [Running Recipes](#running-recipes)
@@ -40,13 +41,27 @@ npx tmplr
   - [GitHub Workflows](#github-workflows)
   - [Contextual Values](#contextual-values)
     - [Git Context](#git-context)
-    - [Path Context](#path-context)
+    - [Filesystem Context](#filesystem-context)
     - [Environment Variables](#environment-variables)
     - [Temporary Directories](#temporary-directories)
     - [Recipe Arguments](#recipe-arguments)
   - [Recipe Syntax](#recipe-syntax)
     - [Commands](#commands)
+      - [Read](#read)
+      - [Update](#update)
+      - [Copy](#copy)
+      - [Remove](#remove)
+      - [Steps](#steps)
+      - [If](#if)
+      - [Degit](#degit)
+      - [Run](#run)
+      - [Use](#use)
     - [Expressions](#expressions)
+      - [From](#from)
+      - [Prompt](#prompt)
+      - [Choices](#choices)
+      - [Eval](#eval)
+      - [Path](#path)
     - [Pipes](#pipes)
 
 <br/>
@@ -918,7 +933,7 @@ Most pipes do not accept arguments are just for changing the letter case of the 
 
 <br>
   
-Additionally, there are `skip` and `trim` pipes as well, which will remove the given number of characters from the beginning and
+👉 Use `skip` and `trim` pipes to remove the given number of characters from the beginning and
 the end of the string respectively:
 
 ```yml
@@ -948,6 +963,37 @@ steps:
       # not modify it.
       #
       eval: '{{ path.rootdir | skip: react- | PascalCase }}'
+```
+
+<br>
+
+👉 Use `matches` pipe to check the value of some variable. This pipe returns the given string if it matches the reference string, and returns an empty string otherwise. This is useful for running conditional commands based on some variable:
+
+```yml
+steps:
+  # ...
+
+  - if:
+      eval: '{{ some_var | matches: some value }}'
+    update: some_file.txt
+    else:
+      update: some_other_file.txt
+
+  # ...
+```
+
+<br>
+
+You can also pass regular expressions to `matches` pipe to check if given string matches given pattern:
+
+```yml
+if:
+  eval: '{{ database | matches: /Mongo/ }}'
+copy: mongodb.config.js
+to: ./src/config/db.config.js
+else:
+  copy: postgres.config.js
+  to: ./src/config/db.config.js
 ```
 
 <br>
