@@ -31,7 +31,6 @@ npx tmplr
 
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [How to Install](#how-to-install)
 - [How to Use](#how-to-use)
   - [Running Recipes](#running-recipes)
@@ -47,21 +46,7 @@ npx tmplr
     - [Recipe Arguments](#recipe-arguments)
   - [Recipe Syntax](#recipe-syntax)
     - [Commands](#commands)
-      - [Read](#read)
-      - [Update](#update)
-      - [Copy](#copy)
-      - [Remove](#remove)
-      - [Steps](#steps)
-      - [If](#if)
-      - [Degit](#degit)
-      - [Run](#run)
-      - [Use](#use)
     - [Expressions](#expressions)
-      - [From](#from)
-      - [Prompt](#prompt)
-      - [Choices](#choices)
-      - [Eval](#eval)
-      - [Path](#path)
     - [Pipes](#pipes)
 
 <br/>
