@@ -634,14 +634,14 @@ steps:
 > run:
 >   <expression>
 > with?:
->   - <argname>:
->       <expression>
->   - <argname>:
->       <expression>
+>   <argname>:
+>     <expression>
+>   <argname>:
+>     <expression>
 >   ...
 > read?:
->   - <varname>: <outname>
->   - <varname>: <outname>
+>   <varname>: <outname>
+>   <varname>: <outname>
 >   ...
 > ```
 Parses and executes given local recipe file. You can pass arguments to the recipe file (which can be accessed via the [`args` context](#recipe-arguments) lazily. The recipe WILL NOT have access to variables you have read, so you need to manually pass them as arguments. You can access all the variables
@@ -654,14 +654,14 @@ steps:
 
   - run: .templates/util/some-recipe.yml
     with:
-      - name                   # will directly pass `name`
-      - remote_url:
-          from: git.remote_url # this will be executed lazily
-          fallback:
-            prompt: What is the remote URL?
+      name: name             # will pass `name` variable
+      remote_url:
+        from: git.remote_url # this will be executed lazily
+        fallback:
+          prompt: What is the remote URL?
     read:
-      - lockfile               # will read `lockfile` variable of the inner recipe into `lockfile` variable of outer recipe
-      - some_success: success  # will read `success` variable of the inner recipe into `some_success` variable of outer recipe
+      lockfile: lockfile     # will read `lockfile` variable of the inner recipe into `lockfile` variable of outer recipe
+      some_success: success  # will read `success` variable of the inner recipe into `some_success` variable of outer recipe
 ```
 
 <br/>
@@ -677,14 +677,14 @@ confusions, use the [path](#path) expression to turn all path strings into absol
 > use:
 >   <expression>
 > with?:
->   - <argname>:
->       <expression>
->   - <argname>:
->       <expression>
+>   <argname>:
+>     <expression>
+>   <argname>:
+>     <expression>
 >   ...
 > read?:
->   - <varname>: <outname>
->   - <varname>: <outname>
+>   <varname>: <outname>
+>   <varname>: <outname>
 >   ...
 > ```
 Will download, parse and execute given recipe from a public repository. Will first fetch the specified repository (via [degit](#degit))
@@ -698,14 +698,14 @@ steps:
 
   - use: some-user/some-repo
     with:
-      - name                   # will directly pass `name`
-      - remote_url:
-          from: git.remote_url # this will be executed lazily
-          fallback:
-            prompt: What is the remote URL?
+      name: name               # will pass `name` variable
+      remote_url:
+        from: git.remote_url   # this will be executed lazily
+        fallback:
+          prompt: What is the remote URL?
     read:
-      - lockfile               # will read `lockfile` variable of the inner recipe into `lockfile` variable of outer recipe
-      - some_success: success  # will read `success` variable of the inner recipe into `some_success` variable of outer recipe
+      lockfile: lockfile       # will read `lockfile` variable of the inner recipe into `lockfile` variable of outer recipe
+      some_success: success    # will read `success` variable of the inner recipe into `some_success` variable of outer recipe
 ```
 
 <br/>
@@ -872,8 +872,8 @@ steps:
 
   - use: some/recipe
     with:
-      - readme:
-          path: '{{ tmpdir.some_repo }}/README.md'
+      readme:
+        path: '{{ tmpdir.some_repo }}/README.md'
 ```
 
 <br>
