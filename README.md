@@ -129,12 +129,23 @@ npx tmplr
 
 <br/>
 
+## Working Directory
+
+Use `-d` or `--dir` argument to specify a working directory:
+
+```bash
+tmplr --dir my-new-project owner/some-repo
+```
+
+The working directory will be the scope that the recipes are limited to: they won't be able to access anything outside of the specified directory. When fetching a recipe from a repository, `tmplr` will create the specified folder(s) if necessary. When used without an argument (to run a local recipe), the folder must already exist with a `.tmplr.yml` recipe inside it, which will be executed by `tmplr`.
+
+<br/>
+
 ## Execution Safety
 
 Running `tmplr` is basically as safe as downloading a bunch of files into a specified folder. Templating recipes can only read values
 from [controlled contexts](#contextual-values) and user prompts, and can only modify contents of files in the same directory by replacing
-string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current directory. Note that they DO get access to your
-environment variables.
+string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current (or working) directory. Note that they DO get access to your environment variables.
 
 <br/><br/>
 
