@@ -182,7 +182,7 @@ steps:
   - read: project_name
     from: git.remote_name
     fallback:
-      from: path.rootdir
+      from: filesystem.rootdir
   
   - read: clone_url
     from: git.remote_url
@@ -203,7 +203,7 @@ git clone {{ tmplr.clone_url }}
 
 <br/>
 
-After you read a variable such as `some_var`, in any file you update or copy, `{{ tmplr.some_var }}` will be replaced with the value read. If a variable is not resolved or read, then `tmplr` will leave it untouched. The comprehensive list of all available commands can be found in [this section](#recipe-syntax), and a list of available contextual values (e.g. `git.remote_url` or `path.rootdir`) can be found in [this section](#contextual-values). If you prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example).
+After you read a variable such as `some_var`, in any file you update or copy, `{{ tmplr.some_var }}` will be replaced with the value read. If a variable is not resolved or read, then `tmplr` will leave it untouched. The comprehensive list of all available commands can be found in [this section](#recipe-syntax), and a list of available contextual values (e.g. `git.remote_url` or `filesystem.rootdir`) can be found in [this section](#contextual-values). If you prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example).
 
 <br/>
 
@@ -389,7 +389,7 @@ steps:
     fallback:
       prompt: What is the name of the project?
       default:
-        from: path.rootdir
+        from: filesystem.rootdir
   
   - update: README.md
 ```
@@ -402,7 +402,7 @@ steps:
     fallback:
       prompt: What is the name of the project?
       default:
-        from: path.rootdir
+        from: filesystem.rootdir
 ```
 
 The [read](#read) command reads a value from an expression and stores it in a variable. From this point on, when [copy](#copy) or [update](#update) contents of a file, if the file contains `{{ tmplr.project_name }}`, the value resolved here will be replaced. Here we read a value using a _From Expression_, i.e. we read _from_ a contextual value (in this case, the remote name for the git repository). If the contextual value can't be resolved (for example, the command is executed outside of a git repo), then the fallback expression will be used, which is a _prompt_ asking the user for the value, and so on.
@@ -466,7 +466,7 @@ Reads some value into a variable. The variable then can be used in updating / co
 ```yml
 steps:
   - read: project_name
-    from: path.rootdir
+    from: filesystem.rootdir
 ```
 ☝️ After executing this command, if you [update](#update) or [copy](#copy) any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
 
@@ -536,6 +536,15 @@ steps:
       path: '{{ tmpdir.license }}/LICENSE'
     to: LICENSE
 ```
+👉 Copy also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can copy multiple files at once. When
+copying multiple files, the `to` expression is treated as a folder address:
+```yml
+copy: ./template/code/**/*.java
+to: src/main/java
+```
+☝️ The structure of the copied files will be preserved in the destination folder. In the above example, if there is a
+`./template/code/com/example/Hello.java` file, it will be copied to `src/main/java/com/example/Hello.java`.
+
 <br/>
 
 #### Remove
@@ -550,6 +559,10 @@ steps:
   # do some other stuff
   
   - remove: .tmplr.yml
+```
+👉 Remove also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can remove multiple files at once:
+```yml
+remove: ./**/*.tmplr.*
 ```
 
 <br/>
@@ -825,7 +838,7 @@ steps:
   read: git_url
   from: git.remote_url
   fallback:
-    eval: 'https://github.com/{{ env.USER | snake_case }}/{{ path.rootdir }}.git'
+    eval: 'https://github.com/{{ env.USER | snake_case }}/{{ filesystem.rootdir }}.git'
 ```
 
 You can optionally pass a list of commands as the _steps_ property. These are usually (but not necessarily) some [read](#read)
@@ -850,7 +863,7 @@ steps:
           from: env.USER
           fallback:
             prompt: What is your username?
-      eval: '{{ git_provider }}/{{ git_owner }}/{{ path.rootdir }}.git'  
+      eval: '{{ git_provider }}/{{ git_owner }}/{{ filesystem.rootdir }}.git'  
 ```
 
 <br/>
@@ -941,7 +954,7 @@ steps:
       # if the directory name is 'react-my-component', then
       # this will evaluate to 'MyComponent'.
       #
-      eval: '{{ path.rootdir | skip: 6 | PascalCase }}'
+      eval: '{{ filesystem.rootdir | skip: 6 | PascalCase }}'
 ```
 
 Alternatively, you can pass string values to `trim` and `skip`, in which case they will remove the given string
@@ -958,7 +971,7 @@ steps:
       # directory name does not start with 'react-', then it will
       # not modify it.
       #
-      eval: '{{ path.rootdir | skip: react- | PascalCase }}'
+      eval: '{{ filesystem.rootdir | skip: react- | PascalCase }}'
 ```
 
 <br>

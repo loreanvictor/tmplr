@@ -1,12 +1,15 @@
 import React from 'react'
 import { Static } from 'ink'
-import { relative, join } from 'path'
+import { relative, join, isAbsolute } from 'path'
 import { ChangeLog, CopyExecution, DegitExecution, RemoveExecution, UpdateExecution } from '@tmplr/core'
 
 import { Success, Highlight, Tertiary } from '../theme'
 
 
-const _ = (workdir: string, path: string) => join(relative(process.cwd(), workdir),  path)
+const _ = (workdir: string, path: string) =>
+  isAbsolute(path) ?
+    relative(process.cwd(), path)
+    : join(relative(process.cwd(), workdir),  path)
 
 export interface LogProps {
   log: ChangeLog
