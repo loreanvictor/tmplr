@@ -108,7 +108,7 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 ## Running Recipes
 
-Sometimes, you already have the template locally and only need to run its recipe (for example its a [GitHub template repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), or you want to add a package / submodule to a monorepo). In these cases, go to the folder where the recipe is, and run `tmplr` without arguments:
+Sometimes, you already have the template locally and only need to run its recipe (for example its a [GitHub template repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), or you want to [add a package / submodule to a monorepo](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)). In these cases, go to the folder where the recipe is, and run `tmplr` without arguments:
 
 ```bash
 npx tmplr
