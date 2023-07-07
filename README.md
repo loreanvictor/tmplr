@@ -29,7 +29,6 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
   - [Execution Safety](#execution-safety)
 - [How to Make a Template](#how-to-make-a-template)
   - [Template Recipes](#template-recipes)
-  - [GitHub Workflows](#github-workflows)
   - [Contextual Values](#contextual-values)
     - [Git Context](#git-context)
     - [Filesystem Context](#filesystem-context)
