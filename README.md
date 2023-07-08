@@ -3,7 +3,7 @@
 
 [![version](https://img.shields.io/npm/v/tmplr?logo=npm)](https://www.npmjs.com/package/tmplr)
 
-Want to start a new project? Don't start from scratch! With `tmplr`, you can use any public repository as a starter template. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), and if present, runs an interactive recipe to further customise the project for your needs (inserting the name of the project, updating LICENSE to inject author contact, etc).
+Want to start a new project? Don't start from scratch! With `tmplr`, you can use any public repository as a starter template. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), and if present, securely runs an interactive recipe to further customise the project for your needs (inserting the name of the project, updating LICENSE to inject author contact, etc).
 
 <div align="center">
 
@@ -122,21 +122,29 @@ npx tmplr
 
 ## Working Directory
 
-Use `-d` or `--dir` argument to specify a working directory:
+By default, `tmplr` runs in the current directory. You can change this working directory by specifying a `--dir` (or `-d`) option:
 
 ```bash
+# 👉 will clone owner/some-repo into my-new-project
 tmplr --dir my-new-project owner/some-repo
 ```
-
-The working directory will be the scope that the recipes are limited to: they won't be able to access anything outside of the specified directory. When fetching a recipe from a repository, `tmplr` will create the specified folder(s) if necessary. When used without an argument (to run a local recipe), the folder must already exist with a `.tmplr.yml` recipe inside it, which will be executed by `tmplr`.
+```bash
+# 👉 will run the recipe some-project/.tmplr.yml
+tmplr -d some-project
+```
 
 <br/>
 
 ## Execution Safety
 
-Running `tmplr` is basically as safe as downloading a bunch of files into a specified folder. Templating recipes can only read values
-from [controlled contexts](#contextual-values) and user prompts, and can only modify contents of files in the same directory by replacing
-string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current (or working) directory. Note that they DO get access to your environment variables.
+Running scripts from unverified sources (such as an arbitrary public repository) on your machine can be fairly dangerous. `tmplr` recipes, however, are pretty constrained in what they can do. They are powerful enough to allow most of the stuff needed for various scaffolding needs, but limited enough that they can't do any harm to your machine.
+
+- The scope of recipes is limited to the working directory.
+- Recipes can read, write, and remove folders in their scope.
+- Recipes can clone public repositories to their scope.
+  - This can only be done from trusted hosts. Recipes cannot send requests to arbitrary hosts.
+- Recipes can read some contextual values.
+- Recipes can read your environment variables (but can't send them anywhere).
 
 <br/><br/>
 
