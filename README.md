@@ -3,7 +3,7 @@
 
 [![version](https://img.shields.io/npm/v/tmplr?logo=npm)](https://www.npmjs.com/package/tmplr)
 
-Use `tmplr` to get a repository as a starter template for your next project. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), then runs a _templating recipe_ and asks a few questions to further prepare the project for you (e.g. update the owner name in LICENSE, project name in README, etc.).
+Want to start a new project? Don't start from scratch! With `tmplr`, you can use any public repository as a starter template. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), and if present, securely runs an interactive recipe to further customise the project for your needs (inserting the name of the project, updating LICENSE to inject author contact, etc).
 
 <div align="center">
 
@@ -20,24 +20,15 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 
 <br/>
 
-You can also just create a repository using a [github template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), and then use `tmplr` to fill in the blanks and get you started:
-
-```bash
-cd my-new-repo
-npx tmplr
-```
-
-<br/>
-
-# Table of Contents
+# Contents
 
 - [How to Install](#how-to-install)
 - [How to Use](#how-to-use)
   - [Running Recipes](#running-recipes)
+  - [Working Directory](#working-directory)
   - [Execution Safety](#execution-safety)
 - [How to Make a Template](#how-to-make-a-template)
   - [Template Recipes](#template-recipes)
-  - [GitHub Workflows](#github-workflows)
   - [Contextual Values](#contextual-values)
     - [Git Context](#git-context)
     - [Filesystem Context](#filesystem-context)
@@ -53,8 +44,8 @@ npx tmplr
 
 # How to Install
 
-You need to have [Node.js and NPM installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
-You don't need to install `tmplr` itself, since you can use it with [`npx`](https://www.npmjs.com/package/npx):
+You need [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+You don't need to install `tmplr` itself, as you can run it with [`npx`](https://www.npmjs.com/package/npx):
 
 ```bash
 npx tmplr owner/repo
@@ -62,7 +53,7 @@ npx tmplr owner/repo
 
 <br/>
 
-However, you _can_ install it globally for more convenience:
+You _can_ install `tmplr` globally for more convenience:
 
 ```bash
 npm i -g tmplr
@@ -75,14 +66,21 @@ tmplr owner/repo    # 3 less characters per project 🍺
 
 # How to Use
 
-If the repository is on github, simply pass `owner/repo` to `tmplr`. For example, if you want to [create a reusable React component using this template](https://github.com/vitrin-app/react-component-template), you can run the following:
+Get public repositories from [GitHub](https://github.com):
+
+```bash
+npx tmplr owner/repo
+```
+
+For example, if you want to create a reusable React component, you can use [this template](https://github.com/vitrin-app/react-component-template) like this:
+
 ```bash
 npx tmplr vitrin-app/react-component-template
 ```
 
 <br/>
 
-Also works with public repositories on other sources:
+Get public repositories from [GitLab](https://about.gitlab.com), [BitBucket](https://bitbucket.org) or [SourceHut](https://sourcehut.org):
 
 ```bash
 # 🥽 download from GitLab
@@ -103,7 +101,7 @@ tpmlr https://git.sr.ht/owner/repo
 
 <br/>
 
-You can also specify a tag, branch, commit or subdirectory:
+Get a tag, branch, commit or subdirectory:
 
 ```bash
 tmplr owner/repo#branch       # 👉 branch
@@ -116,8 +114,7 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 ## Running Recipes
 
-If you receive the content of the template repository via other means (for example [via GitHub template repos](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)), and the repository
-provides a `tmplr` templating recipe, you can run it by going to the directory where the project is and run the following:
+Sometimes, you already have the repository locally and only need to run its recipe (for example its a [GitHub template repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), or you want to [add a package / submodule to a monorepo](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)). To do this, go to the folder where the recipe is, and run `tmplr` without arguments:
 
 ```bash
 npx tmplr
@@ -125,39 +122,46 @@ npx tmplr
 
 <br/>
 
-> When executed without a parameter, `tmplr` will try to locate `.tmplr.yml` recipe file in current folder and run the recipe.
+> 💡 To check whether a recipe exists, look for a `.tmplr.yml` file.
 
 <br/>
 
 ## Working Directory
 
-Use `-d` or `--dir` argument to specify a working directory:
+By default, `tmplr` runs in the current directory. Change this working directory by specifying a `--dir` (or `-d`) option:
 
 ```bash
+# 👉 will clone owner/some-repo into my-new-project
 tmplr --dir my-new-project owner/some-repo
 ```
-
-The working directory will be the scope that the recipes are limited to: they won't be able to access anything outside of the specified directory. When fetching a recipe from a repository, `tmplr` will create the specified folder(s) if necessary. When used without an argument (to run a local recipe), the folder must already exist with a `.tmplr.yml` recipe inside it, which will be executed by `tmplr`.
+```bash
+# 👉 will run the recipe some-project/.tmplr.yml
+tmplr -d some-project
+```
 
 <br/>
 
 ## Execution Safety
 
-Running `tmplr` is basically as safe as downloading a bunch of files into a specified folder. Templating recipes can only read values
-from [controlled contexts](#contextual-values) and user prompts, and can only modify contents of files in the same directory by replacing
-string values from values read. Recipes CAN NOT ACCESS OR MODIFY any file outside the current (or working) directory. Note that they DO get access to your environment variables.
+Running scripts from unverified sources (such as an arbitrary public repository) on your machine is dangerous. `tmplr` limits its recipes so that they can't harm the host they are running on, while remaining powerful enough for any scaffolding task.
+
+- The scope of recipes is limited to the working directory:
+  - Recipes can read, write, and remove files in their scope.
+  - Recipes can clone public repositories, from trusted sources (GitHub, GitLab, BitBucket & SourceHut), to their scope.
+- Recipes can read some contextual values.
+- Recipes can read environment variables.
 
 <br/><br/>
 
 # How to Make a Template
 
-Add a template recipe that instructs `tmplr` what to do (for example, update the project name in README). A template recipe is a [YAML file](https://en.wikipedia.org/wiki/YAML) named `.tmplr.yml`, located at the root of your repository. When running the following:
+Every public repository is a template for `tmplr`. If you have such a template, you can enhance user experience by adding a recipe to interactively customise the result for end user's needs. To do this, add a [YAML file](https://en.wikipedia.org/wiki/YAML) named `.tmplr.yml`, located at the root of your repository. When running the following:
 
 ```bash
 npx tmplr your/repo
 ```
 
-`tmplr` will copy the contents of your repo and then execute the recpie. Alternatively, if someone receives the content of your template repository via other means (for example, using GitHub templates), they can simply execute the recipe by running the following:
+`tmplr` will copy the contents of your repo and then execute the recpie. Alternatively, if someone already has your repo locally, they can run the recipe like this:
 
 ```bash
 npx tmplr
@@ -167,7 +171,7 @@ npx tmplr
 
 ## Template Recipes
 
-A template recipe instructs `tmplr` as to how to update project files with contextual values such as local git information or directory name. It can be a single command:
+A recipe instructs `tmplr` on how to update project files with contextual values such as local git information or directory name. It can be a single command:
 
 ```yaml
 # .tmplr.yml
@@ -201,73 +205,35 @@ git clone {{ tmplr.clone_url }}
 ```
 ````
 
-<br/>
+<br>
 
-After you read a variable such as `some_var`, in any file you update or copy, `{{ tmplr.some_var }}` will be replaced with the value read. If a variable is not resolved or read, then `tmplr` will leave it untouched. The comprehensive list of all available commands can be found in [this section](#recipe-syntax), and a list of available contextual values (e.g. `git.remote_url` or `filesystem.rootdir`) can be found in [this section](#contextual-values). If you prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example).
+Assuming someone runs this recipe on a repository like `https://github.com/john/my-project`, then `README.md` would be updated to the following:
 
-<br/>
+````md
+# my-project
 
-## GitHub Workflows
-
-If values you need for templating can all be found in [GitHub Action contexts](https://docs.github.com/en/actions/learn-github-actions/contexts), then you can also just [create a GitHub template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository), and then add a workflow to run `tmplr` to apply your templating recipe. You can find an example of this [in the example template](https://github.com/loreanvictor/tmplr-template-example).
-
-```yaml
-# .github/workflows/init.yml
-name: Initialize Template
-
-#
-# Run this on creation of a branch or ref
-#
-on:
-  push:
-    branches: main
-
-jobs:
-  build:
-    #
-    # Change this to make sure your workflow doesn't initialize on your template!
-    #
-    if: github.repository != '<your-user-name>/<template-repo-name>'
-
-    runs-on: ubuntu-latest
-    steps:
-      #
-      # Checkout the code
-      #
-      - uses: actions/checkout@v2
-      
-      #
-      # Check if there is a template recipe
-      #
-      - id: template_exists
-        name: Check template
-        uses: andstor/file-existence-action@v1
-        with:
-          files: .tmplr.yml
-      
-      #
-      # Run tmplr with required environment variables,
-      # and remove the template recipe afterwards.
-      #
-      # Use this to get all the values you want from GitHub Action contexts
-      # and set them as environment variables for tmplr.
-      #
-      - name: Apply template
-        if: steps.template_exists.outputs.files_exists == 'true'
-        run: npx tmplr && rm -fr .tmplr.yml && rm -fr .github/workflows/init.yml
-        env:
-          owner_name: ${{ github.event.repository.owner.name }}
-          owner_email: ${{ github.event.repository.owner.email }}
-          repo_name: ${{ github.event.repository.name }}
-          repo_url: ${{ github.event.repository.ssh_url }}
-
-      #
-      # Commit the code
-      #
-      - uses: EndBug/add-and-commit@v9
-        with:
-          message: Initialize from template
+This is my super awesome project. You can clone it using the following command:
+```bash
+git clone https://github.com/john/my-project
 ```
+````
+
+<br>
+
+> 💡 **TEMPLATE VARIABLES**
+>
+> After you read a variable such as `project_name`, in any file you update or copy, `{{ tmplr.project_name }}` will be replaced with the value read. If a variable is not resolved, then `tmplr` will leave it untouched.
+
+<br>
+
+👉 A comprehensive list of all available commands can be found [here](#recipe-syntax). \
+👉 A list of available contextual values (e.g. `git.remote_url` or `filesystem.rootdir`) can be found [here](#contextual-values). \
+👉 If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or checkout these examples from [`/examples`](./examples) folder:
+
+
+- [Create GitHub template and run a recipe when someone uses your template](https://github.com/loreanvictor/tmplr/blob/main/examples/github-actions.md)
+- [Conveniently add new packages to monorepos using local templates](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)
+
 
 <br/>
 
