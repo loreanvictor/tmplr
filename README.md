@@ -122,7 +122,7 @@ npx tmplr
 
 <br/>
 
-> To check whether a recipe exists, look for a `.tmplr.yml` file.
+> 💡 To check whether a recipe exists, look for a `.tmplr.yml` file.
 
 <br/>
 
@@ -220,11 +220,15 @@ git clone https://github.com/john/my-project
 
 <br>
 
-> 💡 After you read a variable such as `project_name`, in any file you update or copy, `{{ tmplr.project_name }}` will be replaced with the value read. If a variable is not resolved, then `tmplr` will leave it untouched.
+> 💡 **TEMPLATE VARIABLES**
+>
+> After you read a variable such as `project_name`, in any file you update or copy, `{{ tmplr.project_name }}` will be replaced with the value read. If a variable is not resolved, then `tmplr` will leave it untouched.
 
-A comprehensive list of all available commands can be found [here](#recipe-syntax), and a list of available contextual values (e.g. `git.remote_url` or `filesystem.rootdir`) can be found [here](#contextual-values).
+<br>
 
-If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or checkout these examples from [`/examples`](./examples) folder:
+👉 A comprehensive list of all available commands can be found [here](#recipe-syntax). \
+👉 A list of available contextual values (e.g. `git.remote_url` or `filesystem.rootdir`) can be found [here](#contextual-values). \
+👉 If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or checkout these examples from [`/examples`](./examples) folder:
 
 
 - [Create GitHub template and run a recipe when someone uses your template](https://github.com/loreanvictor/tmplr/blob/main/examples/github-actions.md)
