@@ -1,7 +1,11 @@
+<div align="right">
+
+[![version](https://img.shields.io/npm/v/tmplr?label=&color=black&style=flat-square)](https://www.npmjs.com/package/tmplr)
+
+</div>
+
 ![Logo](./logo-dark.svg#gh-dark-mode-only)
 ![Logo](./logo-light.svg#gh-light-mode-only)
-
-[![version](https://img.shields.io/npm/v/tmplr?logo=npm)](https://www.npmjs.com/package/tmplr)
 
 Want to start a new project? Don't start from scratch! With `tmplr`, you can use any public repository as a starter template. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), and if present, securely runs an interactive recipe to further customise the project for your needs (inserting the name of the project, updating LICENSE to inject author contact, etc).
 
