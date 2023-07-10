@@ -7,7 +7,9 @@
 ![Logo](./logo-dark.svg#gh-dark-mode-only)
 ![Logo](./logo-light.svg#gh-light-mode-only)
 
-Want to start a new project? Don't start from scratch! With `tmplr`, you can use any public repository as a starter template. `tmplr` copies the repo (without git history, thanks to [`degit`](https://github.com/Rich-Harris/degit)), and if present, securely runs an interactive recipe to further customise the project for your needs (inserting the name of the project, updating LICENSE to inject author contact, etc).
+<br/>
+
+`tmplr` creates a project from a template (as opposed to creating one from scratch). It copies a given public repository, and securely runs the specified interactive recipe to further fill up the project with contextual info (project name, git URL, author contact, etc).
 
 <div align="center">
 
@@ -21,6 +23,10 @@ npx tmplr gitlab:user/repo            # 🥽 or gitlab
 npx tmplr git@bitbucket.org:user/repo # 🪣 or bitbucket
 npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 ```
+
+<br/>
+
+The main difference between `tmplr` and other scaffolding tools (such as [degit](https://github.com/Rich-Harris/degit), which `tmplr` actually uses under the hood, and [cookiecutter](https://github.com/cookiecutter/cookiecutter)) is its powerful, interactive recipes. They are able to conduct a wide range of tasks, from removing a license file, to help manage a monorepo or set up a CI/CD pipeline, while remaining safe to run on your machine.
 
 <br/>
 
