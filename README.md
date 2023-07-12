@@ -72,6 +72,20 @@ npm i -g tmplr
 tmplr owner/repo    # 3 less characters per project 🍺
 ```
 
+<br>
+
+👉 To install/run the latest version, use the `@latest` tag:
+```bash
+npx tmplr@latest owner/repo
+```
+```bash
+npm i -g tmplr@latest
+```
+Use `--version` to check for updates:
+```bash
+npx tmplr --version
+```
+
 <br/>
 
 # How to Use
