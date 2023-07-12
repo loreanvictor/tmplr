@@ -453,6 +453,7 @@ steps:
 > ```yml
 > update:
 >   <expression>
+> include hidden?: <boolean>
 > ```
 Updates contents of a file, using values read with [`read`](#read).
 ```yml
@@ -480,6 +481,17 @@ steps:
 update: 'src/**/*.java'
 ```
 
+When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. You can update hidden files either by explicitly mentioning them:
+```yml
+- update: '**/.*.java'
+- update: '**/.**/**/*.java'
+```
+Or by using the `include hidden` option:
+```yml
+update: '**/*'
+include hidden: true
+```
+
 <br/>
 
 #### Copy
@@ -489,6 +501,8 @@ update: 'src/**/*.java'
 >   <expression>
 > to:
 >   <expression>
+> include hidden?: <boolean>
+>```
 Copies content of given file to a new file on given name/address. Will create required folders, also if a file with given destination address
 exists, will replace it. Will replace all `tmplr` variables (i.e. `{{ tmplr.some_var }}` in the content of the new file based on values [read](#read).
 ```yml
@@ -521,6 +535,23 @@ to: src/main/java
 ☝️ The structure of the copied files will be preserved in the destination folder. In the above example, if there is a
 `./template/code/com/example/Hello.java` file, it will be copied to `src/main/java/com/example/Hello.java`.
 
+<br>
+
+When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. You can update hidden files either by explicitly mentioning them:
+```yml
+- copy: '**/.*.java'
+  to: src/main/java
+
+- copy: '**/.**/**/*.java'
+  to: src/main/java
+```
+Or by using the `include hidden` option:
+```yml
+copy: '**/*.java'
+to: src/main/java
+include hidden: true
+```
+
 <br/>
 
 #### Remove
@@ -528,6 +559,7 @@ to: src/main/java
 > ```yml
 > remove:
 >   <expression>
+> include hidden?: <boolean>
 > ```
 Removes given file. Can also remove a folder.
 ```yml
@@ -539,6 +571,26 @@ steps:
 👉 Remove also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can remove multiple files at once:
 ```yml
 remove: ./**/*.tmplr.*
+```
+
+When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. You can update hidden files either by explicitly mentioning them:
+
+```yml
+- remove: '**/.*'
+- remove: '**/.**/**/*'
+```
+
+Or by using the `include hidden` option:
+
+```yml
+remove: '**/*'
+include hidden: true
+```
+
+Note that when passing a glob pattern, folders are not removed. If you want to remove a folder, you need to pass the folder path explicitly:
+
+```yml
+remove: .github
 ```
 
 <br/>
