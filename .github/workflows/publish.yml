@@ -29,7 +29,7 @@ jobs:
         run: npm run build
 
       - name: Fix README for NPM
-        run: sed -i '' '7d' README.md
+        run: sed -i.tmp -e '7d' README.md && rm README.md.tmp
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v1
