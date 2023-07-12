@@ -1,6 +1,6 @@
 {
   "name": "tmplr",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Easy templating for repositories",
   "bin": "dist/src/index.js",
   "engines": {
@@ -36,7 +36,7 @@
     "@tmplr/core": "^0.6.0",
     "@tmplr/node": "^0.1.6",
     "@tmplr/react": "^0.1.5",
-    "@tmplr/yaml-parser": "^0.1.4",
+    "@tmplr/yaml-parser": "^0.1.5",
     "chalk": "^4.1.2",
     "cli-highlight": "^2.1.11",
     "execa": "^5.1.1",
