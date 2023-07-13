@@ -13,7 +13,7 @@
 
 <div align="center">
 
-![Demo](./demo.gif)
+![Demo](./demo.svg)
 
 </div>
   
