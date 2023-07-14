@@ -878,7 +878,7 @@ steps:
 >   ...
 > ```
 
-Evaluates given expressionm, similar to evaluation of template variables in [updated](#update) or [copied](#copy)
+Evaluates given expression, similar to evaluation of template variables in [updated](#update) or [copied](#copy)
 files, except you don't need the `tmplr.` prefix, and can access [contextual values](#contextual-values) too.
 
 ```yml
@@ -941,6 +941,12 @@ steps:
 
 ### Pipes
 
+- [**Letter Case Pipes**](#letter-case-pipes)
+- [**String Pipes**](#string-pipes)
+- [**Regexp Matching**](#regexp-matching)
+
+<br>
+
 Use pipes to modify variables, either in [copied](#copy) / [updated](#update) files, or in the recipe itself:
 
 ```yaml
@@ -975,12 +981,6 @@ This is a super awesome project that can be installed by running:
 npm i cool-project
 ```
 ````
-
-<br>
-
-- [**Letter Case Pipes**](#letter-case-pipes)
-- [**String Pipes**](#string-pipes)
-- [**Regexp Matching**](#regexp-matching)
 
 <br>
 
