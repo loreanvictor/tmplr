@@ -40,11 +40,6 @@ The main difference between `tmplr` and other scaffolding tools (such as [degit]
 - [How to Make a Template](#how-to-make-a-template)
   - [Template Recipes](#template-recipes)
   - [Contextual Values](#contextual-values)
-    - [Git Context](#git-context)
-    - [Filesystem Context](#filesystem-context)
-    - [Environment Variables](#environment-variables)
-    - [Temporary Directories](#temporary-directories)
-    - [Recipe Arguments](#recipe-arguments)
   - [Recipe Syntax](#recipe-syntax)
     - [Commands](#commands)
     - [Expressions](#expressions)
@@ -218,7 +213,7 @@ steps:
   - update: README.md
 ```
 
-👆 When you _read_ a variable, it will be replaced in all the files copied / updated by the recipe. So for example, if `README.md` looks something like this:
+👆 When you _read_ a variable, it will be replaced in all the files copied / updated by the recipe. If `README.md` looks something like this:
 
 ````md
 # {{ tmplr.project_name }}
@@ -231,7 +226,7 @@ git clone {{ tmplr.clone_url }}
 
 <br>
 
-Assuming someone runs this recipe on a repository like `https://github.com/john/my-project`, then `README.md` would be updated to the following:
+And someone runs this recipe on their project, `https://github.com/john/my-project`, then `README.md` will become this:
 
 ````md
 # my-project
@@ -250,8 +245,10 @@ git clone https://github.com/john/my-project
 
 <br>
 
-👉 A comprehensive list of all available commands can be found [here](#recipe-syntax). \
-👉 A list of available contextual values (e.g. `git.remote_url` or `filesystem.rootdir`) can be found [here](#contextual-values). \
+In the example above, [`steps`](#steps), [`read`](#read) and [`update`](#update) are different [commands](#commands) the recipe executed, [`from`](#from) is an [expression](#expressions), which reads from [_contextual values_](#contextual-values) such as [`git.remote_url`](#git-context) or [`filesystem.rootdir`](#filesystem-context).
+
+👉 Available commands and expressions can be found [here](#recipe-syntax). \
+👉 Available contextual values can be found [here](#contextual-values). \
 👉 If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or checkout these examples from [`/examples`](./examples) folder:
 
 
@@ -263,7 +260,13 @@ git clone https://github.com/john/my-project
 
 ## Contextual Values
 
-Recipes might have access to following contextual values, depending on the conditions (for example, if the repository is executed outside of a git repository, then `git.*` values are not available).
+Recipes can access following contexts:
+
+- [Git Context](#git-context)
+- [Filesystem Context](#filesystem-context)
+- [Environment Variables](#environment-variables)
+- [Temporary Directories](#temporary-directories)
+- [Recipe Arguments](#recipe-arguments)
 
 <br/>
 
@@ -276,6 +279,12 @@ Recipes might have access to following contextual values, depending on the condi
 - `git.author_name`: The name of the person who made the first commit on the repo
 - `git.author_email`: Email address of the first committer.
 
+<br>
+
+> ⚠️  **CAUTION** ⚠️ 
+> 
+> If the recipe is run outside of a repository (where there is no `.git`), then git contextual values won't be available. It is recommended to read them into a variable them using [`from` expression](#from) first, and providing a fallback for that expression to handle such cases.
+
 <br/>
 
 ### Filesystem Context
@@ -285,24 +294,21 @@ Recipes might have access to following contextual values, depending on the condi
 - `filesystem.scope`: Absolute address of the scope of this recipe.
 - `filesystem.scopedir`: The name of the scope directory.
 
-The root directory, accessible via `filesystem.root`, is where the recipe file is located. This is also the addrerss which all
-relative addresses in the recipe are interpreted relative to. The scope, accessible via `filesystem.scope`, dictates which files
-the recipe has access to: The recipe can only access files in the scope (or in sub directories in the scope, recursively). The scope
-is by default the same as the root, however when a recipe invokes a child recipe (via [run](#run) or [use](#use) commands), then
-the scope differs from the root, as the invoked recipe might be in a subdirectory (which would cause its root to differ from the
-parent recipe), while its scope remains the same as the parent recipe.
+The root directory, `filesystem.root`, is where the recipe file is located. This is also the addrerss which all
+relative addresses in the recipe are interpreted relative to. The scope of the recipe, `filesystem.scope`, is where the recipe can access (read/write). The scope can differn from the root when a recipe is called by another recipe (via [run](#run) or [use](#use) commands). The called recipe has the same
+scope to the caller recipe, though their roots might differ.
 
 <br/>
 
 ### Environment Variables
 
-You can use `env.some_var` to access some environment variable. If it is not defined, an empty string will be returned.
+Use `env.some_var` to access some environment variable. If it is not defined, an empty string will be returned.
 
 <br/>
 
 ### Temporary Directories
 
-You can access `tmpdir.some_name` to automatically create temporary directories.
+Use `tmpdir.some_name` to automatically create temporary directories.
 
 ```yml
 steps:
@@ -349,16 +355,16 @@ steps:
       - readme:
           path: ./README.md
 ```
+
 <br/>
 
-> 👉 Recipe arguments are evaluated lazily. For example, if a prompt is passed as an argument, the user will be prompted the first time you
-> access that argument.
+> 👉 Recipe arguments are evaluated lazily. If a prompt is passed as an argument, the user will be prompted the first time the argument is accessed, not when the recipe is called.
 
 <br/>
 
 ## Recipe Syntax
 
-Template recipes are composed of _commands_ and _expressions_. _Commands_ instruct actions that are to be taken (i.e. read a value, update a file, etc), and _expressions_ calculate string values used by commands. A template recipe descirbes a single command, which can itself be composed of multiple other
+Recipes are composed of [_commands_](#commands) and [_expressions_](#expressions). _Commands_ instruct actions (i.e. read a value, update a file, etc), and _expressions_ calculate string values, to be used by commands. A recipe descirbes a single command, which can itself be composed of multiple other
 steps:
 
 <br/>
@@ -384,7 +390,7 @@ steps:
   - update: README.md
 ```
 
-☝️ Here the recipe is a single _steps_ command, which is composed of multiple steps (each another command). Take a closer look at the initial _read_ command:
+☝️ Here the recipe is a single _steps_ command, which is composed of multiple steps (commands). Take a closer look at the initial _read_ command:
 
 ```yml
   - read: project_name
@@ -395,7 +401,7 @@ steps:
         from: filesystem.rootdir
 ```
 
-The [read](#read) command reads a value from an expression and stores it in a variable. From this point on, when [copy](#copy) or [update](#update) contents of a file, if the file contains `{{ tmplr.project_name }}`, the value resolved here will be replaced. Here we read a value using a _From Expression_, i.e. we read _from_ a contextual value (in this case, the remote name for the git repository). If the contextual value can't be resolved (for example, the command is executed outside of a git repo), then the fallback expression will be used, which is a _prompt_ asking the user for the value, and so on.
+This command [read](#read)s a variable, `project_name`, [_from_](#from) a contextual value. From this point on, you can use this variable in other expressions, pass it to other recipes you call, and when you [copy](#copy) or [update](#update) a file, `{{ tmplr.project_name }}` will be replaced with the variable's value. If the contextual value can't be resolved, it will fallback to a [_prompt_](#prompt), asking the user for the value, suggesting the name of the current directory as the default value.
 
 Here you can see the corresponding syntax tree of this example recipe:
 ```
@@ -414,7 +420,7 @@ Steps Command
        ┗━ Value Expression
 ```
 
-Note that the single string passed to the [update](#update) command is also an expression. Except in cases where the expression is attached to the command (like in case of the [read command](#read)), expressions can be simple string values or more complex objects. For example, we can replace the _default_ of the prompt from a _From Expression_ to a simple string:
+The string passed to the [update](#update) command, `README.md`, is also an expression. We can similarly replace the _default_ of the prompt from a _From Expression_ to a simple string:
 
 ```yml
   - read: project_name
@@ -428,15 +434,13 @@ Note that the single string passed to the [update](#update) command is also an e
 
 ### Commands
 
-Commands instruct `tmplr` to read values, update contents of files, etc. Here you can see an overview of all available commands:
-
 - [**read**](#read): reads a value into a variable, so that the variable can be used to update subsequent files.
-- [**update**](#update): updates contents of a file, replacing variables with values read.
-- [**copy**](#copy): copy contents of a file to a new file, while replacing variables with values read.
-- [**remove**](#remove): removes a file.
+- [**update**](#update): updates contents of some files, using variables read.
+- [**copy**](#copy): copies some files, also updating them using variables read.
+- [**remove**](#remove): removes some files.
 - [**steps**](#steps): runs a bunch of commands in a step by step manner.
 - [**if**](#if): runs a command conditionally.
-- [**degit**](#degit): copies content of given repository to given folder, without bringing the git history.
+- [**degit**](#degit): copies content of given repository to given folder.
 - [**exit**](#exit): ends the recipe early.
 - [**run**](#run): runs another local recipe file, with given arguments.
 - [**use**](#use): runs a remote recipe file, with given arugments.
@@ -452,13 +456,15 @@ Commands instruct `tmplr` to read values, update contents of files, etc. Here yo
 > <expression>
 > ```
 
-Reads some value into a variable. The variable then can be used in updating / copying file contents.
+Reads some value into a variable. The variable can then be used in subsequent expressions or passed as an argument to other called recipes. It will also be replaced in all files that are [updated](#update) or [copied](#copy).
+
 ```yml
 steps:
   - read: project_name
     from: filesystem.rootdir
 ```
-☝️ After executing this command, if you [update](#update) or [copy](#copy) any file that contains `{{ tmplr.project_name }}`, the value read by this command will be replaced.
+
+☝️ After executing this command, if you [update](#update) or [copy](#copy) any file that contains `{{ tmplr.project_name }}`, the value of the variable will be replaced.
 
 <br/>
 
@@ -469,7 +475,9 @@ steps:
 >   <expression>
 > include hidden?: <boolean>
 > ```
-Updates contents of a file, using values read with [`read`](#read).
+
+Updates a file, using variables that are already [`read`](#read).
+
 ```yml
 steps:
   - read: name
@@ -490,12 +498,12 @@ steps:
       path: '{{ docs_folder }}/Home.md'
 ```
 
-👉 Update also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can update multiple files at once:
+👉 Pass an [extended glob pattern](https://www.npmjs.com/package/minimatch) to update multiple files at once:
 ```yml
 update: 'src/**/*.java'
 ```
 
-When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. You can update hidden files either by explicitly mentioning them:
+When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored. Update hidden files by explicitly mentioning them:
 ```yml
 - update: '**/.*.java'
 - update: '**/.**/**/*.java'
@@ -517,8 +525,9 @@ include hidden: true
 >   <expression>
 > include hidden?: <boolean>
 >```
-Copies content of given file to a new file on given name/address. Will create required folders, also if a file with given destination address
-exists, will replace it. Will replace all `tmplr` variables (i.e. `{{ tmplr.some_var }}` in the content of the new file based on values [read](#read).
+
+Copies a file, creating necessary folders, replacing existing files. Will also [update](#update) the copied file, replacing all [read](#read) variables with their values.
+
 ```yml
 steps:
   - read: email
@@ -540,18 +549,18 @@ steps:
       path: '{{ tmpdir.license }}/LICENSE'
     to: LICENSE
 ```
-👉 Copy also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can copy multiple files at once. When
+👉 Pass an [extended glob pattern](https://www.npmjs.com/package/minimatch) to copy multiple files at once. When
 copying multiple files, the `to` expression is treated as a folder address:
 ```yml
 copy: ./template/code/**/*.java
 to: src/main/java
 ```
-☝️ The structure of the copied files will be preserved in the destination folder. In the above example, if there is a
-`./template/code/com/example/Hello.java` file, it will be copied to `src/main/java/com/example/Hello.java`.
+☝️ The structure of the copied files will be preserved in the destination folder. In the above example,
+`./template/code/com/example/Hello.java` will be copied to `src/main/java/com/example/Hello.java`.
 
 <br>
 
-When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. You can update hidden files either by explicitly mentioning them:
+When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. Copy hidden files by explicitly mentioning them:
 ```yml
 - copy: '**/.*.java'
   to: src/main/java
@@ -575,19 +584,19 @@ include hidden: true
 >   <expression>
 > include hidden?: <boolean>
 > ```
-Removes given file. Can also remove a folder.
+Removes a file or a folder.
 ```yml
 steps:
   # do some other stuff
   
   - remove: .tmplr.yml
 ```
-👉 Remove also supports [extended glob pattern](https://www.npmjs.com/package/minimatch), so you can remove multiple files at once:
+👉 Pass an [extended glob pattern](https://www.npmjs.com/package/minimatch) to remove multiple files at once:
 ```yml
 remove: ./**/*.tmplr.*
 ```
 
-When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. You can update hidden files either by explicitly mentioning them:
+When using a glob pattern, hidden files (starting with a dot, e.g. `.gitignore`) and files in hidden folders (e.g. `.github/workflows/publish.yml`) are ignored by default. Remove hidden files by explicitly mentioning them:
 
 ```yml
 - remove: '**/.*'
@@ -617,6 +626,7 @@ remove: .github
 >   - <command>
 >   - ...
 > ```
+
 Runs given commands step by step.
 ```yml
 steps:
@@ -636,7 +646,7 @@ steps:
 #### If
 > _Command_
 > ```yml
-> if: <contextual-variable>
+> if: <variable / contextual value>
 > <command>
 > else?:
 >   <command>
@@ -648,9 +658,8 @@ steps:
 > else?:
 >   <command>
 > ```
-Runs given command if given contextual variable (or value) exists and has a non-empty value. Can be given an expression instead
-of a contextual variable (e.g. [eval](#eval)), where it will check if the resolved value is a non-empty string. Will run the _else_ command if the
-condition fails (and an _else_ command is provided).
+Runs given command if given variable, contextual value, or expression resolves to a non-empty string. Runs the _else_ command if the
+condition fails.
 ```yml
 steps:
   - if: git.remote_url
@@ -672,8 +681,8 @@ steps:
 > to?:
 >   <expression>
 > ```
-Will fetch the contents of given repository and copy them into specified folder. If destination is not specified, will copy
-into the same folder as the running recipe. Accepts the same sources as `tmplr` command itself (basically runs [degit](https://github.com/Rich-Harris/degit)).
+Copies contents of given repository into specified folder. If destination is not specified, will copy
+into the same folder as the running recipe. Accepts the same sources as `tmplr` command.
 ```yml
 steps:
   - degit: user/repo
@@ -699,8 +708,7 @@ steps:
 >   <varname>: <outname>
 >   ...
 > ```
-Parses and executes given local recipe file. You can pass arguments to the recipe file (which can be accessed via the [`args` context](#recipe-arguments) lazily. The recipe WILL NOT have access to variables you have read, so you need to manually pass them as arguments. You can access all the variables
-read by the recipe though, and read them into variables of your own execution context.
+Parses and executes given local recipe. You can pass arguments to the recipe file (which can be accessed via the [`args` context](#recipe-arguments) lazily). The recipe WILL NOT have access to variables you have [read](#read) by default. You can read the variables [read](#read) by the recipe into variables in your own recipe.
 
 ```yml
 steps:
@@ -721,8 +729,9 @@ steps:
 
 <br/>
 
-Note that all relative paths inside any recipe are resolved _relative to the recipe file itself_. So in case of above example, the caller recipe referencing `README.md` will access `README.md` at the root of the project, while the called recipe accessing `README.md` would access `.templates/util/README.md`. This means the string `README.md` or `./README.md` mean different things for different recipes. To avoid such
-confusions, use the [path](#path) expression to turn all path strings into absolute paths.
+> 💡 **RELATIVE PATHS**
+> 
+> Relative paths are resolved _relative to the recipe_. In the example above, the caller recipe referencing `README.md` will access `README.md` at the root of the project, while the called recipe accessing `README.md` would access `.templates/util/README.md`. It is recommended to use the [path](#path) expression to turn all path strings into absolute paths.
 
 <br/>
 
@@ -742,8 +751,8 @@ confusions, use the [path](#path) expression to turn all path strings into absol
 >   <varname>: <outname>
 >   ...
 > ```
-Will download, parse and execute given recipe from a public repository. Will first fetch the specified repository (via [degit](#degit))
-into a temporary directory at the root of the project, and then locate `.tmplr.yml` in that directory and [run](#run) it. The specified
+Dwnloads, parses and executes given recipe from a public repository. First fetches the specified repository (using [degit](#degit))
+into a temporary directory at the root of the project, and then locates `.tmplr.yml` in that directory and [runs](#run) it. The specified
 repository MUST have a `.tmplr.yml` file at its root.
 
 ```yml
@@ -782,8 +791,6 @@ steps:
 
 ### Expressions
 
-Expressions calculate string values used by commands. Here is an overview of all available expressions:
-
 - [**from**](#from): reads from a contextual value.
 - [**prompt**](#prompt): asks the value from user.
 - [**choices**](#choices): asks the value from user, but gives them some predetermined choices.
@@ -799,8 +806,8 @@ Expressions calculate string values used by commands. Here is an overview of all
 > fallback?:
 >   <expression>
 > ```
-Will resolve from the value of given contextual variable. If it is not present and fallback is specified, will evaluate
-and return the fallback expression. Otherwise will return an empty string.
+Resolves given contextual value. If it can't be resolved,
+will evaluate the fallback expression, or an empty string if no fallback is specified.
 ```yml
 steps:
   - read: username
@@ -818,7 +825,7 @@ steps:
 > default?:
 >   <expression>
 >```
-Will resolve the value by asking the user. If a default value is provided, then that will be suggested to the user
+Asks the user for a value. If a default value is provided, then that will be suggested to the user
 as well.
 ```yml
 steps:
@@ -843,7 +850,7 @@ steps:
 >       <expression>
 >   ...
 > ```
-Will resolve the value by giving the user multiple choices. Will evaluate the corresponding expression of each choice _after_ the user
+Asks the user to choose from a list of values. Evaluates the corresponding expression of each choice _after_ the user
 has selected it (so you can chain prompts and other expressions safely).
 ```yml
 steps:
@@ -871,9 +878,8 @@ steps:
 >   ...
 > ```
 
-Will evaluate given string expression. This is almost similar to evaluation of template variables in [updated](#update) or [copied](#copy)
-files. The main difference is that in eval expressions you don't need the `tmplr.` prefix to access [read](#read) variables, and you can also
-access other contextual values. [Pipes](#pipes) work similar to other files.
+Evaluates given expressionm, similar to evaluation of template variables in [updated](#update) or [copied](#copy)
+files, except you don't need the `tmplr.` prefix, and can access [contextual values](#contextual-values) too.
 
 ```yml
 steps:  
@@ -883,8 +889,8 @@ steps:
     eval: 'https://github.com/{{ env.USER | snake_case }}/{{ filesystem.rootdir }}.git'
 ```
 
-You can optionally pass a list of commands as the _steps_ property. These are usually (but not necessarily) some [read](#read)
-commands to fetch further values required for the evaluation. Note that these commands only get executed if the _Eval Expression_
+You can optionally pass a list of commands as the _steps_ property. These are usually (but not necessarily) some [read](#read)s
+to fetch further values required for the evaluation. Note that these commands only get executed if the _Eval Expression_
 itself is evaluated.
 
 ```yml
@@ -916,8 +922,8 @@ steps:
 > path: <expr>
 > ```
 Similar to [**eval**](#eval) but for strings representing file paths. If the expression evaluates to a relative path, will
-turn it into an absolute path assuming the recipe file itself as the root of the address. This will be useful for passing path
-arguments to and reading path values from other recipes executed via [run](#run) or [use](#use) commands.
+turn it into an absolute path (relative paths are _relative to the recipe_). Use it to pass path
+arguments to and reading path values from recipes you [use](#use) or [run](#run).
 ```yml
 steps:
   # ...
@@ -935,9 +941,8 @@ steps:
 
 ### Pipes
 
-Templating variables referenced in files or in the recipe (i.e. `{{ some_var }}`, `{{ git.some_var }}` or `{{ tmplr.some_var }}`) can also
-be further modified with _pipes_:
-  
+Use pipes to modify variables, either in [copied](#copy) / [updated](#update) files, or in the recipe itself:
+
 ```yaml
 # .tmplr.yml
 steps:
@@ -973,7 +978,15 @@ npm i cool-project
 
 <br>
 
-Most pipes do not accept arguments are just for changing the letter case of the string. Here is a list of supported letter cases:
+- [**Letter Case Pipes**](#letter-case-pipes)
+- [**String Pipes**](#string-pipes)
+- [**Regexp Matching**](#regexp-matching)
+
+<br>
+
+#### Letter Case Pipes
+
+Use the following pipes to change the casing of a string (they are case-sensitive):
 
 ```
 - camelCase           - Capital Case       - CONSTANT_CASE 
@@ -984,8 +997,10 @@ Most pipes do not accept arguments are just for changing the letter case of the 
 
 <br>
   
+#### String Pipes
+
 👉 Use `skip` and `trim` pipes to remove the given number of characters from the beginning and
-the end of the string respectively:
+the end of the string, respectively:
 
 ```yml
 steps:
@@ -999,8 +1014,8 @@ steps:
       eval: '{{ filesystem.rootdir | skip: 6 | PascalCase }}'
 ```
 
-Alternatively, you can pass string values to `trim` and `skip`, in which case they will remove the given string
-from the start / end of the string only if the string starts / ends with the given string:
+👉 Pass string values to `trim` and `skip` to remove the given string
+from the start / end of the variable. Only works if the variable starts / ends with exactly the given string:
 
 ```yml
 steps:
@@ -1018,7 +1033,9 @@ steps:
 
 <br>
 
-👉 Use `matches` pipe to check the value of some variable. This pipe returns the given string if it matches the reference string, and returns an empty string otherwise. This is useful for running conditional commands based on some variable:
+#### Regexp Matching
+
+👉 Use `matches` pipe to check if a variable matches given string/pattern. This pipe returns the given string if it matches, and returns an empty string otherwise. Use this for [conditional commands](#if):
 
 ```yml
 steps:
@@ -1032,11 +1049,6 @@ steps:
 
   # ...
 ```
-
-<br>
-
-You can also pass regular expressions to `matches` pipe to check if given string matches given pattern:
-
 ```yml
 if:
   eval: '{{ database | matches: /Mongo/ }}'
