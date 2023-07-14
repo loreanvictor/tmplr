@@ -218,7 +218,7 @@ steps:
   - update: README.md
 ```
 
-Where `README.md` can be something like this:
+👆 When you _read_ a variable, it will be replaced in all the files copied / updated by the recipe. So for example, if `README.md` looks something like this:
 
 ````md
 # {{ tmplr.project_name }}
