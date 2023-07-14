@@ -2,6 +2,8 @@
 
 Code scaffolding can speed up adding new projects and packages to a [monorepo](https://en.wikipedia.org/wiki/Monorepo). In this example, we setup a monorepo with multiple starter templates for different package types. You can see this setup in action in [this sandox](https://codesandbox.io/p/sandbox/tmplr-monorepo-setup-39z54r?file=%2Ftemplates%2Fsecond-template%2F.tmplr.yml%3A6%2C39), simply fork it and run `npx tmplr` to see how it works.
 
+![demo](monorepo-demo.svg)
+
 👉 **STEP 1**: Add a folder at the root of your repository for your templates. Lets say we call this `.templates`.
 
 👉 **STEP 2**: Create a folder for each template in `.templates` folder. For each template, you need a recipe and some other files (maybe a README, some boilerplate code to get started, etc.). These recipe files can be named arbitrarily, since they are not the main recipe and are just going to be used by it.
