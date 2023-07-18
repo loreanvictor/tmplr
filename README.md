@@ -76,9 +76,9 @@ npx tmplr@latest owner/repo
 ```bash
 npm i -g tmplr@latest
 ```
-Use `--version` to check for updates:
+Use `version` command to check for updates:
 ```bash
-npx tmplr --version
+npx tmplr version
 ```
 
 <br/>
@@ -128,6 +128,10 @@ tmplr owner/repo#tag          # 👉 release tag
 tmplr owner/repo#c0m1th45h    # 👉 commit hash
 tmplr owner/repo/subdirectory # 👉 sub directory
 ```
+
+<br/>
+
+> 💡 Read more about CLI options [here](cli.md)
 
 <br/>
 

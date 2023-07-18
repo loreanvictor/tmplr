@@ -15,7 +15,18 @@ export interface RepoArgs {
   workdir: string
 }
 
-export type Args = VersionArgs | HelpArgs | RepoArgs
+export interface PreviewArgs {
+  preview: true
+  workdir: string
+}
+
+export interface CleanArgs {
+  clean: true
+  workdir: string
+}
+
+
+export type Args = VersionArgs | HelpArgs | RepoArgs | PreviewArgs | CleanArgs
 
 
 export function isVersionArgs(args: Args): args is VersionArgs {
@@ -30,6 +41,14 @@ export function isRepoArgs(args: Args): args is RepoArgs {
   return 'repo' in args
 }
 
+export function isPreviewArgs(args: Args): args is PreviewArgs {
+  return 'preview' in args
+}
+
+export function isCleanArgs(args: Args): args is CleanArgs {
+  return 'clean' in args
+}
+
 
 export function parseArgs(): Args {
   const parsed = yargs
@@ -38,16 +57,19 @@ export function parseArgs(): Args {
     .alias('dir', 'd')
     .parseSync(process.argv.slice(2))
 
-  if (parsed['help']) {
+  const cmd = parsed._[0] as string
+  const workdir = parsed['dir'] as string || process.cwd()
+
+  if (parsed['help'] || cmd === 'help') {
     return { help: true }
-  } else if (parsed['version']) {
+  } else if (parsed['version'] || cmd === 'version') {
     return { version: true }
+  } else if (cmd === 'preview') {
+    return { preview: true, workdir }
+  } else if (cmd === 'clean') {
+    return { clean: true, workdir }
   } else {
-    return {
-      ...parsed,
-      repo: (parsed._[0] as string) || null,
-      workdir: (parsed['dir'] as string) || process.cwd(),
-    }
+    return { repo: cmd || null, workdir }
   }
 }
 

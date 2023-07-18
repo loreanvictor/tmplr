@@ -48,7 +48,7 @@ export function useRuntime(args: RepoArgs) {
       runnable,
       parser,
     }
-  })
+  }, [args])
 
   return {
     loading: env.loading,

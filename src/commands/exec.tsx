@@ -1,11 +1,11 @@
 import React from 'react'
 import { ExecutionInterface } from '@tmplr/react'
 
-import { COMPONENTS } from './components'
-import { RepoArgs } from './args'
-import { Waiting } from './theme'
-import { useRuntime } from './runtime'
-import { WorkDirAware } from './workdir'
+import { COMPONENTS } from '../components'
+import { RepoArgs } from '../args'
+import { Waiting } from '../theme'
+import { useRuntime } from '../runtime'
+import { WorkDirAware } from '../workdir'
 
 
 export function Exec(args: RepoArgs) {

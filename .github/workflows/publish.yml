@@ -29,7 +29,7 @@ jobs:
         run: npm run build
 
       - name: Fix README for NPM
-        run: sed -i.tmp -e '7d' README.md && rm README.md.tmp
+        run: sed -i '/logo-dark\.svg/d' README.md
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v1

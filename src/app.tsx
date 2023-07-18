@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { isHelpArgs, isRepoArgs, isVersionArgs, useArgs } from './args'
-import { Exec } from './exec'
-import { Help } from './help'
-import { Version } from './version'
+import { isCleanArgs, isHelpArgs, isPreviewArgs, isRepoArgs, isVersionArgs, useArgs } from './args'
+import { Exec, Preview, Clean, Version, Help } from './commands'
 
 
 export function App() {
@@ -12,6 +10,8 @@ export function App() {
   return <>
     { isHelpArgs(args) && <Help /> }
     { isVersionArgs(args) && <Version /> }
+    { isPreviewArgs(args) && <Preview {...args} /> }
+    { isCleanArgs(args) && <Clean {...args} /> }
     { isRepoArgs(args) && <Exec {...args} />}
   </>
 }
