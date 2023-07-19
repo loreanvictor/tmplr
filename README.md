@@ -4,8 +4,17 @@
 
 </div>
 
+<!--
 ![Logo](./logo-dark.svg#gh-dark-mode-only)
 ![Logo](./logo-light.svg#gh-light-mode-only)
+-->
+
+```
+       ┓
+ ╋┏┳┓┏┓┃┏┓ repo
+ ┗┛┗┗┣┛┗┛  templating
+     ┛
+```
 
 <br/>
 
