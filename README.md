@@ -7,6 +7,8 @@
 <!--
 ![Logo](./logo-dark.svg#gh-dark-mode-only)
 ![Logo](./logo-light.svg#gh-light-mode-only)
+
+<br/>
 -->
 
 ```
@@ -15,8 +17,6 @@
  ┗┛┗┗┣┛┗┛   templating 🚀
      ┛
 ```
-
-<br/>
 
 `tmplr` creates a project from a template (as opposed to creating one from scratch). It copies a given public repository, and securely runs the specified interactive recipe to further fill up the project with contextual info (project name, git URL, author contact, etc).
 
