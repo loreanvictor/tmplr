@@ -131,7 +131,7 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 <br/>
 
-> 💡 Read more about CLI options [here](cli.md)
+> 📖 Read more about command line options [here](cli.md).
 
 <br/>
 
@@ -189,6 +189,14 @@ npx tmplr your/repo
 ```bash
 npx tmplr
 ```
+
+To test how your repository would act as a template, use the `preview` command:
+
+```bash
+npx tmplr preview
+```
+
+> 📖 [Read more](cli.md#testing-recipes).
 
 <br/>
 

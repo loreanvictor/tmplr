@@ -78,3 +78,8 @@ export function Highlight({ children }) {
 export function Accent({ children }) {
   return <Text bold color={ACCENT}>{children}</Text>
 }
+
+
+export function Fade({ children }) {
+  return <Text color={FADE}>{children}</Text>
+}

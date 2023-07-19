@@ -2,10 +2,22 @@ import React from 'react'
 import { Text, Transform, Box } from 'ink'
 import link from 'terminal-link'
 
-import { Highlight, Tertiary, Accent, Hint  } from '../theme'
+import { version } from '../../package.json'
+import { Highlight, Tertiary, Accent, Hint, TERTIARY  } from '../theme'
 
 
 const Newline = () => <Text> </Text>
+
+const Version = () => (<Text color={TERTIARY} backgroundColor={'gray'}> v{version} </Text>)
+
+const Logo = () => (
+  <Highlight>
+    {      '       ┓   '}                                                                  <Version/>
+    {'\n'}{' ╋┏┳┓┏┓┃┏┓ '}<Hint>repo</Hint>
+    {'\n'}{' ┗┛┗┗┣┛┗┛  '}<Hint>templating</Hint>
+    {'\n'}{'     ┛     '}
+  </Highlight>
+)
 
 
 interface SectionProps {
@@ -50,8 +62,7 @@ const Link = ({ children, url }: LinkProps) => (
 
 export function Help() {
   return <>
-    <Newline/>
-    <Highlight># tmplr: repo templating</Highlight>
+    <Logo/>
     <Text>Copies contents of a repository and runs its templating recipe.</Text>
     <Newline/>
 
