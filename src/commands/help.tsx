@@ -3,12 +3,16 @@ import { Text, Transform, Box } from 'ink'
 import link from 'terminal-link'
 
 import { version } from '../../package.json'
-import { Highlight, Tertiary, Accent, Hint, TERTIARY  } from '../theme'
+import { Highlight, Tertiary, Accent, Hint, ACCENT  } from '../theme'
 
 
 const Newline = () => <Text> </Text>
 
-const Version = () => (<Text color={TERTIARY} backgroundColor={'gray'}> v{version} </Text>)
+const Version = () => (
+  <Text inverse color={ACCENT}>
+    {link(' v' + version + ' ', 'https://npmjs.com/tmplr', { fallback: _ => _ })}
+  </Text>
+)
 
 const Logo = () => (
   <Highlight>
