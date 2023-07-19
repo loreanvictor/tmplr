@@ -196,7 +196,7 @@ To test how your repository would act as a template, use the `preview` command:
 npx tmplr preview
 ```
 
-> 📖 [Read this](cli.md#testing-recipes) to learn more about testing recipes.
+> 📖 [Read this](cli.md#testing-recipes) to learn more about previewing templates.
 
 <br/>
 
