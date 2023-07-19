@@ -4,10 +4,19 @@
 
 </div>
 
+<!--
 ![Logo](./logo-dark.svg#gh-dark-mode-only)
 ![Logo](./logo-light.svg#gh-light-mode-only)
 
 <br/>
+-->
+
+```
+       ┓
+ ╋┏┳┓┏┓┃┏┓  repo
+ ┗┛┗┗┣┛┗┛   templating 🚀
+     ┛
+```
 
 `tmplr` creates a project from a template (as opposed to creating one from scratch). It copies a given public repository, and securely runs the specified interactive recipe to further fill up the project with contextual info (project name, git URL, author contact, etc).
 
@@ -196,7 +205,7 @@ To test how your repository would act as a template, use the `preview` command:
 npx tmplr preview
 ```
 
-> 📖 [Read more](cli.md#testing-recipes).
+> 📖 [Read this](cli.md#testing-recipes) to learn more about previewing templates.
 
 <br/>
 
