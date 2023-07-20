@@ -18,9 +18,7 @@
      ┛
 ```
 
-Downloads a public repository, and interactively fills it up with contextual info, by safely running the repo's _templating recipe_. Altneratively, can run local recipe files for modifying existing projects.
-
-Useful for creating new projects from templates. Can also be used to add new modules / packages to existing projects.
+`tmplr` creates projects from _templates_, which can be any public repository. `tmplr` downloads the specified repo and runs its _templating recipe_, interactively filling it with contextual info.
 
 <div align="center">
 
@@ -37,9 +35,9 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 
 <br/>
 
-Interactive recipes set `tmplr` apart from other scaffolding tools. 
+Recipes set `tmplr` apart from other scaffolding tools:
 - ☕ They can do simple tasks like removing a license file, updating README using git info, etc.
-- ✨ They can do complex tasks such as adding new packages to a monorepo using chosen presets.
+- ✨ They can do complex tasks such as adding new packages to a monorepo from a chosen preset.
 - 🔒 They are powerful yet safe to run on your machine.
 - 🚀 They are super easy to write, as opposed to bash / python scripts.
 
@@ -64,7 +62,7 @@ Interactive recipes set `tmplr` apart from other scaffolding tools.
 
 # Installation
 
-You need [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+You need [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). No need to install `tmplr` itself.
 
 ```bash
 npx tmplr owner/repo
@@ -72,13 +70,13 @@ npx tmplr owner/repo
 
 <br/>
 
-You _can_ also install `tmplr` globally:
+🍺 You _can_ install `tmplr` globally:
 
 ```bash
 npm i -g tmplr
 ```
 ```bash
-tmplr owner/repo    # 3 less characters per project 🍺
+tmplr owner/repo
 ```
 
 <br>
@@ -151,7 +149,7 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 ## Running Recipes
 
-If you have the repo on your machine and just want to run its recipe, 
+If you have a repo with a recipe locally and just want to run its recipe, 
 go to the folder where the recipe is, and run `tmplr` without arguments:
 
 ```bash
@@ -181,11 +179,11 @@ tmplr -d some-project
 
 ## Execution Safety
 
-You should not run arbitrary scripts from untrusted sources on your machine. `tmplr` recipes are limited so that they can't harm your machine, while remaining powerful enough for any scaffolding task.
+Generally, you should not run arbitrary scripts from untrusted sources on your machine. `tmplr` recipes are limited in what they can do, so that they can't harm your machine, while remaining powerful enough for any scaffolding task.
 
 - The scope of recipes is limited to the working directory:
   - Recipes can read, write, and remove files in their scope.
-  - Recipes can clone public repositories, from trusted sources (GitHub, GitLab, BitBucket & SourceHut), to their scope.
+  - Recipes can download contents of public repositories, from trusted sources (GitHub, GitLab, BitBucket & SourceHut), to their scope.
 - Recipes can read some contextual values.
 - Recipes can read environment variables.
 
@@ -193,7 +191,7 @@ You should not run arbitrary scripts from untrusted sources on your machine. `tm
 
 # Making a Template
 
-Every public repository is a template. They can be enhanced by adding a recipe to interactively fill up the project using user's context. To do this, add a `.tmplr.yml`, located at the root of your repo. When running the following:
+Every public repository is a template. They can be enhanced by adding a recipe to interactively fill up the project using user's context. Simply add a `.tmplr.yml`, located at the root of your repo. When running the following:
 
 ```bash
 npx tmplr your/repo
@@ -276,11 +274,11 @@ In the example above, [`steps`](#steps), [`read`](#read) and [`update`](#update)
 
 👉 Available commands and expressions can be found [here](#recipe-syntax). \
 👉 Available contextual values can be found [here](#contextual-values). \
-👉 If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or checkout these examples from [`/examples`](./examples) folder:
+👉 If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or check [these examples](./examples):
 
 
 - [Create GitHub template and run a recipe when someone uses your template](https://github.com/loreanvictor/tmplr/blob/main/examples/github-actions.md)
-- [Conveniently add new packages to monorepos using local templates](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)
+- [Add new packages to monorepos using local templates](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)
 
 
 <br/>
@@ -322,7 +320,7 @@ Recipes can access following contexts:
 - `filesystem.scopedir`: The name of the scope directory.
 
 The root directory, `filesystem.root`, is where the recipe file is located. This is also the addrerss which all
-relative addresses in the recipe are interpreted relative to. The scope of the recipe, `filesystem.scope`, is where the recipe can access (read/write). The scope can differn from the root when a recipe is called by another recipe (via [run](#run) or [use](#use) commands). The called recipe has the same
+relative addresses in the recipe are interpreted relative to. The scope of the recipe, `filesystem.scope`, is where the recipe can access (read/write). The scope can be differnt from the root: when a recipe is called by another recipe (via [run](#run) or [use](#use) commands), the called recipe has the same
 scope to the caller recipe, though their roots might differ.
 
 <br/>
@@ -391,8 +389,7 @@ steps:
 
 ## Recipe Syntax
 
-Recipes are composed of [_commands_](#commands) and [_expressions_](#expressions). _Commands_ instruct actions (i.e. read a value, update a file, etc), and _expressions_ calculate string values, to be used by commands. A recipe descirbes a single command, which can itself be composed of multiple other
-steps:
+Recipes are composed of [_commands_](#commands) and [_expressions_](#expressions). _Commands_ instruct actions (i.e. read a value, update a file, etc), and _expressions_ calculate string values used by commands. A recipe descirbes a single command, which can itself be composed of multiple other steps:
 
 <br/>
 
