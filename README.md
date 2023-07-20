@@ -705,15 +705,13 @@ steps:
 > to?:
 >   <expression>
 > ```
-Copies contents of given repository into specified folder. If destination is not specified, will copy
-into the same folder as the running recipe. Accepts the same sources as `tmplr` command.
+Copies contents of given repository into specified folder (using [degit](https://github.com/Rich-Harris/degit)). If destination is not specified, will copy into the same folder as the running recipe. Accepts the same sources as `tmplr` command.
 ```yml
 steps:
   - degit: user/repo
     to:
       eval: '{{ tmpdir.repo }}'
 ```
-
 <br/>
 
 #### Run
@@ -756,6 +754,18 @@ steps:
 > 💡 **RELATIVE PATHS**
 > 
 > Relative paths are resolved _relative to the recipe_. In the example above, the caller recipe referencing `README.md` will access `README.md` at the root of the project, while the called recipe accessing `README.md` would access `.templates/util/README.md`. It is recommended to use the [path](#path) expression to turn all path strings into absolute paths.
+
+<br>
+
+> 🤡 **USELESS FACTOID**
+>
+> When running `tmplr owner/repo`, tmplr basically runs the following recipe:
+> ```yml
+> steps:
+>   - degit: owner/repo
+>     to: .
+>   - run: .tmplr.yml
+> ```
 
 <br/>
 
