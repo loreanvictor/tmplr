@@ -20,7 +20,7 @@
 
 Downloads a public repository, and interactively fills it up with contextual info, by safely running the repo's _templating recipe_. Altneratively, can run local recipe files for modifying existing projects.
 
-The main use of `tmplr` is to create new projects from templates. It can also be used to add new modules / packages to existing projects.
+Useful for creating new projects from templates. Can also be used to add new modules / packages to existing projects.
 
 <div align="center">
 
@@ -40,7 +40,7 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 Interactive recipes set `tmplr` apart from other scaffolding tools. 
 - ☕ They can do simple tasks like removing a license file, updating README using git info, etc.
 - ✨ They can do complex tasks such as adding new packages to a monorepo using chosen presets.
-- 🔒 They can do all of that while remaining safe to run on your machine.
+- 🔒 They are powerful yet safe to run on your machine.
 - 🚀 They are super easy to write, as opposed to bash / python scripts.
 
 <br/>
@@ -65,7 +65,6 @@ Interactive recipes set `tmplr` apart from other scaffolding tools.
 # Installation
 
 You need [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
-You don't need to install `tmplr` itself, as you can run it with [`npx`](https://www.npmjs.com/package/npx):
 
 ```bash
 npx tmplr owner/repo
@@ -73,7 +72,7 @@ npx tmplr owner/repo
 
 <br/>
 
-You _can_ install `tmplr` globally for more convenience:
+You _can_ also install `tmplr` globally:
 
 ```bash
 npm i -g tmplr
@@ -84,7 +83,7 @@ tmplr owner/repo    # 3 less characters per project 🍺
 
 <br>
 
-👉 To install/run the latest version, use the `@latest` tag:
+👉 Use `@latest` tag to install/run the latest version:
 ```bash
 npx tmplr@latest owner/repo
 ```
@@ -106,7 +105,7 @@ Get public repositories from [GitHub](https://github.com):
 npx tmplr owner/repo
 ```
 
-For example, if you want to create a reusable React component, you can use [this template](https://github.com/vitrin-app/react-component-template) like this:
+For example, use [this template](https://github.com/vitrin-app/react-component-template) to create a publishable React component:
 
 ```bash
 npx tmplr vitrin-app/react-component-template
@@ -152,7 +151,8 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 ## Running Recipes
 
-Sometimes, you already have the repository locally and only need to run its recipe (for example its a [GitHub template repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template), or you want to [add a package / submodule to a monorepo](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)). To do this, go to the folder where the recipe is, and run `tmplr` without arguments:
+If you have the repo on your machine and just want to run its recipe, 
+go to the folder where the recipe is, and run `tmplr` without arguments:
 
 ```bash
 npx tmplr
@@ -160,13 +160,13 @@ npx tmplr
 
 <br/>
 
-> 💡 To check whether a recipe exists, look for a `.tmplr.yml` file.
+> 💡 A recipe is a `.tmplr.yml` file that modifies the project via interactive prompts / contextual info.
 
 <br/>
 
 ## Working Directory
 
-By default, `tmplr` runs in the current directory. Change this working directory by specifying a `--dir` (or `-d`) option:
+Use `--dir` (or `-d`) option to change the working directory (default is `.`):
 
 ```bash
 # 👉 will clone owner/some-repo into my-new-project
@@ -181,7 +181,7 @@ tmplr -d some-project
 
 ## Execution Safety
 
-Running scripts from unverified sources (such as an arbitrary public repository) on your machine is dangerous. `tmplr` limits its recipes so that they can't harm the host they are running on, while remaining powerful enough for any scaffolding task.
+You should not run arbitrary scripts from untrusted sources on your machine. `tmplr` recipes are limited so that they can't harm your machine, while remaining powerful enough for any scaffolding task.
 
 - The scope of recipes is limited to the working directory:
   - Recipes can read, write, and remove files in their scope.
@@ -193,19 +193,19 @@ Running scripts from unverified sources (such as an arbitrary public repository)
 
 # Making a Template
 
-Every public repository is a template for `tmplr`. If you have such a template, you can enhance user experience by adding a recipe to interactively customise the result for end user's needs. To do this, add a [YAML file](https://en.wikipedia.org/wiki/YAML) named `.tmplr.yml`, located at the root of your repository. When running the following:
+Every public repository is a template. They can be enhanced by adding a recipe to interactively fill up the project using user's context. To do this, add a `.tmplr.yml`, located at the root of your repo. When running the following:
 
 ```bash
 npx tmplr your/repo
 ```
 
-`tmplr` will copy the contents of your repo and then execute the recpie. Alternatively, if someone already has your repo locally, they can run the recipe like this:
+`tmplr` will copy your repo and run the recpie. Alternatively, if someone already has your repo locally, they can run the recipe like this:
 
 ```bash
 npx tmplr
 ```
 
-To test how your repository would act as a template, use the `preview` command:
+Use `preview` to test how your repo would act as a template:
 
 ```bash
 npx tmplr preview
@@ -217,7 +217,7 @@ npx tmplr preview
 
 ## Template Recipes
 
-A recipe instructs `tmplr` on how to update project files with contextual values such as local git information or directory name. It can be a single command:
+A recipe instructs `tmplr` on how to update project files with contextual info such as local git info or directory name. A recipe can be a single command:
 
 ```yaml
 # .tmplr.yml
