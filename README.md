@@ -37,11 +37,11 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 
 <br/>
 
-Interactive recipes set `tmplr` apart from other scaffolding tools (such as [degit](https://github.com/Rich-Harris/degit), which `tmplr` actually uses under the hood, and [cookiecutter](https://github.com/cookiecutter/cookiecutter)). 
-- ☕ They can do simple tasks like removing a license file or updating the README based on local git info.
-- 🏗 They can do more complex tasks such as adding new packages based on chosen presets to a monorepo.
-- 🔐 They can do all of that while remaining safe to run on your machine.
-- 🌱 They are also pretty easy to write for such purposes, as opposed to bash / python / js scripts.
+Interactive recipes set `tmplr` apart from other scaffolding tools. 
+- ☕ They can do simple tasks like removing a license file, updating README using git info, etc.
+- ✨ They can do complex tasks such as adding new packages to a monorepo using chosen presets.
+- 🔒 They can do all of that while remaining safe to run on your machine.
+- 🚀 They are super easy to write, as opposed to bash / python scripts.
 
 <br/>
 
