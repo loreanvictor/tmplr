@@ -18,7 +18,9 @@
      ┛
 ```
 
-`tmplr` creates a project from a template (as opposed to creating one from scratch). It copies a given public repository, and securely runs the specified interactive recipe to further fill up the project with contextual info (project name, git URL, author contact, etc).
+Downloads a public repository, and interactively fills it up with contextual info, by safely running the repo's _templating recipe_. Altneratively, can run local recipe files for modifying existing projects.
+
+The main use of `tmplr` is to create new projects from templates. It can also be used to add new modules / packages to existing projects.
 
 <div align="center">
 
@@ -35,18 +37,22 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 
 <br/>
 
-The main difference between `tmplr` and other scaffolding tools (such as [degit](https://github.com/Rich-Harris/degit), which `tmplr` actually uses under the hood, and [cookiecutter](https://github.com/cookiecutter/cookiecutter)) is its powerful, interactive recipes. They are able to conduct a wide range of tasks, from removing a license file, to help manage a monorepo or set up a CI/CD pipeline, while remaining safe to run on your machine.
+Interactive recipes set `tmplr` apart from other scaffolding tools (such as [degit](https://github.com/Rich-Harris/degit), which `tmplr` actually uses under the hood, and [cookiecutter](https://github.com/cookiecutter/cookiecutter)). 
+- ☕ They can do simple tasks like removing a license file or updating the README based on local git info.
+- 🏗 They can do more complex tasks such as adding new packages based on chosen presets to a monorepo.
+- 🔐 They can do all of that while remaining safe to run on your machine.
+- 🌱 They are also pretty easy to write for such purposes, as opposed to bash / python / js scripts.
 
 <br/>
 
 # Contents
 
-- [How to Install](#how-to-install)
-- [How to Use](#how-to-use)
+- [Installation](#installation)
+- [Usage](#usage)
   - [Running Recipes](#running-recipes)
   - [Working Directory](#working-directory)
   - [Execution Safety](#execution-safety)
-- [How to Make a Template](#how-to-make-a-template)
+- [Making a Template](#making-a-template)
   - [Template Recipes](#template-recipes)
   - [Contextual Values](#contextual-values)
   - [Recipe Syntax](#recipe-syntax)
@@ -56,7 +62,7 @@ The main difference between `tmplr` and other scaffolding tools (such as [degit]
 
 <br/>
 
-# How to Install
+# Installation
 
 You need [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 You don't need to install `tmplr` itself, as you can run it with [`npx`](https://www.npmjs.com/package/npx):
@@ -92,7 +98,7 @@ npx tmplr version
 
 <br/>
 
-# How to Use
+# Usage
 
 Get public repositories from [GitHub](https://github.com):
 
@@ -185,7 +191,7 @@ Running scripts from unverified sources (such as an arbitrary public repository)
 
 <br/><br/>
 
-# How to Make a Template
+# Making a Template
 
 Every public repository is a template for `tmplr`. If you have such a template, you can enhance user experience by adding a recipe to interactively customise the result for end user's needs. To do this, add a [YAML file](https://en.wikipedia.org/wiki/YAML) named `.tmplr.yml`, located at the root of your repository. When running the following:
 
