@@ -465,7 +465,6 @@ The string passed to the [update](#update) command, `README.md`, is also an expr
 - [**steps**](#steps): runs a bunch of commands in a step by step manner.
 - [**if**](#if): runs a command conditionally.
 - [**degit**](#degit): copies content of given repository to given folder.
-- [**exit**](#exit): ends the recipe early.
 - [**run**](#run): runs another local recipe file, with given arguments.
 - [**use**](#use): runs a remote recipe file, with given arugments.
 
