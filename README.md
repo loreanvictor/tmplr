@@ -64,15 +64,14 @@ Recipes set `tmplr` apart from other scaffolding tools:
 
 # Installation
 
-You need [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). No need to install `tmplr` itself.
-
+Install [Node.js](https://nodejs.org/en) and [npm](https://www.npmjs.com/package/npm), then run with [npx](https://www.npmjs.com/package/npx):
 ```bash
 npx tmplr owner/repo
 ```
 
 <br/>
 
-🍺 You _can_ install `tmplr` globally:
+🍺 You _can_ install `tmplr` globally too:
 
 ```bash
 npm i -g tmplr
@@ -151,8 +150,8 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 ## Running Recipes
 
-If you have a repo with a recipe locally and just want to run its recipe, 
-go to the folder where the recipe is, and run `tmplr` without arguments:
+If you have a repo with a recipe file locally and just want to run the recipe, 
+go to the project directory and run `tmplr` without arguments:
 
 ```bash
 npx tmplr
@@ -177,11 +176,18 @@ tmplr --dir my-new-project owner/some-repo
 tmplr -d some-project
 ```
 
+<br>
+
+> 🔒 **NOTE ON SECURITY**
+>
+> Recipes can change files only inside the working directory. By choosing their working directory, you basically choose which files they will have access to.
+
+
 <br/>
 
 ## Execution Safety
 
-Generally, you should not run arbitrary scripts from untrusted sources on your machine. `tmplr` recipes are limited in what they can do, so that they can't harm your machine, while remaining powerful enough for any scaffolding task.
+Generally, you should not run arbitrary scripts from untrusted sources on your machine. `tmplr` recipes are limited in what they can do, so that they can't do malicious acts, while remaining powerful enough for any scaffolding task.
 
 - The scope of recipes is limited to the working directory:
   - Recipes can read, write, and remove files in their scope.
