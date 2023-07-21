@@ -36,8 +36,10 @@ npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
 <br/>
 
 Recipes set `tmplr` apart from other scaffolding tools:
-- 🐵 They can do simple tasks like removing a license file, updating README using git info, etc.
-- 👽 They can do complex tasks such as adding new packages to a monorepo from a chosen preset.
+- 🌱 They can do simple tasks like removing a license file, updating README using git info, etc.
+- 🛸 They can do complex tasks such as adding new packages to a monorepo from a chosen preset.
+- 🧠 They can use context, such as git info or directory name, to fill the template.
+- 🎤 They can interactively ask for more info if needed.
 - ☔ They are powerful yet safe to run on your machine.
 - 🍰 They are super easy to write and understand.
 
