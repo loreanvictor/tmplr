@@ -199,16 +199,10 @@ Generally, you should not run arbitrary scripts from untrusted sources on your m
 
 # Making a Template
 
-Every public repository is a template. They can be enhanced by adding a recipe to interactively fill up the project using user's context. Simply add a `.tmplr.yml`, located at the root of your repo. When running the following:
+Every public repository is a template. They can become more fun to use by adding a recipe to interactively fill up the project using user's context. Simply add a `.tmplr.yml`, located at the root of your repo. People can use your template by running this:
 
 ```bash
 npx tmplr your/repo
-```
-
-`tmplr` will copy your repo and run the recpie. Alternatively, if someone already has your repo locally, they can run the recipe like this:
-
-```bash
-npx tmplr
 ```
 
 Use `preview` to test how your repo would act as a template:
@@ -223,7 +217,7 @@ npx tmplr preview
 
 ## Template Recipes
 
-A recipe instructs `tmplr` on how to update project files with contextual info such as local git info or directory name. A recipe can be a single command:
+A recipe instructs `tmplr` on how to update project files with contextual info such as local git info, environment variables or directory name. A recipe can be a single command:
 
 ```yaml
 # .tmplr.yml
