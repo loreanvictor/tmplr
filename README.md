@@ -448,15 +448,30 @@ Steps Command
        ┗━ Value Expression
 ```
 
-The string passed to the [update](#update) command, `README.md`, is also an expression. We can similarly replace the _default_ of the prompt from a _From Expression_ to a simple string:
+The string passed to the [update](#update) command, `README.md`, is also an expression, which means it could be replaced
+by a _prompt_:
 
 ```yml
-  - read: project_name
-    from: git.remote_name
-    fallback:
-      prompt: What is the name of the project?
-      default: My Awesome Project
+  - update:
+      prompt: Which file do you want to update?
+      default: README.md
 ```
+
+Or can reference variables / contextual values:
+
+```yml
+  - update: '{{ readme_file }}.md'
+```
+```yml
+  - update: '{{ env.README_FILE }}.md'
+```
+
+<br>
+
+> 💡 **VARIABLES IN EXPRESSIONS**
+>
+> For using variables in expressions, you don't need the `tmplr.` prefix. You can also directly access
+> contextual values such as `git.remote_owner`, `filesystem.rootdir`, or `tmpdir.some_dir` directly. You can also use [pipes](#pipes) to transform values.
 
 <br/>
 
@@ -993,8 +1008,7 @@ steps:
     prompt: whats the name?
   
   - copy: .templates/template.md
-    to:
-      eval: '{{ name | path/case }}.md'
+    to: '{{ name | path/case }}.md'
 
   - remove: .templates
 ```
