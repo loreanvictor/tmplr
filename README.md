@@ -348,15 +348,13 @@ steps:
   #
   
   - copy: some_file.go
-    to:
-      eval: '{{ tmpdir.go_file }}/some_file.go'
+    to: '{{ tmpdir.go_file }}/some_file.go'
       
   #
   # some other steps
   #
   
-  - copy:
-      eval: '{{ tmpdir.go_file }}/some_file.go'
+  - copy: '{{ tmpdir.go_file }}/some_file.go'
     to: some_other_file.go
 ```
 
