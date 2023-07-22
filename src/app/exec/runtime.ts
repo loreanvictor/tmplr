@@ -1,12 +1,12 @@
 import { useAsync } from 'react-use'
-import { mkdir, access } from 'fs/promises'
+import { mkdir, access, cp } from 'fs/promises'
 import { ChangeLog, EvaluationContext, scopeFromProviders, STANDARD_PIPES } from '@tmplr/core'
 import { createEnvProvider, createGitProvider, createTmpDirProvider, NodeFS } from '@tmplr/node'
 import { STANDARD_RULE_SET, Parser } from '@tmplr/yaml-parser'
 
-import { RepoArgs } from './args'
-import { degitAndRun } from './recipes/degit-and-run'
-import { runLocalRecipe } from './recipes/run-local'
+import { ExecArgs, isLocalTemplateArgs, isRemoteTemplateArgs } from './types'
+import { degitAndRun } from '../../recipes/degit-and-run'
+import { runLocalRecipe } from '../../recipes/run-local'
 
 
 const setupParser = (workdir: string) => {
@@ -25,16 +25,19 @@ const setupParser = (workdir: string) => {
 }
 
 
-export function useRuntime(args: RepoArgs) {
+export function useRuntime(args: ExecArgs) {
   const env = useAsync(async () => {
-    if (args.repo) {
+    if (isRemoteTemplateArgs(args)) {
       await mkdir(args.workdir, { recursive: true })
+    } else if (isLocalTemplateArgs(args)) {
+      await mkdir(args.workdir, { recursive: true })
+      await cp(args.path, args.workdir, { recursive: true })
     } else {
       await access(args.workdir)
     }
 
     const parser = setupParser(args.workdir)
-    const recipe = args.repo ?
+    const recipe = isRemoteTemplateArgs(args) ?
       await degitAndRun(args.repo, parser.filesystem.root) :
       await runLocalRecipe()
 

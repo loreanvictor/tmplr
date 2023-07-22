@@ -1,17 +1,13 @@
-import React from 'react'
+
 import { useAsync } from 'react-use'
-import { Newline } from 'ink'
-
-import { basename, join, relative } from 'path'
 import { mkdir, readdir, rm, cp, lstat, copyFile } from 'fs/promises'
+import { basename, join } from 'path'
 
-import { COMPONENTS } from '../components'
-import { Waiting, Hint, Tertiary  } from '../theme'
-import { PreviewArgs } from '../args'
-import { Exec } from './exec'
+import { PreviewArgs } from './types'
 
 
 export const PREVIEW_DIRNAME = '.tmplr-preview'
+
 
 export function usePreviewEnv(args: PreviewArgs) {
   const { value, loading, error } = useAsync(async () => {
@@ -39,25 +35,4 @@ export function usePreviewEnv(args: PreviewArgs) {
   }, [args])
 
   return { env: value, loading, error }
-}
-
-
-export function Preview(args: PreviewArgs) {
-  const { env, loading, error } = usePreviewEnv(args)
-
-  return <>
-    { loading && <Waiting>Setting up preview environment ...</Waiting> }
-    { error && <COMPONENTS.Error error={error} message={error.message} /> }
-    { !!env && <>
-      <Hint>
-        # <Newline/>
-        # 👉 Preview in <Tertiary>
-          {relative(process.cwd(), env.workdir)}
-        </Tertiary>
-        # <Newline/>
-        #
-      </Hint>
-      <Exec repo={null} workdir={env.workdir} />
-    </>}
-  </>
 }

@@ -12,6 +12,16 @@ import { Waiting,
 } from '../theme'
 
 
+export interface VersionArgs {
+  version: true
+}
+
+
+export function isVersionArgs(args: any): args is VersionArgs {
+  return 'version' in args
+}
+
+
 export function Version() {
   const latest = useAsync(async () => {
     return (await execa.command('npm show tmplr version')).stdout

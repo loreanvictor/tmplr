@@ -31,6 +31,7 @@ npx tmplr owner/repo                  # 👉 get repo from github
 npx tmplr gitlab:user/repo            # 🥽 or gitlab
 npx tmplr git@bitbucket.org:user/repo # 🪣 or bitbucket
 npx tmplr https://git.sr.ht/user/repo # 🛖 or source hut
+npx tmplr local:/some/template        # 🏠 or local template
 ```
 
 <br/>
@@ -129,6 +130,9 @@ tmplr https://bitbucket.org/owner/repo
 tmplr git.sr.ht/owner/repo
 tpmlr git@git.sr.ht:owner/repo
 tpmlr https://git.sr.ht/owner/repo
+
+# 🏠 use local template
+tmplr local:/path/to/template
 ```
 
 <br/>

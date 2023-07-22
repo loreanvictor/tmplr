@@ -5,8 +5,18 @@ import { join } from 'path'
 
 import { COMPONENTS } from '../components'
 import { Success, Waiting } from '../theme'
-import { CleanArgs } from '../args'
 import { PREVIEW_DIRNAME } from './preview'
+
+
+export interface CleanArgs {
+  clean: true
+  workdir: string
+}
+
+
+export function isCleanArgs(args: any): args is CleanArgs {
+  return 'clean' in args
+}
 
 
 export function Clean(args: CleanArgs) {

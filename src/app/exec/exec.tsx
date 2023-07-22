@@ -1,14 +1,14 @@
 import React from 'react'
 import { ExecutionInterface } from '@tmplr/react'
 
-import { COMPONENTS } from '../components'
-import { RepoArgs } from '../args'
-import { Waiting } from '../theme'
-import { useRuntime } from '../runtime'
-import { WorkDirAware } from '../workdir'
+import { COMPONENTS } from '../../components'
+import { ExecArgs } from './types'
+import { Waiting } from '../../theme'
+import { useRuntime } from './runtime'
+import { WorkDirAware } from './workdir'
 
 
-export function Exec(args: RepoArgs) {
+export function Exec(args: ExecArgs) {
   const { loading, runtime, error } = useRuntime(args)
 
   return <>
