@@ -7,7 +7,7 @@ import { Location, Position, Range } from 'mapped-file'
 import { highlight } from 'cli-highlight'
 
 import { BGERROR, Error, FADE, HINT, PRIMARY } from '../theme'
-import { useWorkDir } from '../app/exec/workdir'
+import { useWorkDir } from '../workdir'
 
 
 export function TracePos({ pos }: { pos: Position }) {

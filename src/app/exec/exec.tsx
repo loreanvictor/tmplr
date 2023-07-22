@@ -5,7 +5,7 @@ import { COMPONENTS } from '../../components'
 import { ExecArgs } from './types'
 import { Waiting } from '../../theme'
 import { useRuntime } from './runtime'
-import { WorkDirAware } from './workdir'
+import { WorkDirAware } from '../../workdir'
 
 
 export function Exec(args: ExecArgs) {
