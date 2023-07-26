@@ -22,7 +22,7 @@ export function Preview(args: PreviewArgs) {
         # 👉 Preview in <Tertiary>
           {relative(process.cwd(), env.workdir)}
         </Tertiary>
-        # <Newline/>
+        <Newline/>
         #
       </Hint>
       <Exec exec={true} workdir={env.workdir} />
