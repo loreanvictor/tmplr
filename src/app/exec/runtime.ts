@@ -5,8 +5,8 @@ import { createEnvProvider, createGitProvider, createTmpDirProvider, NodeFS } fr
 import { STANDARD_RULE_SET, Parser } from '@tmplr/yaml-parser'
 
 import { ExecArgs, isLocalTemplateArgs, isRemoteTemplateArgs } from './types'
-import { degitAndRun } from '../../recipes/degit-and-run'
-import { runLocalRecipe } from '../../recipes/run-local'
+import { degitAndRun, runLocalRecipe } from '../../recipes'
+import { createDatetimeProvider, DATETIME_FORMAT_PIPES } from '../../util'
 
 
 const setupParser = (workdir: string) => {
@@ -16,9 +16,13 @@ const setupParser = (workdir: string) => {
     env: createEnvProvider(),
     git: createGitProvider(workdir),
     tmpdir: createTmpDirProvider(workdir),
+    datetime: createDatetimeProvider(),
   }, 'tmplr')
 
-  const context = new EvaluationContext(scope, STANDARD_PIPES)
+  const context = new EvaluationContext(scope, {
+    ...STANDARD_PIPES,
+    ...DATETIME_FORMAT_PIPES
+  })
   const log = new ChangeLog()
 
   return new Parser(STANDARD_RULE_SET, scope, context, fs, log)

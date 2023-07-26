@@ -296,6 +296,7 @@ Recipes can access following contexts:
 - [Git Context](#git-context)
 - [Filesystem Context](#filesystem-context)
 - [Environment Variables](#environment-variables)
+- [Date & Time](#date--time)
 - [Temporary Directories](#temporary-directories)
 - [Recipe Arguments](#recipe-arguments)
 
@@ -334,6 +335,27 @@ scope to the caller recipe, though their roots might differ.
 ### Environment Variables
 
 Use `env.some_var` to access some environment variable. If it is not defined, an empty string will be returned.
+
+<br/>
+
+### Date & Time
+
+- `datetime.now`: The current date and time in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) (e.g. `2023-07-26T14:06:38.794Z`)
+- `datetime.date`: The current date (e.g. `7/26/2023`).
+- `datetime.time`: The current time in the local timezone (e.g. `5:15 PM`).
+- `datetime.year`: The current year (e.g. `2023`).
+- `datetime.month`: The current month (e.g. `6`).
+- `datettime.month_of_year`: The name of the current month (e.g. `July`).
+- `datetime.day`: The current day (e.g. `26`).
+- `datetime.day_of_week`: The name of the current day (e.g. `Wednesday`).
+- `datetime.hour`: The current hour in the local timezone (e.g. `17`).
+- `datetime.minute`: The current minute in the local timezone (e.g. `15`).
+- `datetime.second`: The current time seconds (e.g. `38`).
+- `datetime.millisecond`: The current time milliseconds (e.g. `794`).
+
+<br/>
+
+> 👉 Use [date & time pipes](#date--time-pipes) to further format date and time strings.
 
 <br/>
 
@@ -995,6 +1017,7 @@ steps:
 
 - [**Letter Case Pipes**](#letter-case-pipes)
 - [**String Pipes**](#string-pipes)
+- [**Date & Time Pipes**](#date--time-pipes)
 - [**Regexp Matching**](#regexp-matching)
 
 <br>
@@ -1081,6 +1104,56 @@ steps:
       #
       eval: '{{ filesystem.rootdir | skip: react- | PascalCase }}'
 ```
+
+<br>
+
+#### Date & Time Pipes
+
+👉 Use `date format` to format a value representing some date:
+
+```yml
+steps:
+  - read: date
+    eval: '{{ datetime.now | date format: YYYY-MM-DD }}'
+
+  - update: LICENSE
+```
+
+👉 Use `time format` to format a time string:
+
+```yml
+steps:
+  - read: time
+    eval: '{{ datetime.now | time format: HH:mm:ss }}'
+```
+
+👉 Use `datetime format` to format both:
+
+```yml
+read: now
+eval: '{{ datetime.now | datetime format: YYYY-MM-DD HH:mm:ss }}'
+```
+
+<br>
+
+> 💡 [Read this](https://github.com/knowledgecode/date-and-time#formatdateobj-arg-utc) to learn more about possible formats.
+
+<br>
+
+👉 To format date / time using locale specific formats, pass `locale <locale>` to any of the pipes:
+
+```yml
+read: now
+eval: '{{ datetime.now | datetime format: locale en-US }}'
+```
+```yml
+read: zeit
+eval: '{{ datetime.now | time format: locale de }}'
+```
+
+<br>
+
+> 💡 Language and locale codes are based on [this](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and [this](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) standards. You can use tools like [this](https://www.science.co.il/language/Locale-codes.php) to figure out which tags you should use.
 
 <br>
 
