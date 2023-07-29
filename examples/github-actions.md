@@ -74,6 +74,18 @@ You can see this in action on [this example repository](https://github.com/lorea
 >
 > Since the execution context of GitHub Actions is NOT interactive, your recipe SHOULD NOT require user interaction. Make sure that all the data you need to run the recipe exists within [GitHub Actions Context](https://docs.github.com/en/actions/learn-github-actions/contexts).
 
+> **WARNING**
+>
+> What happens now?
+
+> **INFO**
+>
+> Or here?
+
+> **HINT**
+>
+> Maybe something here?
+
 <br><br>
 
 
