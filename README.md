@@ -168,14 +168,23 @@ npx tmplr
 
 > 💡 A recipe is a `.tmplr.yml` file that modifies the project via interactive prompts / contextual info.
 
-<br/>
+<br>
 
 ## Reusable Recipes
 
-Reusable recipes alter your project in a specific way without determining its whole template. For example, [this reusable recipe](https://github.com/loreanvictor/license-recipe) adds a license file to your project:
+Reusable recipes alter only a part of your project, instead of determining its whole shape. For example, [this reusable recipe](https://github.com/loreanvictor/license-recipe) helps you choose a license for your project. You can use it like this:
 
 ```bash
 npx tmplr use loreanvictor/license-recipe
+```
+
+<br>
+
+While you can only use one template for your project, you can apply many reusable recipes, as they affect different aspects of your project. For example, you can use the license recipe above, and then use [this recipe](https://github.com/loreanvictor/npm-autopublish-recipe) to add a GitHub action for automatic publishing to NPM:
+
+```bash
+npx tmplr use loreanvictor/license-recipe
+npx tmplr use loreanvictor/npm-autopublish-recipe
 ```
 
 <br>
@@ -855,7 +864,7 @@ steps:
 >   ...
 > ```
 
-Runs given reusable recipe. For example, the following will add a licence to the target project:
+Runs given [reusable recipe](#reusable-recipes). For example, the following will help users add a licence to their project:
 
 ```yml
 steps:
@@ -870,7 +879,7 @@ steps:
   # ...
 ```
 
-To be more specific, `use` downloads, parses and executes given recipe from a public repository. First fetches the specified repository (using [degit](#degit)) into a temporary directory at the root of the project, and then locates `.tmplr.yml` in that directory and [runs](#run) it. The specified repository MUST have a `.tmplr.yml` file at its root.
+`use` downloads, parses and executes given recipe from a public repository. It fetches the specified repository (using [degit](#degit)) into a temporary directory at the root of the project, locates `.tmplr.yml` in that directory and [runs](#run) it, and cleans the directory afterwards. The specified repository MUST have a `.tmplr.yml` file at its root.
 
 ```yml
 steps:
@@ -891,20 +900,7 @@ steps:
 
 <br>
 
-<br>
-
-Since the whole repo is fetched, the recipe can also utilize other templating files shipped alongside it. Since it will be put in a temporary
-directory at the root of the project, it can relatively access files via `../` (for example, the main readme will be at `../README.md`).
-
-```yml
-# https://github.com/some-user/some-repo/.tmplr.yml
-steps:
-  - read: some_variable
-    from: some.context
-
-  - copy: ./README.md
-    to: ../README.md
-```
+> 💡 Read [this section](#making-a-reusable-recipe) to learn more about creating reusable recipes.
 
 <br/>
 
@@ -1232,18 +1228,24 @@ else:
 
 # Making a Reusable Recipe
 
-A reusable recipe is similar to a template, except that it alters the project in a specific way, instead of determining
-its overall layout and template. Reusable recipes can be used by the [CLI `use` command](#reusable-recipes), or via [the `use` command in another recipe](#use). For example, [this reusable recipe](https://github.com/loreanvictor/npm-autopublish-recipe) will add a GitHub action to a project that will automatically publish the package to npm on every push to the `main` branch where the version in `package.json` is bumped. It can be used like this:
+A reusable recipe is similar to a template, except that it alters only a specific part of a project, instead of determining
+its overall layout. This allows multiple reusable recipes to be applied to a single project, allows them be used as part of other templates, or to alter existing projects in specific ways
+
+Reusable recipes can be used by the [CLI `use` command](#reusable-recipes), or via [the `use` command in another recipe](#use). For example, [this reusable recipe](https://github.com/loreanvictor/npm-autopublish-recipe) will add a GitHub action to a project that will automatically publish the package to NPM when the version is bumped. It can be directly applied to a project like this:
 
 ```bash
 tmplr use loreanvictor/npm-autopublish-recipe
 ```
 
-Or like this:
+Or it can be used as part of another recipe:
 
 ```yaml
 steps:
+  # ...
+
   - use: loreanvictor/npm-autopublish-recipe
+
+  # ...
 ```
 
 <br>
@@ -1253,9 +1255,10 @@ Making a reusable recipe is similar to making a template repository, with minor 
 - Your repository will be cloned to a temporary directory, not the root of the project.
 - This temporary directory will be removed when your recipe is finished running.
 
-This means you would need to intentionally copy any file or directory to the project. For example, if you want to copy a file from your repository to the project, you would need to do something like this:
+This means you would need to intentionally copy any files to the project:
 
 ```yaml
+# inside some reusable recipe ...
 steps:
   - copy: workflow.yml
     to: ../.github/workflows/publish.yml
@@ -1263,7 +1266,7 @@ steps:
 
 <br>
 
-A reusable recipe is always copied to a temporary directory located in the root of the project (current working directory). This means you can access all files using `../wherever`. Alternatively, you can use `{{ filesystem.scope }}` to provide addresses from the root of the project, regardless of where your recipe is located:
+A reusable recipe is copied to a temporary directory located in the root of the project (current working directory). Access files in the host project using `../some-file`, or use `{{ filesystem.scope }}` to provide addresses from the root of the project:
 
 ```yaml
 steps:
@@ -1272,6 +1275,14 @@ steps:
       path: '{{ filesystem.scope }}/.github/workflows/publish.yml'
 ```
 
-This basically allows you to have templates that can also act as reusable recipes. Simply use [`copy`](#copy) instead of [`update`](#update), and make sure to use `{{ filesystem.scope }}` combined with [`path`](#path) expression.
+<br>
+
+👉 To test your reusable recipe, use `preview:use` command:
+
+```bash
+tmplr preview:use
+```
+
+This command will emulate what happens when your recipe is used as a reusable recipe. It creates a `.tmplr-preview` folder, copies contents of working directory to a temporary subdirectory, runs your recipe, and removes said temp directory afterwards. You can inspect the result in `.tmplr-preview` folder.
 
 <br><br>

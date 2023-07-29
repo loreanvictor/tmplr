@@ -2,7 +2,7 @@
 
 - [Copy a Repository](#copy-a-repository)
 - [Run Local Recipe](#run-local-recipe)
-- [Run Reusable Recipe](#running-reusable-recipe)
+- [Run a Reusable Recipe](#run-a-reusable-recipe)
 - [Testing Recipes](#testing-recipes)
 - [Miscellaneous](#miscellaneous)
 
@@ -71,7 +71,7 @@ Which will run `.tmplr.yml` file located inside `my-project` directory, in the s
 
 <br>
 
-## Run Reusable Recipe
+## Run a Reusable Recipe
 
 ```bash
 tmplr use owner/repo
