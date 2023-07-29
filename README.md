@@ -220,7 +220,7 @@ tmplr -d some-project
 
 <br>
 
-> 🔒 **NOTE ON SECURITY**
+> **IMPORTANT**
 >
 > Recipes can change files only inside the working directory. By choosing their working directory, you basically choose which files they will have access to.
 
@@ -351,7 +351,7 @@ Recipes can access following contexts:
 
 <br>
 
-> ⚠️  **CAUTION** ⚠️ 
+> **WARNING**
 > 
 > If the recipe is run outside of a repository (where there is no `.git`), then git contextual values won't be available. It is recommended to read them into a variable them using [`from` expression](#from) first, and providing a fallback for that expression to handle such cases.
 
