@@ -1,8 +1,9 @@
 # CLI Options
 
 - [Copy a Repository](#copy-a-repository)
-- [Run local recipe](#run-local-recipe)
-- [Testing recipes](#testing-recipes)
+- [Run Local Recipe](#run-local-recipe)
+- [Run Reusable Recipe](#running-reusable-recipe)
+- [Testing Recipes](#testing-recipes)
 - [Miscellaneous](#miscellaneous)
 
 <br/>
@@ -54,7 +55,7 @@ tmplr owner/repo -d my-project
 <br>
 
 
-## Run local recipe
+## Run Local Recipe
 
 ```bash
 tmplr
@@ -67,6 +68,31 @@ tmplr -d my-project
 ```
 
 Which will run `.tmplr.yml` file located inside `my-project` directory, in the same project.
+
+<br>
+
+## Run Reusable Recipe
+
+```bash
+tmplr use owner/repo
+```
+
+Copies content of given repository to a temporary directory, runs its recipe, and then removes the directory. Reusable recipes
+can be used to alter an existing project in specific ways. For example, you can use [this recipe](https://github.com/loreanvictor/license-recipe) to add a license file to your project:
+
+```bash
+tmplr use loreanvictor/license-recipe
+```
+
+> 💡 `use` command accepts all the [same arguments as for copying a repo](#copy-a-repository):
+>
+> ```bash
+> tmplr use owner/repo#branch
+> tmplr use gitlab:owner/repo
+> tmplr use owner/repo -d my-project
+> tmplr use local:some/recipe
+> ...
+> ```
 
 <br>
 
@@ -83,6 +109,19 @@ tmplr preview -d my-project
 ```
 
 Which will copy the contents of `my-project` directory into `my-project/.tmplr-preview/my-project` and runs the recipe file.
+
+<br>
+
+If you are working on a reusable recipe, you can preview the result of running it (without any arguments)
+using `preview:use` command:
+
+```bash
+tmplr preview:use
+```
+
+This will treat contents of working directory as a reusable recipe, running it inside `.tmplr-preview` directory. To be more specific: this command will copy the contents of working directory into a temporary subdirectory of `.tmplr-preview`, run `.tmplr.yml`, and then remove the temporary subdirectory, emulating what happens when someone uses your recipe either via [`use` command in a recipe](https://github.com/loreanvictor/tmplr#use) or [via the CLI](#running-reusable-recipe).
+
+<br>
 
 You can cleanup testing artifacts using `tmplr clean` command:
 

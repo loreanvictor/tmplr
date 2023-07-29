@@ -21,11 +21,13 @@ export function Help() {
       <Command cmd='tmplr local:SRC -d DEST'>Copies contents of folder to given folder and runs its recipe</Command>
       <Command cmd='tmplr gitlab:USER/REPO#c0m1th45h'>Copies repo from GitLab at given commit and runs its recipe</Command>
       <Command cmd='tmplr bitbucket:USER/REPO#BRANCH'>Copies repo from BitBucket from given branch and runs its recipe</Command>
+      <Command cmd='tmplr use USER/REPO'>Runs given re-usable recipe</Command>
     </Section>
 
     <Section title='✨ Recipe Development'>
       <Command cmd='tmplr preview'>Safely preview the local recipe</Command>
       <Command cmd='tmplr preview -d FOLDER'>Safely preview the recipe in given folder</Command>
+      <Command cmd='tmplr preview:use'>Safely preview running local recipe as a reusable recipe</Command>
       <Command cmd='tmplr clean'>Clean all development artifacts</Command>
     </Section>
 

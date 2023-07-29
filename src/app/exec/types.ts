@@ -1,3 +1,7 @@
+import { ChangeLog } from '@tmplr/core'
+import { LocatedExecution, LocatedRunnable, Parser } from '@tmplr/yaml-parser'
+
+
 interface BaseExecArgs {
   workdir: string
   exec: true
@@ -9,6 +13,10 @@ export interface RemoteTemplateArgs extends BaseExecArgs {
 
 export interface LocalTemplateArgs extends BaseExecArgs {
   path: string
+}
+
+export interface UseRecipeArgs extends BaseExecArgs {
+  recipe: string
 }
 
 export type LocalRecipeArgs = BaseExecArgs
@@ -28,9 +36,23 @@ export function isLocalTemplateArgs(args: BaseExecArgs): args is LocalTemplateAr
 }
 
 
-export type ExecArgs = RemoteTemplateArgs | LocalTemplateArgs | LocalRecipeArgs
+export function isUseRecipeArgs(args: BaseExecArgs): args is UseRecipeArgs {
+  return 'recipe' in args
+}
+
+
+export type ExecArgs = RemoteTemplateArgs | LocalTemplateArgs | LocalRecipeArgs | UseRecipeArgs
 
 
 export function isExecArgs(args: any): args is ExecArgs {
   return isBaseExecArgs(args)
+}
+
+
+export interface Runtime<T=unknown> {
+  workdir: string
+  execution: LocatedExecution<T>
+  runnable: LocatedRunnable<T>
+  changelog: ChangeLog
+  parser: Parser
 }

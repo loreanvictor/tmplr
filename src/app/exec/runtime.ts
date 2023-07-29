@@ -1,12 +1,13 @@
-import { useAsync } from 'react-use'
-import { mkdir, access, cp } from 'fs/promises'
+// import { useAsync } from 'react-use'
+// import { mkdir, access, cp } from 'fs/promises'
 import { ChangeLog, EvaluationContext, scopeFromProviders, STANDARD_PIPES } from '@tmplr/core'
 import { createEnvProvider, createGitProvider, createTmpDirProvider, NodeFS } from '@tmplr/node'
 import { STANDARD_RULE_SET, Parser } from '@tmplr/yaml-parser'
 
-import { ExecArgs, isLocalTemplateArgs, isRemoteTemplateArgs } from './types'
-import { degitAndRun, runLocalRecipe } from '../../recipes'
+// import { ExecArgs, isLocalTemplateArgs, isRemoteTemplateArgs, isUseRecipeArgs } from './types'
+// import { degitAndRun, runLocalRecipe, useRecipe } from '../../recipes'
 import { createDatetimeProvider, DATETIME_FORMAT_PIPES } from '../../util'
+import { Runtime } from './types'
 
 
 const setupParser = (workdir: string) => {
@@ -29,37 +30,45 @@ const setupParser = (workdir: string) => {
 }
 
 
-export function useRuntime(args: ExecArgs) {
-  const env = useAsync(async () => {
-    if (isRemoteTemplateArgs(args)) {
-      await mkdir(args.workdir, { recursive: true })
-    } else if (isLocalTemplateArgs(args)) {
-      await mkdir(args.workdir, { recursive: true })
-      await cp(args.path, args.workdir, { recursive: true })
-    } else {
-      await access(args.workdir)
-    }
+export async function createRuntime(
+  workdir: string,
+  recipeFn: (root: string) => Promise<string>,
+): Promise<Runtime<unknown>> {
+  // const env = useAsync(async () => {
+  // if (isRemoteTemplateArgs(args)) {
+  //   await mkdir(args.workdir, { recursive: true })
+  // } else if (isLocalTemplateArgs(args)) {
+  //   await mkdir(args.workdir, { recursive: true })
+  //   await cp(args.path, args.workdir, { recursive: true })
+  // } else {
+  //   await access(args.workdir)
+  // }
 
-    const parser = setupParser(args.workdir)
-    const recipe = isRemoteTemplateArgs(args) ?
-      await degitAndRun(args.repo, parser.filesystem.root) :
-      await runLocalRecipe()
+  const parser = setupParser(workdir)
+  const recipe = await recipeFn(parser.filesystem.root)
+  // const recipe = isRemoteTemplateArgs(args) ?
+  //   await degitAndRun(args.repo, parser.filesystem.root) :
+  //   isUseRecipeArgs(args) ?
+  //     await useRecipe(args.recipe) :
+  //     await runLocalRecipe()
 
-    const runnable = await parser.parseString(recipe)
-    const changeLog = parser.changelog
-    const execution = runnable.run()
-
-    return {
-      execution,
-      changeLog,
-      runnable,
-      parser,
-    }
-  }, [args])
+  const runnable = await parser.parseString(recipe)
+  const changelog = parser.changelog
+  const execution = runnable.run()
 
   return {
-    loading: env.loading,
-    runtime: env.value,
-    error: env.error,
+    workdir,
+    execution,
+    changelog,
+    runnable,
+    parser,
   }
 }
+// , [args])
+
+// return {
+//   loading: env.loading,
+//   runtime: env.value,
+//   error: env.error,
+// }
+// }

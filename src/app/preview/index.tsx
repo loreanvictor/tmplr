@@ -6,26 +6,34 @@ import { relative } from 'path'
 import { COMPONENTS } from '../../components'
 import { Waiting, Hint, Tertiary  } from '../../theme'
 import { Exec } from '../exec'
-import { PreviewArgs } from './types'
 import { usePreviewEnv } from './env'
 
 
-export function Preview(args: PreviewArgs) {
-  const { env, loading, error } = usePreviewEnv(args)
+export interface PreviewProps {
+  workdir: string
+  use?: boolean
+}
+
+
+export function Preview({workdir, use}: PreviewProps) {
+  const { runtime, loading, error } = usePreviewEnv(workdir, use)
 
   return <>
     { loading && <Waiting>Setting up preview environment ...</Waiting> }
     { error && <COMPONENTS.Error error={error} message={error.message} /> }
-    { !!env && <>
+    { !!runtime && <>
       <Hint>
         # <Newline/>
         # 👉 Preview in <Tertiary>
-          {relative(process.cwd(), env.workdir)}
+          {relative(process.cwd(), runtime.workdir)}
         </Tertiary>
         <Newline/>
         #
       </Hint>
-      <Exec exec={true} workdir={env.workdir} />
+      <Exec runtime={runtime} />
     </>}
   </>
 }
+
+
+export { PREVIEW_DIRNAME } from './env'

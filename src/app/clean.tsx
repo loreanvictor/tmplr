@@ -8,21 +8,15 @@ import { Success, Waiting } from '../theme'
 import { PREVIEW_DIRNAME } from './preview'
 
 
-export interface CleanArgs {
-  clean: true
+export interface CleanProps {
   workdir: string
 }
 
 
-export function isCleanArgs(args: any): args is CleanArgs {
-  return 'clean' in args
-}
-
-
-export function Clean(args: CleanArgs) {
+export function Clean({ workdir }: CleanProps) {
   const { loading, error } = useAsync(async () => {
-    await rm(join(args.workdir, PREVIEW_DIRNAME), { recursive: true, force: true })
-  }, [args])
+    await rm(join(workdir, PREVIEW_DIRNAME), { recursive: true, force: true })
+  }, [workdir])
 
   return <>
     { loading && <Waiting>🧹 Cleaning up dev artifacts ...</Waiting> }

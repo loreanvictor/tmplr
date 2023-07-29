@@ -1,21 +1,31 @@
 import React from 'react'
 
-import { Exec, isExecArgs } from './exec'
-import { Help, isHelpArgs } from './help'
-import { Preview, isPreviewArgs } from './preview'
-import { Version, isVersionArgs } from './version'
-import { Clean, isCleanArgs } from './clean'
 import { useArgs } from './args'
+import { Help } from './help'
+import { Version } from './version'
+import { Preview } from './preview'
+import { Clean } from './clean'
+import { RunLocal } from './local'
+import { Template } from './template'
+import { Use } from './use'
 
 
 export function App() {
   const args = useArgs()
 
-  return <>
-    { isHelpArgs(args) && <Help /> }
-    { isVersionArgs(args) && <Version /> }
-    { isPreviewArgs(args) && <Preview {...args} /> }
-    { isCleanArgs(args) && <Clean {...args} /> }
-    { isExecArgs(args) && <Exec {...args} />}
-  </>
+  if (args.flags.help || args.command === 'help') {
+    return <Help />
+  } else if (args.flags.version || args.command === 'version') {
+    return <Version />
+  } else if (args.command === 'preview' || args.command === 'preview:use') {
+    return <Preview workdir={args.workdir} use={args.command === 'preview:use'} />
+  } else if (args.command === 'clean') {
+    return <Clean workdir={args.workdir} />
+  } else if (args.command === 'use') {
+    return <Use workdir={args.workdir} target={args.target} />
+  } else if (args.target) {
+    return <Template workdir={args.workdir} target={args.target} />
+  } else {
+    return <RunLocal workdir={args.workdir} />
+  }
 }
