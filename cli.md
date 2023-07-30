@@ -78,10 +78,10 @@ tmplr use owner/repo
 ```
 
 Copies content of given repository to a temporary directory, runs its recipe, and then removes the directory. Reusable recipes
-can be used to alter an existing project in specific ways. For example, you can use [this recipe](https://github.com/loreanvictor/license-recipe) to add a license file to your project:
+can be used to alter an existing project in specific ways. For example, you can use [this recipe](https://github.com/trcps/license) to add a license file to your project:
 
 ```bash
-tmplr use loreanvictor/license-recipe
+tmplr use trcps/license
 ```
 
 > 💡 `use` command accepts all the [same arguments as for copying a repo](#copy-a-repository):
