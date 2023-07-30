@@ -172,19 +172,19 @@ npx tmplr
 
 ## Reusable Recipes
 
-Reusable recipes only change a part of your project, instead of determining its whole shape. For example, [this reusable recipe](https://github.com/loreanvictor/license-recipe) helps you choose a license for your project. Use it like this:
+Reusable recipes only change a part of your project, instead of determining its whole shape. For example, [this reusable recipe](https://github.com/trcps/license) helps you choose a license for your project. Use it like this:
 
 ```bash
-npx tmplr use loreanvictor/license-recipe
+npx tmplr use trcps/license
 ```
 
 <br>
 
-While you can use only one template for your project, you can use multiple reusable recipes. For example, add a license, and then use [this recipe](https://github.com/loreanvictor/npm-autopublish-recipe) to add a GitHub action for automatic publishing to NPM:
+While you can use only one template for your project, you can use multiple reusable recipes. For example, add a license, and then use [this recipe](https://github.com/trcps/npm-autopublish) to add a GitHub action for automatic publishing to NPM:
 
 ```bash
-npx tmplr use loreanvictor/license-recipe
-npx tmplr use loreanvictor/npm-autopublish-recipe
+npx tmplr use trcps/license
+npx tmplr use trcps/npm-autopublish
 ```
 
 <br>
@@ -869,7 +869,7 @@ Runs given [reusable recipe](#reusable-recipes). For example, the following will
 steps:
   # ...
 
-  - use: loreanvictor/license-recipe
+  - use: trcps/license
     with:
       owner: '{{ git.author_name }}'
       project_name: '{{ filesystem.scopedir }}'
@@ -1229,10 +1229,10 @@ else:
 
 A reusable recipe is similar to a template, except that it should change only a specific part of a project. They might be applied directly, or used as part of another recipe.
 
-For example, [this reusable recipe](https://github.com/loreanvictor/npm-autopublish-recipe) adds a GitHub action to automatically publish to NPM on a version bump. It can be directly applied to a project like this:
+For example, [this reusable recipe](https://github.com/trcps/npm-autopublish) adds a GitHub action to automatically publish to NPM on a version bump. It can be directly applied to a project like this:
 
 ```bash
-tmplr use loreanvictor/npm-autopublish-recipe
+tmplr use trcps/npm-autopublish
 ```
 
 Or it can be used as part of another recipe:
@@ -1241,7 +1241,7 @@ Or it can be used as part of another recipe:
 steps:
   # ...
 
-  - use: loreanvictor/npm-autopublish-recipe
+  - use: trcps/npm-autopublish
 
   # ...
 ```
