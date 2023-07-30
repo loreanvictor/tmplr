@@ -41,7 +41,7 @@ Recipes set `tmplr` apart from other scaffolding tools:
 - 🛸 They can do complex tasks such as adding new packages to a monorepo from a chosen preset.
 - 🧠 They can [use context](#contextual-values), such as git info or directory name, to fill the template.
 - 💬 They can [interactively](#expressions) ask for more info if needed.
-- 🧩 They are highly composable through [reusable recipes](#reusable-recipes).
+- 🧩 They can use other templates and [reusable recipes](#reusable-recipes).
 - ☂️ They are [powerful yet safe](#execution-safety) to run on your machine.
 - 🍰 They are [super easy](#recipe-syntax) to write and understand.
 
@@ -172,7 +172,7 @@ npx tmplr
 
 ## Reusable Recipes
 
-Reusable recipes alter only a part of your project, instead of determining its whole shape. For example, [this reusable recipe](https://github.com/loreanvictor/license-recipe) helps you choose a license for your project. You can use it like this:
+Reusable recipes only change a part of your project, instead of determining its whole shape. For example, [this reusable recipe](https://github.com/loreanvictor/license-recipe) helps you choose a license for your project. Use it like this:
 
 ```bash
 npx tmplr use loreanvictor/license-recipe
@@ -180,7 +180,7 @@ npx tmplr use loreanvictor/license-recipe
 
 <br>
 
-While you can only use one template for your project, you can apply many reusable recipes, as they affect different aspects of your project. For example, you can use the license recipe above, and then use [this recipe](https://github.com/loreanvictor/npm-autopublish-recipe) to add a GitHub action for automatic publishing to NPM:
+While you can use only one template for your project, you can use multiple reusable recipes. For example, add a license, and then use [this recipe](https://github.com/loreanvictor/npm-autopublish-recipe) to add a GitHub action for automatic publishing to NPM:
 
 ```bash
 npx tmplr use loreanvictor/license-recipe
@@ -189,15 +189,14 @@ npx tmplr use loreanvictor/npm-autopublish-recipe
 
 <br>
 
-The `use` command will copy the contents of the given repo into a temporary directory (under current working directory),
-run its recipe, and then clean it up. You can pass the same arguments to reusable recipes as you would to templates:
-
-```bash
-tmplr use owner/repo#mit       # 👉 get a branch
-tmplr use owner/repo#v1.0.0    # 👉 get a tag
-tmplr use bitbucket:owner/repo # 🪣 get from bitbucket
-tmplr use local:/path/to/repo  # 🏠 get from local
-```
+> 💡 `tmplr use` accepts same arguments for using a template:
+>
+> ```bash
+> tmplr use owner/repo#mit       # 👉 get a branch
+> tmplr use owner/repo#v1.0.0    # 👉 get a tag
+> tmplr use bitbucket:owner/repo # 🪣 get from bitbucket
+> tmplr use local:/path/to/repo  # 🏠 get from local
+> ```
 
 <br>
 
@@ -879,7 +878,7 @@ steps:
   # ...
 ```
 
-`use` downloads, parses and executes given recipe from a public repository. It fetches the specified repository (using [degit](#degit)) into a temporary directory at the root of the project, locates `.tmplr.yml` in that directory and [runs](#run) it, and cleans the directory afterwards. The specified repository MUST have a `.tmplr.yml` file at its root.
+`use` downloads, parses and executes given recipe from a public repository. It fetches the specified repository (using [degit](#degit)) into a temporary directory at the root of the project, locates `.tmplr.yml` in that directory and [runs](#run) it, and removes the directory. The specified repository MUST have a `.tmplr.yml` file at its root.
 
 ```yml
 steps:
@@ -1228,10 +1227,9 @@ else:
 
 # Making a Reusable Recipe
 
-A reusable recipe is similar to a template, except that it alters only a specific part of a project, instead of determining
-its overall layout. This allows multiple reusable recipes to be applied to a single project, allows them be used as part of other templates, or to alter existing projects in specific ways
+A reusable recipe is similar to a template, except that it should change only a specific part of a project. They might be applied directly, or used as part of another recipe.
 
-Reusable recipes can be used by the [CLI `use` command](#reusable-recipes), or via [the `use` command in another recipe](#use). For example, [this reusable recipe](https://github.com/loreanvictor/npm-autopublish-recipe) will add a GitHub action to a project that will automatically publish the package to NPM when the version is bumped. It can be directly applied to a project like this:
+For example, [this reusable recipe](https://github.com/loreanvictor/npm-autopublish-recipe) adds a GitHub action to automatically publish to NPM on a version bump. It can be directly applied to a project like this:
 
 ```bash
 tmplr use loreanvictor/npm-autopublish-recipe
@@ -1250,12 +1248,12 @@ steps:
 
 <br>
 
-Making a reusable recipe is similar to making a template repository, with minor differences:
+Making a reusable recipe is similar to making a template repository, with following differences:
 
 - Your repository will be cloned to a temporary directory, not the root of the project.
 - This temporary directory will be removed when your recipe is finished running.
 
-This means you would need to intentionally copy any files to the project:
+👉 Copy any files you want to add to the project explicitly:
 
 ```yaml
 # inside some reusable recipe ...
@@ -1266,7 +1264,7 @@ steps:
 
 <br>
 
-A reusable recipe is copied to a temporary directory located in the root of the project (current working directory). Access files in the host project using `../some-file`, or use `{{ filesystem.scope }}` to provide addresses from the root of the project:
+👉 Read or write files from the host project using `../file`. OR, use [filesystem scope](#filesystem-context) and [path](#path):
 
 ```yaml
 steps:
@@ -1277,12 +1275,12 @@ steps:
 
 <br>
 
-👉 To test your reusable recipe, use `preview:use` command:
+👉 Use `tmplr preview:use` to see what would happen if your repo was used as a reusable recipe:
 
 ```bash
 tmplr preview:use
 ```
 
-This command will emulate what happens when your recipe is used as a reusable recipe. It creates a `.tmplr-preview` folder, copies contents of working directory to a temporary subdirectory, runs your recipe, and removes said temp directory afterwards. You can inspect the result in `.tmplr-preview` folder.
+This command applies your recipe to an empty `.tmplr-preview` directory, where you can inspect the results.
 
 <br><br>
