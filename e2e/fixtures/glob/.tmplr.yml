@@ -1,0 +1,19 @@
+steps:
+  - read: token
+    eval: james
+
+  - copy: src-a/**/*.js
+    to: dest-a
+
+  - copy: src-b/**/*.js
+    to: dest-b
+    include hidden: true
+
+  - update: src-a/**/*.ts
+  - update: src-c/**/*.ts
+    include hidden: true
+
+  - remove: src-a/**/*.js
+  - remove: src-b
+  - remove: src-c/**/*.js
+    include hidden: true

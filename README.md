@@ -1,6 +1,7 @@
 <div align="right">
 
 [![version](https://img.shields.io/npm/v/tmplr?label=&color=black&style=flat-square)](https://www.npmjs.com/package/tmplr)
+[![tests](https://img.shields.io/github/actions/workflow/status/loreanvictor/tmplr/test.yml?label=&style=flat-square)](https://github.com/loreanvictor/tmplr/actions/workflows/test.yml)
 
 </div>
 

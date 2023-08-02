@@ -1,0 +1,1 @@
+console.log('b (ts) some {{ tmplr.token}}')

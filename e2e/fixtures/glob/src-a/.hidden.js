@@ -1,0 +1,1 @@
+console.log('a: hidden {{ tmplr.token }}')
