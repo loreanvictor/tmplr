@@ -1,0 +1,13 @@
+# {{ tmplr.project_name | Capital Case }}
+
+```bash
+$ npm install {{ tmplr.project_name }}
+```
+
+## Usage
+
+```js
+import { {{ tmplr.project_name | snake_case }} } from '{{ tmplr.project_name }}'
+  
+{{ tmplr.project_name | snake_case }}()
+```

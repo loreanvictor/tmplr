@@ -104,5 +104,6 @@ dist
 .tern-port
 
 tmp/
+test-*/
 
 .DS_Store

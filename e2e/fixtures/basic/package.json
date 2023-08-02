@@ -1,0 +1,7 @@
+{
+  "name": "{{ tmplr.project_name }}",
+  "repository": {
+    "type": "git",
+    "url": "{{ tmplr.project_url }}"
+  }
+}

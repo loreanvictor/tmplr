@@ -1,0 +1,11 @@
+steps:
+  - read: project_name
+    from: filesystem.scopedir
+  - read: project_url
+    from: git.remote_url
+
+  - update: package.json
+  - copy: README.md.tmpl
+    to: README.md
+  - remove: '**/*.tmpl'
+  - remove: .tmplr.yml

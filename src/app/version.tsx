@@ -1,6 +1,5 @@
 import React from 'react'
 import { useAsync } from 'react-use'
-import execa from 'execa'
 import semver from 'semver'
 import { Text } from 'ink'
 
@@ -14,7 +13,10 @@ import { Waiting,
 
 export function Version() {
   const latest = useAsync(async () => {
-    return (await execa.command('npm show tmplr version')).stdout
+    const { $ } = await import('execa')
+    const { stdout } = await $`npm view tmplr version`
+
+    return stdout
   })
 
   const outOfDate = latest.value && semver.gt(latest.value!, version)
