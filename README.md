@@ -352,7 +352,11 @@ Recipes can access following contexts:
 
 > **WARNING**
 > 
-> If the recipe is run outside of a repository (where there is no `.git`), then git contextual values won't be available. It is recommended to read them into a variable them using [`from` expression](#from) first, and providing a fallback for that expression to handle such cases.
+> If the recipe is run outside of a repository (where there is no `.git`), then git contextual values won't be available. Read git value using [`from`](#from), and provide a fallback.
+
+> **WARNING**
+>
+> Even inside a git repository, if there are 0 commits, then `git.author_name` and `git.author_email` will be empty strings.
 
 <br/>
 
@@ -1113,7 +1117,7 @@ Use the following pipes to change the casing of a string (they are case-sensitiv
   
 #### String Pipes
 
-👉 Use `skip` and `trim` pipes to remove the given number of characters from the beginning and
+Use `skip` and `trim` pipes to remove the given number of characters from the beginning and
 the end of the string, respectively:
 
 ```yml
@@ -1149,7 +1153,7 @@ steps:
 
 #### Date & Time Pipes
 
-👉 Use `date format` to format a value representing some date:
+Use `date format` to format a value representing some date:
 
 ```yml
 steps:
@@ -1159,7 +1163,7 @@ steps:
   - update: LICENSE
 ```
 
-👉 Use `time format` to format a time string:
+Use `time format` to format a time string:
 
 ```yml
 steps:
@@ -1167,7 +1171,7 @@ steps:
     eval: '{{ datetime.now | time format: HH:mm:ss }}'
 ```
 
-👉 Use `datetime format` to format both:
+Use `datetime format` to format both:
 
 ```yml
 read: now
@@ -1199,7 +1203,7 @@ eval: '{{ datetime.now | time format: locale de }}'
 
 #### Regexp Matching
 
-👉 Use `matches` pipe to check if a variable matches given string/pattern. This pipe returns the given string if it matches, and returns an empty string otherwise. Use this for [conditional commands](#if):
+Use `matches` pipe to check if a variable matches given string/pattern. This pipe returns the given string if it matches, and returns an empty string otherwise. Use this for [conditional commands](#if):
 
 ```yml
 steps:
