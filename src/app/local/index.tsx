@@ -2,10 +2,11 @@ import React from 'react'
 import { useAsync } from 'react-use'
 import { access } from 'fs/promises'
 
-import { COMPONENTS } from '../components'
-import { Waiting  } from '../theme'
-import { runLocalRecipe } from '../recipes'
-import { Exec, createRuntime } from './exec'
+import { COMPONENTS } from '../../components'
+import { Waiting  } from '../../theme'
+import { runLocalRecipe } from '../../recipes'
+import { createRuntime } from '../runtime'
+import { Exec } from '../exec'
 
 
 function useLocalEnv(workdir: string) {

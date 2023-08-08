@@ -1,27 +1,30 @@
 import chalk from 'chalk'
-import { readdir } from 'fs/promises'
-import { HINT, WARNING } from '../theme'
+import { WARNING } from '../theme'
 
 
-export async function degitAndRun(repo: string, workdir: string) {
-  const files = await readdir(workdir)
-
-  if (files.filter(file => file !== '.git' && file !== '.tmplr.yml').length === 0) {
-    return `steps:\n  - degit: '${repo}'\n    to: .\n  - run: .tmplr.yml`
-  } else {
-    return `steps:
-  - read: __override__
+export async function degitAndRun(repo: string) {
+  return `
+steps:
+  - if:
+      exists: '**/*'
     prompt: |
-      ${chalk.hex(WARNING).bold('This directory is not empty. Do you want to override its content?')}
-      ${chalk.hex(HINT)(`You are in ${workdir}`)}
+      This directory is NOT empty. Do you want to override its content?
+
     choices:
-      - 'Yes, override all files in this directory': yes
-      - No: ''
-  - if: __override__
-    steps:
-      - degit: '${repo}'
-        to: .
-      - run: .tmplr.yml
+      - label: |
+          ${chalk.hex(WARNING)('Yes, override all files in:')}
+          {{ filesystem.root }}
+        value: yes
+      - 'No, cancel cloning.':
+          skip: recipe
+
+  - degit: '${repo}'
+    to: .
+
+  - if:
+      exists: '.tmplr.yml'
+    run: .tmplr.yml
+    else:
+      prompt: ${chalk.hex(WARNING).italic('Repository copied, but no templating recipes found.')}
 `
-  }
 }

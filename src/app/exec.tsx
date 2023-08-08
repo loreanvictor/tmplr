@@ -1,9 +1,9 @@
 import React from 'react'
 import { ExecutionInterface } from '@tmplr/react'
 
-import { COMPONENTS } from '../../components'
-import { Runtime } from './types'
-import { WorkDirAware } from '../../util'
+import { COMPONENTS } from '../components'
+import { Runtime } from './runtime'
+import { WorkDirAware } from '../util'
 
 
 export interface ExecProps<T> {

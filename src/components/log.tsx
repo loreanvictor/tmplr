@@ -1,7 +1,7 @@
 import React from 'react'
 import { Static } from 'ink'
 import { relative, join, isAbsolute } from 'path'
-import { ChangeLog, CopyExecution, DegitExecution, RemoveExecution, UpdateExecution } from '@tmplr/core'
+import { ChangeLog, CopyExecution, DegitExecution, RemoveExecution, UpdateExecution, WriteExecution } from '@tmplr/core'
 
 import { Success, Highlight, Tertiary } from '../theme'
 
@@ -44,6 +44,12 @@ export function Log({ log } : LogProps) {
             Cloned: <Highlight>{entry.details['source']}</Highlight>
             <Tertiary>{' -> '}</Tertiary>
             <Highlight>{_(entry.change.filesystem.root, entry.details['target']!)}</Highlight>
+          </Success>
+        )
+      } else if (entry.change instanceof WriteExecution) {
+        return (
+          <Success key={i}>
+            Wrote: <Highlight>{_(entry.change.filesystem.root, entry.details['target']!)}</Highlight>
           </Success>
         )
       } else {

@@ -2,7 +2,7 @@ import { useAsync } from 'react-use'
 import { join } from 'path'
 import { access, mkdir, cp } from 'fs/promises'
 
-import { createRuntime } from '../exec'
+import { createRuntime } from '../runtime'
 import { useRecipe, runAndClean } from '../../recipes'
 
 

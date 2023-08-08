@@ -544,12 +544,15 @@ Or can reference variables / contextual values:
 - [**read**](#read): reads a value into a variable, so that the variable can be used to update subsequent files.
 - [**update**](#update): updates contents of some files, using variables read.
 - [**copy**](#copy): copies some files, also updating them using variables read.
+- [**write**](#write): writes given content to a file.
 - [**remove**](#remove): removes some files.
 - [**steps**](#steps): runs a bunch of commands in a step by step manner.
 - [**if**](#if): runs a command conditionally.
+- [**skip**](#skip): skips current steps or recipe.
 - [**degit**](#degit): copies content of given repository to given folder.
 - [**run**](#run): runs another local recipe file, with given arguments.
 - [**use**](#use): runs a remote recipe file, with given arugments.
+
 
 <br/>
 
@@ -683,6 +686,31 @@ include hidden: true
 
 <br/>
 
+#### Write
+> _Command_
+> ```yml
+> write:
+>   <expression>
+> to:
+>   <expression>
+>```
+
+Writes given content to a file, creating necessary folders, replacing existing files. Will replace all [read](#read) variables with their values inside the written content (not the whole file).
+
+```yml
+steps:
+  - read: badge_content
+    from file: .template/badge.md
+
+  - read: readme_content
+    from file: README.md
+
+  - write: '{{ badge_content }}\n{{ readme_content }}'
+    to: README.md
+```
+
+<br/>
+
 #### Remove
 > _Command_
 > ```yml
@@ -764,8 +792,20 @@ steps:
 > else?:
 >   <command>
 > ```
-Runs given command if given variable, contextual value, or expression resolves to a non-empty string. Runs the _else_ command if the
-condition fails.
+> ```yml
+> if not: <variable / contextual value>
+> <command>
+> else?:
+>   <command>
+> ```
+> ```yml
+> if not:
+>   <expression>
+> <command>
+> else?:
+>   <command>
+> ```
+Runs given command if given variable, contextual value, or expression resolves to a non-empty string. Runs the _else_ command if the condition fails.
 ```yml
 steps:
   - if: git.remote_url
@@ -777,7 +817,45 @@ steps:
 ```
 
 <br/>
-  
+
+Can also be used as a ternary operator:
+```yml
+prompt: Wassup?
+default:
+  if: some_var
+  eval: 'Hello {{ some_var }}!'
+  else:
+    eval: 'Hello world!'
+```
+
+<br/>
+
+#### Skip
+
+> _Command_
+> ```yml
+> skip: steps
+> ```
+> ```yml
+> skip: recipe
+> ```
+
+Skips the rest of current [steps](#steps) or recipe. Useful for conditional execution:
+```yml
+steps:
+  # ...
+
+  - prompt: Are you sure?
+    choices:
+      - Yes
+      - No:
+          skip: recipe
+
+  # ...
+```
+
+<br/>
+
 #### Degit
 
 > _Command_
@@ -915,6 +993,7 @@ steps:
 - [**choices**](#choices): asks the value from user, but gives them some predetermined choices.
 - [**eval**](#eval): evaluates an expression.
 - [**path**](#path): evaluates to an absolute path value.
+- [**from file**](#from-file): reads content of a file.
 
 <br/>
 
@@ -990,7 +1069,7 @@ steps:
 #### Eval
 > _Expression_
 > ```yml
-> eval: <expr>
+> eval: <expression>
 > steps?:
 >   - <command>
 >   - <command>
@@ -1038,7 +1117,7 @@ steps:
 #### Path
 > _Expression_
 > ```yml
-> path: <expr>
+> path: <expression>
 > ```
 Similar to [**eval**](#eval) but for strings representing file paths. If the expression evaluates to a relative path, will
 turn it into an absolute path (relative paths are _relative to the recipe_). Use it to pass path
@@ -1054,6 +1133,22 @@ steps:
     with:
       readme:
         path: '{{ tmpdir.some_repo }}/README.md'
+```
+
+<br>
+
+#### From File
+> _Expression_
+> ```yml
+> from file: <expression>
+> ```
+
+Reads the content of a file.
+
+```yml
+steps:
+  - read: readme
+    from file: README.md
 ```
 
 <br>

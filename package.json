@@ -1,6 +1,6 @@
 {
   "name": "tmplr",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "description": "Easy templating for repositories",
   "bin": "dist/src/index.js",
   "engines": {
@@ -35,10 +35,10 @@
   },
   "homepage": "https://github.com/loreanvictor/tmplr#readme",
   "dependencies": {
-    "@tmplr/core": "^0.6.2",
-    "@tmplr/node": "^0.1.7",
-    "@tmplr/react": "^0.1.5",
-    "@tmplr/yaml-parser": "^0.1.5",
+    "@tmplr/core": "^0.7.3",
+    "@tmplr/node": "^0.1.8",
+    "@tmplr/react": "^0.1.6",
+    "@tmplr/yaml-parser": "^0.1.8",
     "chalk": "^4.1.2",
     "cli-highlight": "^2.1.11",
     "date-and-time": "^3.0.2",

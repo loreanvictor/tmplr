@@ -3,9 +3,9 @@ import { useAsync } from 'react-use'
 import { rm } from 'fs/promises'
 import { join } from 'path'
 
-import { COMPONENTS } from '../components'
-import { Success, Waiting } from '../theme'
-import { PREVIEW_DIRNAME } from './preview'
+import { COMPONENTS } from '../../components'
+import { Success, Waiting } from '../../theme'
+import { PREVIEW_DIRNAME } from '../preview'
 
 
 export interface CleanProps {

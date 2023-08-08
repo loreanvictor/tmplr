@@ -3,12 +3,12 @@ import { useAsync } from 'react-use'
 import semver from 'semver'
 import { Text } from 'ink'
 
-import { version } from '../../package.json'
+import { version } from '../../../package.json'
 import { Waiting,
   Warning,
   Success, Tertiary,
   Highlight, Hint,
-} from '../theme'
+} from '../../theme'
 
 
 export function Version() {

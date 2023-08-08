@@ -1,7 +1,7 @@
 import { useAsync } from 'react-use'
 import { cp, mkdir } from 'fs/promises'
 
-import { createRuntime } from '../exec'
+import { createRuntime } from '../runtime'
 import { degitAndRun, runLocalRecipe } from '../../recipes'
 
 
@@ -17,8 +17,8 @@ export function useTemplateEnv(workdir: string, target: string) {
 
     return createRuntime(
       workdir,
-      async (root) => {
-        return local ? runLocalRecipe() : degitAndRun(target, root)
+      async () => {
+        return local ? runLocalRecipe() : degitAndRun(target)
       }
     )
   })

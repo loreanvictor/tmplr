@@ -3,7 +3,7 @@ import { useAsync } from 'react-use'
 import { mkdir, readdir, rm, cp, lstat, copyFile, writeFile } from 'fs/promises'
 import { basename, join } from 'path'
 
-import { createRuntime } from '../exec'
+import { createRuntime } from '../runtime'
 import { runLocalRecipe } from '../../recipes'
 
 
