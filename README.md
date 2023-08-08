@@ -993,6 +993,7 @@ steps:
 - [**choices**](#choices): asks the value from user, but gives them some predetermined choices.
 - [**eval**](#eval): evaluates an expression.
 - [**path**](#path): evaluates to an absolute path value.
+- [**exists**](#exists): checks if a file exists or not.
 - [**from file**](#from-file): reads content of a file.
 
 <br/>
@@ -1133,6 +1134,38 @@ steps:
     with:
       readme:
         path: '{{ tmpdir.some_repo }}/README.md'
+```
+
+<br>
+
+#### Exists
+> _Expression_
+> ```yml
+> exists:
+>   <expression>
+> include hidden?: <boolean>
+> ```
+
+Checks if a file exists or not. Can be passed a glob pattern, in which case checks if any file matching given pattern exists or not. If it does, returns the path of the first matching file.
+
+```yml
+steps:
+  - if:
+      exists: '**/*'
+    prompt: 'Directory is not empty. Overwrite?'
+    choices:
+      - Yes
+      - No:
+          skip: recipe
+  
+  # ...
+```
+
+Similar to [copy](#copy), [update](#update) and [remove](#remove), the command will by default ommit hidden files unless explicitly mentioned in the glob pattern. Override this using `include hidden` property:
+
+```yml
+exists: '**/*'
+include hidden: true
 ```
 
 <br>
