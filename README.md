@@ -19,7 +19,7 @@
      ┛
 ```
 
-`tmplr` creates projects from _templates_, which can be any public repository. `tmplr` downloads the specified repo and runs its _templating recipe_, interactively filling it with contextual info.
+Create a new project from a _templates_: `tmplr` downloads the specified repo and runs its _templating recipe_, interactively filling it with contextual info. It can also enrich existing projects by running _reusable recipes_.
 
 <div align="center">
 
