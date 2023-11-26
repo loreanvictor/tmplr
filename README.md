@@ -19,7 +19,7 @@
      ┛
 ```
 
-Create a new project from a _templates_: `tmplr` downloads the specified repo and runs its _templating recipe_, interactively filling it with contextual info. It can also enrich existing projects by running _reusable recipes_.
+Create a new project from a _template_: `tmplr` downloads the specified repo and runs its _templating recipe_ (if it exists), interactively filling it with contextual info. It can also enrich existing projects by running _reusable recipes_.
 
 <div align="center">
 
