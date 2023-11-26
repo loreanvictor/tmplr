@@ -19,13 +19,16 @@
      ┛
 ```
 
-Create a new project from a _template_: `tmplr` downloads the specified repo and runs its _templating recipe_ (if it exists), interactively filling it with contextual info. It can also enrich existing projects by running _reusable recipes_.
+Create projects from interactive templates, or enrich existing projects using interactive recipes.
 
 <div align="center">
 
 ![Demo](./demo.svg)
 
 </div>
+
+Any public repository can be a template for your next project. `tmplr` will download it (without git history) and execute its _templating recipe_, if one exists,
+interactively filling up the project with contextual information.
   
 ```bash
 npx tmplr owner/repo                  # 👉 get repo from github
@@ -167,7 +170,8 @@ npx tmplr
 
 <br/>
 
-> 💡 A recipe is a `.tmplr.yml` file that modifies the project via interactive prompts / contextual info.
+> [!TIP]
+> A recipe is a `.tmplr.yml` file that modifies the project via interactive prompts / contextual info.
 
 <br>
 
@@ -190,7 +194,8 @@ npx tmplr use trcps/npm-autopublish
 
 <br>
 
-> 💡 `tmplr use` accepts same arguments for using a template:
+> [!TIP]
+> `tmplr use` accepts same arguments for using a template:
 >
 > ```bash
 > tmplr use owner/repo#mit       # 👉 get a branch
@@ -220,8 +225,7 @@ tmplr -d some-project
 
 <br>
 
-> **IMPORTANT**
->
+> [!CAUTION]
 > Recipes can change files only inside the working directory. By choosing their working directory, you basically choose which files they will have access to.
 
 
@@ -241,7 +245,7 @@ Generally, you should not run arbitrary scripts from untrusted sources on your m
 
 # Making a Template
 
-Every public repository is a template. They can become more fun to use by adding a recipe to interactively fill up the project using user's context. Simply add a `.tmplr.yml`, located at the root of your repo. People can use your template by running this:
+Every public repository is a template. They can become more convenient to use by adding a recipe to interactively fill up the project using user's context. Simply add a `.tmplr.yml`, located at the root of your repo. People can use your template by running this:
 
 ```bash
 npx tmplr your/repo
@@ -308,18 +312,27 @@ git clone https://github.com/john/my-project
 
 <br>
 
-> 💡 **TEMPLATE VARIABLES**
->
+> [!NOTE]
 > After you read a variable such as `project_name`, in any file you update or copy, `{{ tmplr.project_name }}` will be replaced with the value read. If a variable is not resolved, then `tmplr` will leave it untouched.
 
 <br>
 
-In the example above, [`steps`](#steps), [`read`](#read) and [`update`](#update) are different [commands](#commands) the recipe executed, [`from`](#from) is an [expression](#expressions), which reads from [_contextual values_](#contextual-values) such as [`git.remote_url`](#git-context) or [`filesystem.rootdir`](#filesystem-context).
+We have multiple _commands_ and _expressions_ used in the example recipe above:
+- [`steps`](#steps) is a command that runs multiple other commands sequentially,
+- [`read`](#read) is a command that reads a value into a variable,
+- [`update`](#update) is a command that updates a file using read variables,
+- [`from`](#from) is an expression, reading from [_contextual values_](#contextual-values) such as [`git.remote_url`](#git-context) or [`filesystem.rootdir`](#filesystem-context).
 
-👉 Available commands and expressions can be found [here](#recipe-syntax). \
-👉 Available contextual values can be found [here](#contextual-values). \
-👉 If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or check [these examples](./examples):
 
+Read more about the recipe syntax and available commands and expressions:\
+📐 [More about recipe syntax](#recipe-syntax) \
+🤖 [Available commands](#commands) \
+🔌 [Available expressions](#expressions) \
+🚰 [Available pipes](#pipes) \
+🌡️ [Available contextual values](#contextual-values).
+
+
+If you (like me) prefer learning by example, you can [check this example template repository](https://github.com/loreanvictor/tmplr-template-example), or check [these examples](./examples):
 
 - [Create GitHub template and run a recipe when someone uses your template](https://github.com/loreanvictor/tmplr/blob/main/examples/github-actions.md)
 - [Add new packages to monorepos using local templates](https://github.com/loreanvictor/tmplr/blob/main/examples/monorepo.md)
@@ -351,11 +364,11 @@ Recipes can access following contexts:
 
 <br>
 
-> **WARNING**
+> [!WARNING]
 > 
 > If the recipe is run outside of a repository (where there is no `.git`), then git contextual values won't be available. Read git value using [`from`](#from), and provide a fallback.
 
-> **WARNING**
+> [!WARNING]
 >
 > Even inside a git repository, if there are 0 commits, then `git.author_name` and `git.author_email` will be empty strings.
 
@@ -397,7 +410,8 @@ Use `env.some_var` to access some environment variable. If it is not defined, an
 
 <br/>
 
-> 👉 Use [date & time pipes](#date--time-pipes) to further format date and time strings.
+> [!TIP]
+> Use [date & time pipes](#date--time-pipes) to further format date and time strings.
 
 <br/>
 
@@ -451,7 +465,8 @@ steps:
 
 <br/>
 
-> 👉 Recipe arguments are evaluated lazily. If a prompt is passed as an argument, the user will be prompted the first time the argument is accessed, not when the recipe is called.
+> [!TIP]
+> Recipe arguments are evaluated lazily. If a prompt is passed as an argument, the user will be prompted the first time the argument is accessed, not when the recipe is called.
 
 <br/>
 
@@ -532,7 +547,7 @@ Or can reference variables / contextual values:
 
 <br>
 
-> 💡 **VARIABLES IN EXPRESSIONS**
+> [!TIP]
 >
 > For using variables in expressions, you don't need the `tmplr.` prefix. You can also directly access
 > contextual values such as `git.remote_owner`, `filesystem.rootdir`, or `tmpdir.some_dir` directly. You can also use [pipes](#pipes) to transform values.
@@ -911,8 +926,7 @@ steps:
 
 <br/>
 
-> 💡 **RELATIVE PATHS**
-> 
+> [!IMPORTANT]
 > Relative paths are resolved _relative to the recipe_. In the example above, the caller recipe referencing `README.md` will access `README.md` at the root of the project, while the called recipe accessing `README.md` would access `.templates/util/README.md`. It is recommended to use the [path](#path) expression to turn all path strings into absolute paths.
 
 <br>
