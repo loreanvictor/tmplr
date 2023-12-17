@@ -315,7 +315,6 @@ git clone https://github.com/john/my-project
 > [!NOTE]
 > After you read a variable such as `project_name`, in any file you update or copy, `{{ tmplr.project_name }}` will be replaced with the value read. If a variable is not resolved, then `tmplr` will leave it untouched.
 
-> [!IMPORTANT]
 > Make sure any template variable you use starts with `tmplr.` prefix. tmplr will ignore any variable that doesn't.
 > 
 > ```yaml
