@@ -11,7 +11,7 @@
     "clean": "rm -rf dist",
     "build:clean": "npm run clean && npm run build",
     "start": "ts-node ./src/index.tsx",
-    "test": "npm run build:clean && chmod +x dist/src/index.js && NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "npm run build:clean && chmod +x dist/src/index.js && cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "coverage": "jest --coverage",
     "prepack": "npm run build:clean"
   },
@@ -67,6 +67,7 @@
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "babel-jest": "^28.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.15.0",
     "eslint-plugin-jest-extended": "^2.0.0",
     "eslint-plugin-react": "^7.29.4",
