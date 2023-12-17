@@ -1,0 +1,3 @@
+{
+  "name": "{{ tmplr.pluginName | kebab-case }}"
+}

@@ -8,7 +8,7 @@ import { getBinPath } from 'get-bin-path'
 
 
 export function scenario(name, testFn) {
-  test('scnario: ' + name, async () => {
+  test('scenario: ' + name, async () => {
     const fixsrc = name.split(':')[0]
     const fixture = join('e2e', 'fixtures', fixsrc)
 

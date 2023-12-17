@@ -1,0 +1,15 @@
+#
+# replication of issue#29
+# reported by @fwextensions on 16.12.23
+#
+steps:
+  - read: pluginName
+    eval: Bloop Blorp
+
+  - update: derp.txt
+
+  - copy: package-template.json
+    to: out.json
+
+  - write: '{{ pluginName | kebab-case }}'
+    to: ffs.txt
