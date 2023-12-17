@@ -36,7 +36,7 @@
   "homepage": "https://github.com/loreanvictor/tmplr#readme",
   "dependencies": {
     "@tmplr/core": "^0.7.3",
-    "@tmplr/node": "^0.1.8",
+    "@tmplr/node": "^0.2.0",
     "@tmplr/react": "^0.1.6",
     "@tmplr/yaml-parser": "^0.1.8",
     "chalk": "^4.1.2",

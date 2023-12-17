@@ -1,5 +1,6 @@
 name: tests
 on:
+  workflow_call:
   push:
     branches: ['*']
   pull_request:

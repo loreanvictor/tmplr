@@ -7,6 +7,8 @@ describe('sanity checks', () => {
   })
 
   test('has a built binary', async () => {
-    expect(await getBinPath()).toMatch(/dist\/.*\/index\.js$/)
+    const path = await getBinPath()
+    const binPath = path.startsWith('\\\\?\\') ? path : path.replace(/\\/g, '/')
+    expect(binPath).toMatch(/dist\/.*\/index\.js$/)
   })
 })

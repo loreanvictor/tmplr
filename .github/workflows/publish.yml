@@ -5,7 +5,11 @@ on:
       - main
       - master
 jobs:
-  do:
+  test:
+    uses: ./.github/workflows/test.yml
+  publish:
+    needs:
+      - test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
