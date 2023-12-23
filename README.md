@@ -607,8 +607,11 @@ Or can reference variables / contextual values:
 
 > [!TIP]
 >
-> For using variables in expressions, you don't need the `tmplr.` prefix. You can also directly access
+> For using variables in expressions (i.e. inside recipe files), you don't need the `tmplr.` prefix. You can also directly access
 > contextual values such as `git.remote_owner`, `filesystem.rootdir`, or `tmpdir.some_dir` directly. You can also use [pipes](#pipes) to transform values.
+>
+> **Note** that inside files that are [copied](#copy) or [updated](#update), you DO NEED the `tmplr.` prefix, and you don't have access to other
+> contextual values. If you need to use these values within these files, [read](#read) them into a variable first.
 
 <br/>
 
