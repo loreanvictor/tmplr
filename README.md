@@ -368,12 +368,39 @@ Recipes can access following contexts:
 
 ### Git Context
 
+Values related to git repository of the project. These only work inside a folder controlled by git.
+
 - `git.remote_url`: The origin URL of current git repository (this can be cloned, for example)
 - `git.remote_name`: The name of the origin (e.g. repository name)
 - `git.remote_provider`: The address of the git host (e.g. `https://github.com`)
 - `git.remote_owner`: The name of the user on the remote who owns the repository
 - `git.author_name`: The name of the person who made the first commit on the repo
 - `git.author_email`: Email address of the first committer.
+
+Example:
+
+```yaml
+# .tmplr.yml
+steps:
+  - read: project_name
+    from: git.remote_name
+    fallback:
+      from: filesystem.rootdir
+
+  - read: author
+    from: git.author_name
+    fallback:
+      prompt: What is your name?
+
+  - read: repo_url
+    eval: 'https://{{ git.remote_provider }}/{{ git.remote_owner }}/{{ git.remote_name }}'
+
+  - update: package.json
+  - update: README.md
+
+  # ...
+```
+
 
 <br>
 
@@ -397,6 +424,24 @@ Recipes can access following contexts:
 The root directory, `filesystem.root`, is where the recipe file is located. This is also the addrerss which all
 relative addresses in the recipe are interpreted relative to. The scope of the recipe, `filesystem.scope`, is where the recipe can access (read/write). The scope can be differnt from the root: when a recipe is called by another recipe (via [run](#run) or [use](#use) commands), the called recipe has the same
 scope to the caller recipe, though their roots might differ.
+
+Example:
+
+```yaml
+# .tmplr.yml
+steps:
+  # ...
+
+  # 👇 will apply a reusable recipe to add proper license for the project.
+  #    check the docs for the `use` command for more info.
+  - use: trcps/license
+    with:
+      owner: '{{ git.author_name }}'
+      project_name: '{{ filesystem.scopedir }}'
+      project_url: '{{ git.remote_url }}'
+
+  # ...
+```
 
 <br/>
 
