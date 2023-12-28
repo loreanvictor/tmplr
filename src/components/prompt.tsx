@@ -29,8 +29,11 @@ export function Prompt({ prompt }: PromptProps) {
   }, [prompt])
 
 
-  useInput((input) => {
-    if (!touched && input[0]?.match(/\w/)) {
+  useInput((input, key) => {
+    if (!touched && !(
+      key.leftArrow || key.rightArrow || key.upArrow || key.downArrow
+      || key.meta || key.ctrl || key.shift || key.pageDown || key.pageUp
+    )) {
       setValue(input)
     }
 
