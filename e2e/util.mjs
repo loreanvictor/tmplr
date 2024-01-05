@@ -25,6 +25,7 @@ export function scenario(name, testFn, options) {
     const cwd = join(dir, options.root)
     const cmd = $({ cwd })
     const bin = await getBinPath()
+    console.log(bin)
     const run = (...args) => execa(bin, args, { cwd })
 
     try {
