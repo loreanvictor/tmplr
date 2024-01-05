@@ -1243,6 +1243,23 @@ exists: '**/*'
 include hidden: true
 ```
 
+> [!IMPORTANT]
+> `exists` only checks for existence of files, and ignores directories. So this is wrong:
+> ```yaml
+> # ❌ WRONG
+> exists: 'my-dir/'
+> ```
+> Use `**/*` glob pattern instead:
+> ```yaml
+> # ✅ CORRECT
+> exists: 'my-dir/**/*'
+> ```
+
+
+
+
+
+
 <br>
 
 #### From File
