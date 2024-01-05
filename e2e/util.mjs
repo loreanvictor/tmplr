@@ -1,3 +1,6 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 import { toIncludeSameMembers } from 'jest-extended'
 expect.extend({ toIncludeSameMembers })
 
@@ -11,8 +14,10 @@ export function scenario(name, testFn, options) {
   options ??= {}
   options.root ??= '.'
 
+  const fn = options.skipCI && require('ci-info').isCI ? test.skip : test
+
   describe('scenario: ' + name, () => {
-    test('runs as expected', async () => {
+    fn('runs as expected', async () => {
       const fixsrc = name.split(':')[0]
       const fixture = join('e2e', 'fixtures', fixsrc)
   
