@@ -1,0 +1,6 @@
+steps:
+  - read: name
+    eval: World
+
+  - copy: ./halo.txt
+    to: ../halo.txt

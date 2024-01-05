@@ -7,7 +7,10 @@ import { execa, $ } from 'execa'
 import { getBinPath } from 'get-bin-path'
 
 
-export function scenario(name, testFn) {
+export function scenario(name, testFn, options) {
+  options ??= {}
+  options.root ??= '.'
+
   test('scenario: ' + name, async () => {
     const fixsrc = name.split(':')[0]
     const fixture = join('e2e', 'fixtures', fixsrc)
@@ -19,9 +22,10 @@ export function scenario(name, testFn) {
     const dir = await mkdtemp('test-')
     await cp(fixture, dir, { recursive: true })
 
-    const cmd = $({ cwd: dir })
+    const cwd = join(dir, options.root)
+    const cmd = $({ cwd })
     const bin = await getBinPath()
-    const run = (...args) => execa(bin, args, { cwd: dir })
+    const run = (...args) => execa(bin, args, { cwd })
 
     try {
       await testFn(run, {
@@ -32,7 +36,7 @@ export function scenario(name, testFn) {
           return stdout.split('\n').filter(x => x !== '.' && x !== '..')
         },
         read: async file => {
-          return await readFile(join(dir, file), 'utf8')
+          return await readFile(join(cwd, file), 'utf8')
         }
       })
     } finally {

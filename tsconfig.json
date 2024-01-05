@@ -1,7 +1,7 @@
 {
 	"extends": "@sindresorhus/tsconfig",
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "Node16",
 		"moduleResolution": "Node16",
 		"jsx": "react",
 		"esModuleInterop": true,

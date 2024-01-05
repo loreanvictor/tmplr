@@ -1,0 +1,5 @@
+steps:
+  - read: name
+    eval: World
+
+  - update: ./halo.txt
