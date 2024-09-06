@@ -127,6 +127,7 @@ Get public repositories from [GitLab](https://about.gitlab.com), [BitBucket](htt
 tmplr gitlab:owner/repo
 tmplr git@gitlab.com:owner/repo
 tmplr https://gitlab.com/owner/repo
+tmplr gitlab:owner/group/repo --subgroup
 
 # 🪣 download from BitBucket
 tmplr bitbucket:owner/repo

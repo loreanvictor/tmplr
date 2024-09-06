@@ -2,7 +2,15 @@ import chalk from 'chalk'
 import { WARNING } from '../theme'
 
 
-export async function degitAndRun(repo: string) {
+export interface DegitAndRunOptions {
+  subgroup?: boolean,
+  warnOnNoRecipe?: boolean,
+}
+
+export async function degitAndRun(repo: string, options: DegitAndRunOptions = {}) {
+  const warnOnNoRecipe = options.warnOnNoRecipe ?? true
+  const subgroup = options.subgroup ?? false
+
   return `
 steps:
   - if:
@@ -20,11 +28,16 @@ steps:
 
   - degit: '${repo}'
     to: .
+    subgroup: ${subgroup ? 'true' : 'false'}
 
   - if:
       exists: '.tmplr.yml'
     run: .tmplr.yml
+    ${
+      warnOnNoRecipe ? `
     else:
       prompt: ${chalk.hex(WARNING).italic('Repository copied, but no templating recipes found.')}
+      ` : ''
+    }
 `
 }

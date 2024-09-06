@@ -45,8 +45,10 @@ export async function createRuntime(
 
   const runnable = await parser.parseString(recipe)
   const changelog = parser.changelog!
-  const execution = runnable.run(new Flow())
 
+  // TODO: the proper flow environment should be provided by @tmplr/node
+  const execution = runnable.run(new Flow({onKill: () => () => {}}))
+  
   return {
     workdir,
     execution,

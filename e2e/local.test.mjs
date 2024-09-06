@@ -7,7 +7,7 @@ scenario('local', async (run, { ls, read }) => {
   expect(await read('halo.txt')).toBe('Halo World!')
 }, {
   root: 'target',
-  skipCI: true,
+  skipCI: true, // TODO: why should this be skipped?
 })
 
 

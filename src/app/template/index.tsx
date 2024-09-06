@@ -3,17 +3,20 @@ import React from 'react'
 import { Waiting } from '../../theme'
 import { COMPONENTS } from '../../components'
 import { Exec } from '../exec'
-import { useTemplateEnv } from './env'
+import { TemplateEnvExtras, useTemplateEnv } from './env'
 
 
-export interface TemplateProps {
+export interface TemplateProps extends TemplateEnvExtras {
   workdir: string
   target: string
 }
 
 
-export function Template({ workdir, target }: TemplateProps)  {
-  const { runtime, loading, error } = useTemplateEnv(workdir, target)
+export function Template({ workdir, target, subgroup, skipWarnings }: TemplateProps)  {
+  const { runtime, loading, error } = useTemplateEnv(workdir, target, {
+    subgroup,
+    skipWarnings,
+  })
 
   return <>
     { loading && <Waiting>Initializing ...</Waiting> }

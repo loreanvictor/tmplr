@@ -24,7 +24,12 @@ export function App() {
   } else if (args.command === 'use') {
     return <Use workdir={args.workdir} target={args.target} />
   } else if (args.target) {
-    return <Template workdir={args.workdir} target={args.target} />
+    return <Template
+      workdir={args.workdir}
+      target={args.target}
+      subgroup={args.flags.subgroup}
+      skipWarnings={args.flags.skipWarnings}
+    />
   } else {
     return <RunLocal workdir={args.workdir} />
   }

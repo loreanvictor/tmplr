@@ -1,6 +1,6 @@
 {
   "name": "tmplr",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Easy templating for repositories",
   "bin": "dist/src/index.js",
   "engines": {
@@ -35,10 +35,10 @@
   },
   "homepage": "https://github.com/loreanvictor/tmplr#readme",
   "dependencies": {
-    "@tmplr/core": "^0.7.4",
-    "@tmplr/node": "^0.2.2",
-    "@tmplr/react": "^0.1.6",
-    "@tmplr/yaml-parser": "^0.1.8",
+    "@tmplr/core": "^0.8.1",
+    "@tmplr/node": "^0.2.3",
+    "@tmplr/react": "^0.2.0",
+    "@tmplr/yaml-parser": "^0.2.0",
     "chalk": "^4.1.2",
     "cli-highlight": "^2.1.11",
     "date-and-time": "^3.0.2",
@@ -77,7 +77,7 @@
     "get-bin-path": "^10.0.0",
     "ink-testing-library": "^2.1.0",
     "jest": "^28.1.0",
-    "jest-extended": "^4.0.0",
+    "jest-extended": "^4.0.2",
     "sleep-promise": "^9.1.0",
     "ts-jest": "^28.0.2",
     "ts-node": "^10.7.0",

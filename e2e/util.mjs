@@ -1,8 +1,8 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-import { toIncludeSameMembers } from 'jest-extended'
-expect.extend({ toIncludeSameMembers })
+import { toIncludeSameMembers, toIncludeAllMembers } from 'jest-extended'
+expect.extend({ toIncludeSameMembers, toIncludeAllMembers })
 
 import { join } from 'path'
 import { cp, mkdtemp, rm, access, lstat, readFile } from 'fs/promises'

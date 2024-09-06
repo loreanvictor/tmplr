@@ -7,6 +7,8 @@ export interface Args {
     help: boolean
     version: boolean
     dir: string
+    subgroup: boolean
+    skipWarnings: boolean
   }
 
   workdir: string
@@ -31,6 +33,8 @@ export function parseArgs(): Args {
       help: parsed['help'] as boolean,
       version: parsed['version'] as boolean,
       dir: workdir,
+      subgroup: parsed['subgroup'] as boolean,
+      skipWarnings: parsed['skip-warnings'] as boolean,
     },
     workdir,
     command,
