@@ -158,6 +158,14 @@ tmplr owner/repo/subdirectory # 👉 sub directory
 
 > 📖 Read more about command line options [here](cli.md).
 
+<br>
+
+> [!TIP]
+> For cloning [gitlab subgroups](https://docs.gitlab.com/ee/user/group/subgroups/), use the `--subgroup` flag:
+> ```bash
+> tmplr gitlab:dude/fun-projects/starter-recipe --subgroup
+> ```
+
 <br/>
 
 ## Running Recipes
@@ -941,6 +949,7 @@ steps:
 >   <expression>
 > to?:
 >   <expression>
+> subgroup?: <boolean>
 > ```
 Copies contents of given repository into specified folder (using [degit](https://github.com/Rich-Harris/degit)). If destination is not specified, will copy into the same folder as the running recipe. Accepts the same sources as `tmplr` command.
 ```yml
@@ -949,6 +958,11 @@ steps:
     to:
       eval: '{{ tmpdir.repo }}'
 ```
+<br/>
+
+> [!TIP]
+> For cloning [gitlab subgroups](https://docs.gitlab.com/ee/user/group/subgroups/), use the `subgroup` option.
+
 <br/>
 
 #### Run

@@ -21,6 +21,7 @@ Copies content of given repository on GitHub to current directory, and runs its 
 tmplr gitlab:owner/repo
 tmplr git@gitlab.com:owner/repo
 tmplr https://gitlab.com/owner/repo
+tmplr gitlab:owner/group/repo --subgroup
 
 # 🪣 download from BitBucket
 tmplr bitbucket:owner/repo
@@ -41,6 +42,14 @@ tmplr owner/repo#tag          # 👉 release tag
 tmplr owner/repo#c0m1th45h    # 👉 commit hash
 tmplr owner/repo/subdirectory # 👉 sub directory
 ```
+
+<br>
+
+> [!TIP]
+> For cloning [gitlab subgroups](https://docs.gitlab.com/ee/user/group/subgroups/), use the `--subgroup` flag:
+> ```bash
+> tmplr gitlab:dude/fun-projects/starter-recipe --subgroup
+> ```
 
 <br>
 
