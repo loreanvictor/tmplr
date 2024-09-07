@@ -1,5 +1,5 @@
 import { ChangeLog, createFSProvider, EvaluationContext, Flow, scopeFromProviders, STANDARD_PIPES } from '@tmplr/core'
-import { createEnvProvider, createGitProvider, createTmpDirProvider, NodeFS } from '@tmplr/node'
+import { createEnvProvider, createGitProvider, createTmpDirProvider, NodeFS, NODE_ENV } from '@tmplr/node'
 import { STANDARD_RULE_SET, Parser, LocatedExecution, LocatedRunnable } from '@tmplr/yaml-parser'
 
 import { createDatetimeProvider, DATETIME_FORMAT_PIPES } from '../util'
@@ -46,8 +46,7 @@ export async function createRuntime(
   const runnable = await parser.parseString(recipe)
   const changelog = parser.changelog!
 
-  // TODO: the proper flow environment should be provided by @tmplr/node
-  const execution = runnable.run(new Flow({onKill: () => () => {}}))
+  const execution = runnable.run(new Flow(NODE_ENV))
   
   return {
     workdir,
